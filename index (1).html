@@ -1,0 +1,1219 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Теплица 6000×2850 — проект</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+
+:root{
+  --ground:#F4F6F8; --paper:#FFFFFF; --ink:#1F2933; --muted:#5F6B78; --rule:#D5DBE2;
+  --dim:#1D5FA6; --accent:#1D5FA6; --accent-soft:#E3EDF9;
+  --wood:#D9B27A; --woodbg:#EFE3CB; --pcfill:rgba(58,145,215,.22); --pcline:#2A6BA8; --pcvent:rgba(46,158,107,.25); --pcventline:#1B7A50;
+  --alu:#C6CCD3; --steel:#6E7883; --brush:#8A6644; --tape:#2E9E6B; --seal:#3A3A3A; --stone:#C9C4BA; --water:#3A7BD5;
+  --warn:#9A5B00; --warnbg:#FFF3DF; --tank:#D9A066; --filmfill:rgba(200,215,230,.35);
+  --font-d:"Roboto Condensed","Arial Narrow",Arial,sans-serif;
+  --font-b:"IBM Plex Sans","Segoe UI",Arial,sans-serif;
+  --font-m:"IBM Plex Mono","Consolas",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#12171D; --paper:#1A2129; --ink:#E6EAEF; --muted:#9AA5B1; --rule:#33404D;
+    --dim:#86B7F2; --accent:#86B7F2; --accent-soft:#1F2F44;
+    --wood:#A8834E; --woodbg:#4A3B27; --pcfill:rgba(120,190,255,.22); --pcline:#8CC3F5; --pcvent:rgba(95,207,147,.25); --pcventline:#5FCF93;
+    --alu:#8F97A1; --steel:#AEB7C2; --brush:#B48A5E; --tape:#5FCF93; --seal:#C9C9C9; --stone:#5A5751; --water:#6FA7F0;
+    --warn:#F0B35A; --warnbg:#2E2410; --tank:#B8783E; --filmfill:rgba(160,190,220,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12171D; --paper:#1A2129; --ink:#E6EAEF; --muted:#9AA5B1; --rule:#33404D;
+  --dim:#86B7F2; --accent:#86B7F2; --accent-soft:#1F2F44;
+  --wood:#A8834E; --woodbg:#4A3B27; --pcfill:rgba(120,190,255,.22); --pcline:#8CC3F5; --pcvent:rgba(95,207,147,.25); --pcventline:#5FCF93;
+  --alu:#8F97A1; --steel:#AEB7C2; --brush:#B48A5E; --tape:#5FCF93; --seal:#C9C9C9; --stone:#5A5751; --water:#6FA7F0;
+  --warn:#F0B35A; --warnbg:#2E2410; --tank:#B8783E; --filmfill:rgba(160,190,220,.25);
+}
+html{background:var(--ground)}
+body{background:var(--ground);color:var(--ink);font-family:var(--font-b);font-size:15px;line-height:1.55;margin:0;padding-block:24px 60px;padding-inline:clamp(16px,4vw,48px)}
+.wrap{max-width:1160px;margin:0 auto}
+header{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:8px 32px;align-items:flex-end}
+header h1{font-family:var(--font-d);font-weight:700;font-size:30px;line-height:1.1;margin:0;letter-spacing:.01em;text-wrap:balance}
+header .meta{font-family:var(--font-m);font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 18px}
+.sheet{background:var(--paper);border:1px solid var(--rule);margin:0 0 26px;padding:16px 18px 14px}
+.sheet-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 18px;border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:10px}
+.sheet-head h2{font-family:var(--font-d);font-weight:500;font-size:20px;margin:0}
+.sheet-head .no{font-family:var(--font-m);font-size:12px;color:var(--muted);letter-spacing:.06em}
+.sheet-head .scale{font-family:var(--font-m);font-size:12px;color:var(--muted)}
+.dr{overflow-x:auto}
+.dr svg{display:block;width:100%;height:auto;min-width:520px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:800px){.two{grid-template-columns:1fr}}
+.cap{font-size:13.5px;color:var(--muted);margin:8px 0 0;max-width:70ch}
+.cap b{color:var(--ink);font-weight:500}
+.ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:10px 0 4px;font-size:14px}
+.ctrl label{font-family:var(--font-d);font-size:14px;letter-spacing:.02em}
+.ctrl input[type=range]{width:min(360px,60vw);accent-color:var(--accent)}
+.ctrl output{font-family:var(--font-m);font-size:13px;background:var(--accent-soft);padding:3px 10px;border-radius:3px}
+.ctrl button{font-family:var(--font-d);font-size:14px;letter-spacing:.03em;background:var(--ink);color:var(--paper);border:0;padding:7px 16px;border-radius:3px;cursor:pointer}
+.ctrl button:focus-visible,.ctrl input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:18px;height:11px;border:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border-bottom:1px solid var(--rule);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-family:var(--font-d);font-weight:500;letter-spacing:.03em;font-size:13px;color:var(--muted);text-transform:uppercase}
+td.n{font-family:var(--font-m);font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{background:var(--warnbg);border-left:3px solid var(--warn);border-radius:0;padding:10px 14px;font-size:13.5px;margin:0 0 18px}
+.note b{font-weight:500}
+ul{padding-left:20px;margin:6px 0}
+li{margin:3px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:800px){.grid2{grid-template-columns:1fr}}
+svg text{font-family:var(--font-b);font-size:12.5px;fill:var(--ink)}
+svg text.dm{font-family:var(--font-m);font-size:11.5px;fill:var(--dim)}
+svg text.ttl{font-family:var(--font-d);font-size:14px;fill:var(--ink);letter-spacing:.02em}
+svg text.mu{fill:var(--muted);font-size:11.5px}
+svg .wood{fill:var(--wood);stroke:var(--ink);stroke-width:1}
+svg .woodbg{fill:var(--woodbg);stroke:var(--muted);stroke-width:.8}
+svg .pc{fill:var(--pcfill);stroke:var(--pcline);stroke-width:1.2}
+svg .pcv{fill:var(--pcvent);stroke:var(--pcventline);stroke-width:1.2}
+svg .pcl{stroke:var(--pcline);stroke-width:.6;opacity:.7}
+svg .alu{fill:var(--alu);stroke:var(--ink);stroke-width:.9}
+svg .aluo{fill:none;stroke:var(--alu);stroke-width:2.2}
+svg .steel{fill:var(--steel);stroke:var(--ink);stroke-width:.9}
+svg .brush{fill:var(--brush);stroke:none}
+svg .tape{fill:var(--tape);stroke:none}
+svg .seal{fill:var(--seal);stroke:none}
+svg .stone{fill:var(--stone);stroke:var(--ink);stroke-width:.8}
+svg .water{fill:var(--water);stroke:var(--ink);stroke-width:.8}
+svg .waterl{stroke:var(--water);stroke-width:2.5;fill:none}
+svg .tank{fill:var(--tank);stroke:var(--ink);stroke-width:.9}
+svg .tankl{stroke:var(--tank);stroke-width:3;fill:none}
+svg .film{fill:var(--filmfill);stroke:var(--ink);stroke-width:.9;stroke-dasharray:4 2}
+svg .edge{fill:var(--seal);stroke:none}
+svg .screw{stroke:var(--ink);stroke-width:2.2}
+svg .dim line{stroke:var(--dim);stroke-width:.9}
+svg .ext{stroke:var(--dim);stroke-width:.6}
+svg .ldr{stroke:var(--ink);stroke-width:.7;fill:none}
+svg .ldrdot{fill:var(--ink)}
+svg .axis{stroke:var(--muted);stroke-width:.8;stroke-dasharray:10 4 2 4}
+svg .hid{stroke:var(--ink);stroke-width:.9;stroke-dasharray:5 3;fill:none}
+svg .ghost{fill:none;stroke:var(--pcventline);stroke-width:1;stroke-dasharray:6 3}
+svg .cut{stroke:var(--ink);stroke-width:1.6}
+.vent{transition:transform .5s ease}
+@media (prefers-reduced-motion: reduce){.vent{transition:none}}
+
+
+#view3d{--bg:#0F1720;--panel:rgba(18,26,36,.9);--ink3:#E8EDF2;--muted3:#9AA8B6;--accent3:#5AAEFF;--line:#2B3A4B}
+#view3d{position:relative;overflow:hidden;background:var(--bg);color:var(--ink3);font-family:var(--font-b);font-size:14px;border-radius:8px;height:min(78vh,760px);min-height:420px;border:1px solid var(--rule)}
+#view3d canvas{display:block;width:100%;height:100%;touch-action:none}
+#view3d .row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+#view3d button{font:inherit;font-size:13px;background:#1E2A38;color:var(--ink3);border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+#view3d button.on{background:var(--accent3);color:#08131F;border-color:var(--accent3)}
+#view3d button:focus-visible{outline:2px solid var(--accent3);outline-offset:2px}
+#view3d label{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted3);margin:7px 0;line-height:1.3}
+#view3d label input{margin-top:2px}
+#view3d input[type=checkbox]{accent-color:var(--accent3);flex:none}
+#view3d .panel{position:absolute;background:var(--panel);border:1px solid var(--line);border-radius:10px;backdrop-filter:blur(6px);box-sizing:border-box;box-shadow:0 6px 22px rgba(0,0,0,.35);z-index:4}
+#view3d .panel .head{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:grab;user-select:none;touch-action:none;border-bottom:1px solid transparent}
+#view3d .panel:not(.collapsed) .head{border-bottom-color:var(--line)}
+#view3d .panel .head:active{cursor:grabbing}
+#view3d .panel .head h1{font-size:13.5px;margin:0;font-weight:600;flex:1;letter-spacing:.01em;line-height:1.25}
+#view3d .panel .head .grip{color:var(--muted3);font-size:13px;letter-spacing:1px;line-height:1}
+#view3d .panel .head .fold{background:none;border:0;color:var(--muted3);font-size:15px;line-height:1;padding:2px 4px;cursor:pointer;border-radius:4px}
+#view3d .panel .head .fold:hover{color:var(--ink3);background:#1E2A38}
+#view3d .panel .body{padding:8px 12px 12px;overflow-y:auto;max-height:min(66vh,620px)}
+#view3d .panel.collapsed .body{display:none}
+#view3d #ui{top:12px;left:12px;width:286px}
+#view3d #specPanel{top:12px;right:12px;width:320px}
+#view3d #specPanel .body{font-size:12px;color:var(--muted3)}
+#view3d #specPanel ol{margin:0;padding-left:22px;line-height:1.45}
+#view3d #specPanel li{margin:3px 0}
+#view3d #specPanel p{margin:8px 0 0}
+#view3d #legend{left:12px;bottom:14px;width:300px}
+#view3d #legend .body{font-size:12px;color:var(--muted3);line-height:1.6}
+#view3d #legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+#view3d #hint{font-size:12px;color:var(--muted3);margin-top:8px;line-height:1.45}
+#view3d #tip{position:absolute;pointer-events:none;display:none;background:rgba(8,14,22,.94);color:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:13px;max-width:min(460px,72vw);line-height:1.35;z-index:6}
+@media (max-width:760px){.panel{width:calc(100vw - 24px)!important}#specPanel,#legend{position:absolute}}
+
+#view3d .panel .body{max-height:min(46vh,420px)}
+#view3d #legend{bottom:12px}
+#view3d .fsbtn{position:absolute;right:12px;bottom:12px;z-index:5}
+#view3d:fullscreen{height:100vh;border-radius:0}
+@media (max-width:760px){#view3d{height:64vh;min-height:360px}
+#view3d .panel{width:calc(100% - 100px)!important;max-width:280px}
+#view3d #ui{top:10px;left:10px}
+#view3d #specPanel{top:52px;left:10px;right:auto;bottom:auto}
+#view3d #legend{top:94px;left:10px;bottom:auto}
+#view3d .fsbtn{right:10px;bottom:10px;top:auto;font-size:12px;padding:6px 10px}
+#view3d .panel .body{max-height:min(38vh,320px)}}
+/* ---------- сайт ---------- */
+body{padding-block:0 60px}
+.site-head{background:var(--paper);border-bottom:1px solid var(--rule);margin:0 calc(-1*clamp(16px,4vw,48px)) 0;padding:18px clamp(16px,4vw,48px) 14px}
+.site-head .in{max-width:1160px;margin:0 auto}
+.site-head h1{font-family:var(--font-d);font-weight:700;font-size:clamp(20px,3.4vw,30px);line-height:1.12;margin:0 0 8px;text-wrap:balance}
+.site-head .sub{color:var(--muted);font-size:14px;max-width:80ch;margin:0 0 10px}
+.badges{display:flex;flex-wrap:wrap;gap:6px 10px;font-family:var(--font-m);font-size:11.5px;color:var(--muted)}
+.badges span{background:var(--accent-soft);color:var(--accent);padding:3px 9px;border-radius:99px}
+nav.site{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);margin:0 calc(-1*clamp(16px,4vw,48px)) 22px;padding:0 clamp(16px,4vw,48px)}
+nav.site ul{max-width:1160px;margin:0 auto;padding:0;list-style:none;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.site ul::-webkit-scrollbar{display:none}
+nav.site a{display:block;white-space:nowrap;padding:12px 14px;font-family:var(--font-d);font-size:14.5px;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent}
+nav.site a:hover{color:var(--ink)}
+nav.site a.on{color:var(--accent);border-bottom-color:var(--accent)}
+.block{max-width:1160px;margin:0 auto 34px}
+.block > h2{font-family:var(--font-d);font-weight:700;font-size:23px;margin:0 0 4px;scroll-margin-top:60px}
+.block > p.lead{color:var(--muted);font-size:14.5px;margin:0 0 16px;max-width:78ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:0 0 20px}
+.card{background:var(--paper);border:1px solid var(--rule);padding:14px 16px}
+.card h3{font-family:var(--font-d);font-size:15px;margin:0 0 6px;font-weight:600}
+.card p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 20px}
+.kpi div{background:var(--paper);border:1px solid var(--rule);padding:12px 14px}
+.kpi b{display:block;font-family:var(--font-m);font-size:22px;color:var(--accent);line-height:1.2}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.sheet{scroll-margin-top:60px}
+.tablewrap{overflow-x:auto}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -2px}
+.tablewrap table{min-width:680px}
+.tablewrap::after{content:'';display:block}
+@media (max-width:700px){table{font-size:12.5px}th,td{padding:6px 7px}.block > h2{font-size:20px}.sheet-head h2{font-size:17px}}
+.status{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.status b{font-family:var(--font-d);font-weight:500;font-size:12.5px;padding:5px 11px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.status b.warn{background:var(--warnbg);color:var(--warn)}
+footer.site{max-width:1160px;margin:30px auto 0;padding-top:16px;border-top:1px solid var(--rule);color:var(--muted);font-size:13px}
+@media print{nav.site,#view3d,.site-head .badges{display:none}.sheet{break-inside:avoid;border:0;padding:0}body{padding:0}}
+@media (max-width:700px){.sheet{padding:12px 12px 10px}.grid2,.two{grid-template-columns:1fr}.dr svg{min-width:0}.dr{overflow-x:auto}.dr svg{min-width:520px}}
+
+</style>
+</head>
+<body>
+<div class="site-head"><div class="in"><h1>Теплица 6000×2850 — проект на согласование</h1><p class="sub">Глухая крыша и стены из поликарбоната 6 мм, сбор дождевой воды в трубы-накопители, капельный полив, раздвижные окна и двери из гибкого ПВХ.</p><div class="badges"><span>Редакция 6.5</span><span>19.09.2026</span><span>Уфа, снеговой район V</span><span>Материалы 117 626 ₽</span></div></div></div>
+<nav class="site"><ul><li><a href="#overview">Обзор</a></li><li><a href="#model3d">3D-модель</a></li><li><a href="#draw">Чертежи</a></li><li><a href="#s-spec">Спецификация</a></li><li><a href="#s-orders">Заказы</a></li><li><a href="#s-montazh">Монтаж</a></li><li><a href="#s-calc">Расчёты</a></li></ul></nav>
+<div class="wrap">
+
+<div class="block" id="overview">
+  <h2>Что построено в проекте</h2>
+  <p class="lead">Теплица 6000×2850 по каркасу владельца: глухая крыша и стены из сотового поликарбоната 6 мм, дождевая вода собирается в трубы-накопители внутри сооружения и идёт на капельный полив, проветривание — через раздвижные окна фронтонов и открытые двери из гибкого ПВХ. Снеговой район V (3,2 кПа), Уфа.</p>
+  <div class="status"><b>Диаметр накопителя Ø200 — согласовано 19.09.2026</b><b>Брус обрешётки закуплен</b><b class="warn">Ожидает: ответ Полигаль по лентам и коньковому профилю</b></div>
+  <div class="kpi">
+    <div><b>117 626 ₽</b><span>материалы без каркаса, цены проверены 19.09.2026</span></div>
+    <div><b>6 рулонов</b><span>поликарбоната 2,1×6 м, выход раскроя 67 %</span></div>
+    <div><b>325 л</b><span>запас воды, 10 дней полива без дождя</span></div>
+    <div><b>47 ч</b><span>монтаж на двоих, около 6 дней</span></div>
+  </div>
+  <div class="cards">
+    <div class="card"><h3>Крыша не открывается</h3><p>Один лист 1480×1800 на пролёт лежит на пяти брусьях 45×45 с шагом 280 — этого требует снеговой район V. Подвижных деталей в кровле нет.</p></div>
+    <div class="card"><h3>Вода — внутрь, а не в бак снаружи</h3><p>Жёлобы по карнизам заводят дождь в две трубы ПВХ Ø200 под стяжками вдоль стен. Ничего не стоит за контуром сооружения, вода в трубах прогревается.</p></div>
+    <div class="card"><h3>Жёлоб ниже линии схода снега</h3><p>Наружная кромка жёлоба на 26 мм ниже продолжения ската — пласт снега проходит над ним. Снимать на зиму не нужно.</p></div>
+    <div class="card"><h3>Окна без рам</h3><p>Створки из того же листа 6 мм ходят в алюминиевых швеллерах 10×10 — просвет 7 мм точно под лист. Вместо мебельной системы за 12 тыс. ₽ — 1,3 тыс. ₽.</p></div>
+    <div class="card"><h3>Двери из гибкого ПВХ</h3><p>Полотно 700 мкм на люверсах и молниях скручивается вверх. Единственное, что снимается на зиму.</p></div>
+    <div class="card"><h3>Зимний режим</h3><p>Снять двери, открыть краны накопителей. Всё остальное — крыша, стены, окна, жёлобы, трубы — остаётся на месте.</p></div>
+  </div>
+  <p class="lead">Ниже: интерактивная 3D-модель с подсказками по каждой детали, 9 листов чертежей с узлами и раскроем, спецификация с проверенными ценами по Уфе, два готовых заказа поставщикам и пооперационная инструкция монтажа с контрольными проверками.</p>
+</div>
+
+
+<div class="block" id="model3d">
+  <h2>3D-модель</h2>
+  <p class="lead">Вращение — левая кнопка или палец, перемещение — правая кнопка или два пальца, масштаб — колесо. При наведении на деталь показывается её номер по спецификации и назначение. Три плашки перетаскиваются за шапку и сворачиваются кнопкой «−».</p>
+  <div id="view3d">
+<canvas id="c"></canvas>
+<button class="fsbtn" id="fs3d" type="button">Во весь экран</button>
+<div class="panel" id="ui">
+  <div class="head"><span class="grip">⠿</span><h1>Теплица: управление</h1><button class="fold" type="button" title="Свернуть">−</button></div>
+  <div class="body">
+  <label><input type="checkbox" id="rain"> Дождь</label>
+  <label><input type="checkbox" id="water" checked> Система полива</label>
+  <label><input type="checkbox" id="walls" checked> Стены и фронтоны 6 мм</label>
+  <label><input type="checkbox" id="wins"> Окна фронтонов сдвинуты (открыты)</label>
+  <label><input type="checkbox" id="doors"> Двери свёрнуты вверх</label>
+  <div class="row">
+    <button id="vGen" type="button">Общий вид</button>
+    <button id="vIn" type="button">Изнутри</button>
+    <button id="vEave" type="button">Карниз</button>
+    <button id="vRidge" type="button">Конёк</button>
+    <button id="vTank" type="button">Накопитель</button>
+  </div>
+  <div id="hint">Вращение — левая кнопка, перемещение — правая, колесо — масштаб. Наведите на деталь: в подсказке её номер позиции по спецификации (лист 7).
+    <details style="margin-top:6px"><summary style="cursor:pointer;color:var(--ink)">Что за конструкция</summary>
+    <p style="margin:6px 0 0">Редакция 6.5. Крыша глухая: один лист 6 мм на пролёт на пяти брусьях 45×45. Вода с крыши — в жёлобы, из них самотёком в две трубы-накопителя Ø200 под стяжками вдоль стен (325 л, 10 дней полива); жёлоб опущен ниже линии ската, чтобы сходящий снег его не срезал. Из труб через краны — в капельные ленты своей грядки. Стены и фронтоны — тот же лист 6 мм; по бокам дверей четыре раздвижных окна без рам: две створки 6 мм в алюминиевых направляющих. Двери — гибкое стекло ПВХ на люверсах и молниях, скручиваются вверх; на зиму снимаются только двери, остальное остаётся на месте (краны накопителей открыть).</p>
+    </details></div>
+  </div>
+</div>
+<div class="panel collapsed" id="specPanel">
+  <div class="head"><span class="grip">⠿</span><h1>Спецификация, лист 7</h1><button class="fold" type="button" title="Развернуть">+</button></div>
+  <div class="body">
+    <ol>
+      <li>Поликарбонат 6 мм 2,1×6 — 6 листов (кровля, стены, фронтоны, створки)</li>
+      <li>Уголок 40×40×40×2 — 100 шт (брус обрешётки закуплен отдельно)</li>
+      <li>Профиль разъёмный 6–10, 6 м — 4</li>
+      <li>Профиль коньковый 4–6, 6 м — 1</li>
+      <li>Профиль торцевой 6 мм, 2,1 м — 40</li>
+      <li>Профиль Н-образный 6 мм, 6 м — 3</li>
+      <li>Лента герметизирующая и перфорированная — по 2 рулона</li>
+      <li>Термошайба с саморезом — 450</li>
+      <li>Саморезы 4×30, 4,8×60, 5×50 — компл.</li>
+      <li>Жёлоб Döcke 120/80 с воронками и кронштейнами — компл.</li>
+      <li>Планка карнизная (капельник) 2,5 м — 6</li>
+      <li>Накопитель: труба Ø200, тройники, заглушки, хомуты — компл.</li>
+      <li>Ввод Ø110 и перелив Ø50 с манжетами — компл.</li>
+      <li>Кран ¾", фильтр, врезка — компл.</li>
+      <li>Капельный полив: лента, гребёнки, шланг — компл.</li>
+      <li>Швеллер алюминиевый 10×10×1,5 — направляющие окон, 7</li>
+      <li>Уплотнитель щёточный 7×6 — 12 м</li>
+      <li>Двери из гибкого ПВХ 700 мкм — 2</li>
+    </ol>
+    
+  
+    <p>[—] — каркас и закупленное ранее (брус обрешётки, полки под трубу), в спецификацию не входит.</p>
+  </div>
+</div>
+<div class="panel" id="legend">
+  <div class="head"><span class="grip">⠿</span><h1>Обозначения</h1><button class="fold" type="button" title="Свернуть">−</button></div>
+  <div class="body">
+  <div><i style="background:#6B3520"></i>дерево каркаса и брусья 45×45 (терракота)</div>
+  <div><i style="background:#9FD3FF"></i>поликарбонат 6 мм: кровля, стены, окна</div>
+  <div><i style="background:#C9CED4"></i>алюминий: профили, направляющие окон</div>
+  <div><i style="background:#C8622A"></i>система полива: жёлобы, накопители Ø200, ленты</div>
+  <div><i style="background:#E6F0F6"></i>гибкое стекло ПВХ: двери</div>
+  </div>
+</div>
+<div id="tip"></div>
+
+</div>
+</div>
+
+
+<div class="block" id="draw">
+  <h2>Чертежи</h2>
+  <p class="lead">Девять листов: схемы, узлы в истинном положении, карта раскроя. Номера в квадратных скобках на выносках — позиции спецификации, те же, что в 3D-модели. На телефоне листы прокручиваются вбок.</p>
+</div>
+
+<section class="sheet" id="s-l1">
+  <div class="sheet-head"><h2>Схема крыши: план и вид с торца</h2><span class="no">Лист 1</span><span class="scale">М 1:7</span></div>
+  <div class="dr"><svg id="l5" viewBox="0 0 1260 600" role="img" aria-label="План крыши: восемь глухих пролётов, жёлобы"></svg></div>
+  <p class="cap">В квадратных скобках на выносках — номера позиций спецификации (лист 7); те же номера показывает 3D-модель при наведении. Оба ската развёрнуты в плоскость. Каждый пролёт — один лист 1480×1800. Пять брусьев 45×45 на скат показаны пунктиром под листами. По карнизам — жёлобы с воронками в 300 мм от переднего торца.</p>
+  <div class="dr" style="margin-top:14px"><svg id="l5b" viewBox="0 20 1100 590" role="img" aria-label="Вид с торца: накопители, окна, дверь, жёлобы"></svg></div>
+  <p class="cap">Вид с торца (передний фронтон). Жёлобы за стеной ниже линии ската; под стяжками вдоль стен — трубы-накопители Ø200 на полках у стоек, ввод из жёлоба сквозь боковую стену, перелив наружу. Во фронтоне: дверь из гибкого ПВХ 950×2240 и по бокам два раздвижных окна 775×1565 из двух створок. Из труб через краны — по четыре капельные ленты на грядку.</p>
+</section>
+<section class="sheet" id="s-l2">
+  <div class="sheet-head"><h2>Разрез А-А: узел на стропиле, поперёк ската</h2><span class="no">Лист 2</span><span class="scale">М 1:1 (2 px = 1 мм)</span></div>
+  <div class="dr"><svg id="l1" viewBox="0 30 1260 520" role="img" aria-label="Поперечный разрез узла на стропиле с разъёмным профилем"></svg></div>
+  <p class="cap"><b>Принцип узла.</b> На верх стропила прикручен базовый алюминиевый профиль разъёмной системы для листа 6 мм. Листы соседних пролётов ложатся на его полки с зазором 20 между кромками, сверху защёлкивается и прижимается крышка с уплотнителем. Лист не сверлится. Это стандартный узел поликарбонатных кровель.</p>
+  <div class="legend"><span><i style="background:var(--wood)"></i>дерево</span><span><i style="background:var(--pcfill)"></i>поликарбонат 6</span><span><i style="background:var(--alu)"></i>алюминий</span><span><i style="background:var(--steel)"></i>сталь</span><span><i style="background:var(--tank)"></i>система полива: жёлоб, накопитель, ленты</span></div>
+</section>
+<section class="sheet" id="s-l3">
+  <div class="sheet-head"><h2>Разрез Б-Б: вдоль ската по середине пролёта</h2><span class="no">Лист 3</span><span class="scale">М 1:2, скат развёрнут</span></div>
+  <div class="dr"><svg id="l2" viewBox="0 120 1180 460" role="img" aria-label="Продольный разрез с пятью брусьями"></svg></div>
+  <p class="cap">Толщины в масштабе (6 мм = 3 px), уклон условно снят. Один лист от конька (с зазором 30 у оси) до карниза со свесом 48, к каждому брусу — саморезы с термошайбами. Брусья 45×45 по осям 280, 560, 840, 1120, 1400 на перфорированных уголках, верх вровень с базовым профилем.</p>
+</section>
+<section class="sheet" id="s-l4">
+  <div class="sheet-head"><h2>Узел В: карниз и жёлоб</h2><span class="no">Лист 4</span><span class="scale">М 1:1, истинное положение</span></div>
+  <div class="dr"><svg id="l3" viewBox="0 0 1100 960" role="img" aria-label="Узел карниза с жёлобом ниже линии ската"></svg></div>
+  <p class="cap"><b>Работа узла.</b> Лист выходит за стену на 48 по скату (40 по горизонтали). Жёлоб ПВХ Ø125 опущен: ось +2062, верх +2124 — на 26 мм ниже линии продолжения ската над его наружной кромкой, поэтому сходящий снег проходит над жёлобом. Кромка листа (+2217) на 93 выше верха жёлоба, поэтому под кромкой стоит капельник — отогнутая вниз полоса, край которой над серединой лотка: без него при ливне вода с крутого ската перелетала бы наружную кромку. Кронштейны — через стеновой лист к обвязке, с уплотнительной шайбой. Стеновой лист 6 мм заходит под кромку кровли до +2225.</p>
+</section>
+<section class="sheet" id="s-l5">
+  <div class="sheet-head"><h2>Узлы Г и Д: середина пролёта над брусом и конёк</h2><span class="no">Лист 5</span><span class="scale">М 1:1 · М 1:1,1</span></div>
+  <div class="two">
+    <div>
+      <div class="dr"><svg id="l4a" viewBox="0 0 760 600" role="img" aria-label="Узел опирания листа на брус"></svg></div>
+      <p class="cap"><b>Г — брус.</b> По кромкам лист держат крышки разъёмных профилей и коньковый профиль, а к каждому брусу он крепится тремя саморезами с термошайбами (шаг ≈ 370, отверстие +2 мм) — иначе при отсосе ветра 1480 мм между стропилами будут хлопать. Брус к стропилам — на перфорированных уголках 40×40×40, верх по шаблону +3.</p>
+    </div>
+    <div>
+      <div class="dr"><svg id="l4b" viewBox="0 0 600 540" role="img" aria-label="Узел конька"></svg></div>
+      <p class="cap"><b>Д — конёк.</b> Листы сходятся над осью с зазором 30, кромки зажимает коньковый профиль для поликарбоната 6 мм с регулируемым углом (108°). В балки ничего не крепится.</p>
+    </div>
+  </div>
+</section>
+<section class="sheet" id="s-l10">
+  <div class="sheet-head"><h2>Накопитель: труба Ø200 под стяжками, ввод из жёлоба, перелив, кран</h2><span class="no">Лист 10</span><span class="scale">вид на правую стену изнутри; по длине М 1:6, по высоте 1:2,5</span></div>
+  <div class="dr"><svg id="l10" viewBox="0 0 1180 470" role="img" aria-label="Продольная схема накопителя с отметками"></svg></div>
+  <p class="cap"><b>Правило отметок:</b> ввод и перелив ниже дна жёлоба (+2000), перелив выше верха трубы (+1970). Система герметична, поэтому труба наполняется до самого верха — уровень в ней равен уровню воды в жёлобе, а лишнее уходит через перелив, не задерживаясь в жёлобе. Труба 5720 из двух хлыстов 3000, соединённых раструбом; уклон 5 мм/м к заднему торцу — к крану, он же полный слив на зиму. Опоры: полка 45×90×300 к ребру каждой стойки и хомут 8" с резиной — пять на сторону, по 38 кг на опору при полной трубе. Над грядкой под трубой 1,57 м.</p>
+  <p class="cap"><b>Обвеска на сторону:</b> тройник 200/110 87° (отросток к стене), заглушки 200 — 2, воронка жёлоба с сеткой, труба Ø110 около 1 м с двумя коленами и проходной манжетой через стеновой лист, перелив Ø50 с колена и манжетой, врезка ¾" в заднюю заглушку, шаровой кран, сетчатый фильтр, шланг Ø20 к гребёнке у заднего конца грядки.</p>
+</section>
+<section class="sheet" id="s-l11">
+  <div class="sheet-head"><h2>Окно фронтона раздвижное и дверь из гибкого ПВХ</h2><span class="no">Лист 11</span><span class="scale">М 1:5 · сечение М 1:1</span></div>
+  <div class="two">
+    <div>
+      <div class="dr"><svg id="l11a" viewBox="0 0 560 640" role="img" aria-label="Окно: фасад и сечение по направляющим"></svg></div>
+      <p class="cap"><b>Окно без рамы.</b> Проём 775×1565 между оконной стойкой 90×45 и угловой. Сверху под торцевой обвязкой и снизу на лежне — направляющие из двух алюминиевых швеллеров 10×10×1,5 каждая (просвет 7 мм точно под лист 6; глубина верхнего паза 10, нижний подрезан до 5). Две створки 400×1545 из листа 6 мм, соты вертикально, каждая в своём пазу; вертикальные кромки в U-профиле — ручка и ребро жёсткости; верх — сплошная лента, низ — перфорированная; в нижней направляющей дренажные отверстия Ø3 через 300. По стойкам щёточный уплотнитель, фиксатор — защёлка. Открыто 390×1545 на окно. Створка снимается подъёмом в верхний паз.</p>
+    </div>
+    <div>
+      <div class="dr"><svg id="l11b" viewBox="0 0 640 640" role="img" aria-label="Дверь: полотно ПВХ, люверсы, молнии, свёрнутое состояние"></svg></div>
+      <p class="cap"><b>Дверь.</b> Гибкое стекло ПВХ 700 мкм, полотно 950×2240 с окантовкой 50 из тентовой ткани: перекрытие проёма 850 по 50 с боков, 30 сверху. Верх — семь люверсов Ø12 через 150 на саморезах с шайбами к торцевой обвязке (единственное постоянное крепление). Бока — тракторные молнии №10 по всей высоте, ответные половины на планках, прикрученных к дверным стойкам. Низ — карман с утяжелителем. Открывание: молнии расстёгнуты, полотно скручено снизу вверх в рулон Ø140 и подвешено двумя стропами с фастексами под обвязкой. На зиму снимается по люверсам; при морозе ниже −15 °C не сворачивать.</p>
+    </div>
+  </div>
+</section>
+<section class="sheet" id="s-l6">
+  <div class="sheet-head"><h2>Аксонометрия одного пролёта</h2><span class="no">Лист 6</span><span class="scale">без масштаба</span></div>
+  <div class="dr"><svg id="l6" viewBox="0 0 1120 600" role="img" aria-label="Аксонометрия пролёта: стропила, пять брусьев, лист, жёлоб"></svg></div>
+  <p class="cap">Один пролёт: лист от конька до карниза на пяти брусьях, жёлоб под кромкой.</p>
+</section>
+<section class="sheet" id="s-l9">
+  <div class="sheet-head"><h2>Раскрой поликарбоната на всю теплицу: крыша, стены, фронтоны</h2><span class="no">Лист 9</span><span class="scale">6 листов 2100×6000, соты вертикально</span></div>
+  <div class="dr"><svg id="l9" viewBox="0 0 1180 470" role="img" aria-label="Карта раскроя шести листов поликарбоната"></svg></div>
+  <p class="cap"><b>Что закрываем.</b> Крыша — 8 заготовок 1480×1800 (соты вдоль ската). Стены — по одной заготовке на пролёт между стойками, 1500×1655 (от верха фундамента +600 до верха обвязки +2255), стык на стойке. Фронтоны — по бокам двери две заготовки 1000×1655, над обвязкой три треугольные части со стыками по линиям дверных стоек (±470), низ треугольников заходит на верх стеновых заготовок внахлёст 50. Дверные проёмы 850 не закрываются.</p>
+  <table style="margin-top:12px">
+    <thead><tr><th>Заготовка</th><th>Размер</th><th>Кол-во</th><th>Площадь</th><th>Из каких листов</th></tr></thead>
+    <tbody>
+      <tr><td>К — крыша</td><td class="n">1480×1800</td><td class="n">8</td><td class="n">21,3 м²</td><td>А, Б по 3; В — 2</td></tr>
+      <tr><td>С — стена</td><td class="n">1500×1655</td><td class="n">8</td><td class="n">19,9 м²</td><td>Г, Д по 3; Е — 2</td></tr>
+      <tr><td>Ф — фронтон у двери</td><td class="n">1000×1655</td><td class="n">4</td><td class="n">6,6 м²</td><td>В — 2, Е — 2 (из остатка под заготовками К и С)</td></tr>
+      <tr><td>Т — треугольник фронтона: средняя часть</td><td class="n">940×985</td><td class="n">2</td><td class="n">1,5 м²</td><td>остатки 2100×1035 листов Г, Д</td></tr>
+      <tr><td>Т — треугольник фронтона: боковые</td><td class="n">955×644</td><td class="n">4</td><td class="n">1,2 м²</td><td>остатки листов Г, Д, Е</td></tr>
+      <tr><td><b>Итого в дело</b></td><td></td><td></td><td class="n">50,5 м²</td><td>из 75,6 м² купленных — выход 67 %; обрезки 8 полос 620×1800, 3 полосы 600×4965 и мелочь</td></tr>
+    </tbody>
+  </table>
+  <p class="cap"><b>Дополнительно к спецификации листа 7</b> (только на стены и фронтоны): Н-профиль неразъёмный для 6 мм — 6 стыков на стойках по 1655 и 4 стыка на фронтонах ≈ 12,5 м → 3 шт. по 6 м; торцевой профиль 6 мм — верх и низ всех заготовок ≈ 38 м → 18 шт. по 2,1 м; лента сплошная и перфорированная — по 25 м; термошайбы 4,8×50 — около 250 шт. (шаг 400 по стойкам и обвязкам). Косые кромки треугольников идут вдоль стропил — их герметизировать сплошной лентой под свесом крыши, профиль на косой срез не ставится.</p>
+  <p class="cap"><b>Вариант с рулонами 12 м.</b> Площадь та же: 3 рулона 2,1×12 = 6 рулонов 2,1×6, цена за м² у Полигаля одинаковая. Раскрой из 12 м: рулон 1 — шесть полос К 1800 + внизу два треугольника; рулон 2 — две полосы К, четыре Ф, три С; рулон 3 — пять С, четыре треугольника, и остаётся целый запасной кусок 2100×1755 (одна стеновая заготовка). Выигрыш 12 м — только этот запас и на две кромки меньше; проигрыш — рулон 33 кг и 12 м разложить негде. Брать 12 м имеет смысл, если резку по этой карте делает продавец (у Полигаля есть резка в размер); при самостоятельном раскрое — шесть рулонов по 6 м.</p>
+  <p class="cap"><b>Допущения, которые надо подтвердить каркасом:</b> высота двери — до верха обвязки (+2255); стойки 90 по фасаду дают опору под стык 1500; дверные стойки доходят до стропил (для стыка треугольников). Если дверь выше обвязки или стойки другие, меняются только заготовки Ф и Т, число листов остаётся 6.</p>
+</section>
+
+<div class="block" id="docs">
+  <h2>Документы</h2>
+  <p class="lead">Спецификация с ценами, заказы поставщикам и порядок монтажа. Цены проверены по сайтам продавцов 19.09.2026, без доставки.</p>
+</div>
+
+<section class="sheet" id="s-spec">
+  <div class="sheet-head"><h2>Спецификация с ценами по Уфе</h2><span class="no">Лист 7</span><span class="scale">проверено 19.09.2026</span></div>
+  <table>
+    <thead><tr><th>Поз.</th><th>Наименование, размер</th><th>Кол-во</th><th>Цена, ₽</th><th>Сумма, ₽</th><th>Продавец, примечание</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td>Сотовый поликарбонат 6 мм прозрачный, 2100×6000, 16,38 кг/лист, УФ-соэкструзия</td><td class="n">6</td><td class="n">8 513</td><td class="n">51 078</td><td>Полигаль Восток, Собинова 22 — в наличии. Раскрой — лист 9</td></tr>
+      
+      <tr><td class="n">2</td><td>Уголок крепёжный 40×40×40×2 оцинк.</td><td class="n">100</td><td class="n">7,17</td><td class="n">717</td><td>Крепёж-Уфа, упак. 100. По одному на каждый конец 40 брусьев обрешётки</td></tr>
+      <tr><td class="n">3</td><td>Профиль разъёмный 6–10 мм, 6 м (база + крышка)</td><td class="n">4</td><td class="n">779</td><td class="n">3 115</td><td>Полигаль. Из хлыста 3 отрезка по 1800; нужно 10</td></tr>
+      <tr><td class="n">4</td><td>Профиль коньковый 4–6 мм, 6 м</td><td class="n">1</td><td class="n">1 050</td><td class="n">1 050</td><td>ufapolicarbonat.ru. У Полигаля только 8–10 мм</td></tr>
+      <tr><td class="n">5</td><td>Профиль торцевой 6 мм, 2,1 м (кровля, стены, фронтоны, кромки створок)</td><td class="n">40</td><td class="n">53,31</td><td class="n">2 132</td><td>Полигаль, «Колибри»</td></tr>
+      <tr><td class="n">6</td><td>Профиль Н-образный неразъёмный 6 мм, 6 м (стыки стен и фронтонов)</td><td class="n">3</td><td class="n">378</td><td class="n">1 134</td><td>Полигаль, «Колибри»</td></tr>
+      <tr><td class="n">7</td><td>Лента герметизирующая 25 мм / перфорированная 25 мм</td><td class="n">2 + 2</td><td class="n">425 / 418</td><td class="n">1 686</td><td>Полигаль. Длина рулона на сайте не указана — уточнить</td></tr>
+      <tr><td class="n">8</td><td>Термошайба Ø38 с саморезом и колпачком (кровля 120, стены 250, фронтоны 80)</td><td class="n">450</td><td class="n">9,12</td><td class="n">4 104</td><td>Полигаль, комплект</td></tr>
+      <tr><td class="n">9</td><td>Саморезы 4×30 (1000 шт), 4,8×60 (100 шт), 5×50 (200 шт)</td><td class="n">компл.</td><td class="n"></td><td class="n">1 308</td><td>ВсеИнструменты, ТК Гранд</td></tr>
+      <tr><td class="n">10</td><td>Жёлоб Döcke Standard 120/80: жёлоб 3 м — 5, заглушка — 4, воронка — 2, кронштейн — 22, соединитель — 2</td><td class="n">компл.</td><td class="n"></td><td class="n">4 969</td><td>ufa.docke.ru. Уплотнители в комплекте, крепёж отдельно</td></tr>
+      <tr><td class="n">11</td><td>Планка карнизная оцинк. 2,5 м — капельник под кромкой листа</td><td class="n">6</td><td class="n">294</td><td class="n">1 764</td><td>ЦентрМК Уфа, в наличии</td></tr>
+      <tr><td class="n">12</td><td><b>Накопитель (Ø200 утверждён 19.09.2026):</b> труба ПВХ Ø200 SN4 3000 — 4, тройник 200/110 87° — 2, заглушка 200 — 4, хомут 8" с резиной — 10</td><td class="n">компл.</td><td class="n"></td><td class="n">25 910</td><td>ВИ / Лемана. <b>325 л</b> (163 на сторону), 10 дней автономности</td></tr>
+      <tr><td class="n">13</td><td>Ввод и перелив: труба 110×1000 — 2, отвод 110 — 4, манжета проходная 124×110 — 2, труба 50 — 2, отвод 50 — 4</td><td class="n">компл.</td><td class="n"></td><td class="n">2 304</td><td>Лемана Уфа, в магазине</td></tr>
+      <tr><td class="n">14</td><td>Разбор накопителя: кран шаровой ¾" — 2, фильтр косой ¾" — 2, врезка в ёмкость ¾" — 2</td><td class="n">компл.</td><td class="n"></td><td class="n">2 466</td><td>Проконсим, Лемана, Роса163</td></tr>
+      <tr><td class="n">15</td><td>Полив: лента капельная 100 м шаг 30 — 1, старт-коннекторы 4 шт — 2, гребёнка 4 выхода — 2, шланг 3/4" 25 м — 1</td><td class="n">компл.</td><td class="n"></td><td class="n">3 564</td><td>«В Огородном» Уфа, ВИ. Лента работает от 0,1 бар</td></tr>
+      <tr><td class="n">16</td><td>Окна: швеллер алюминиевый 10×10×10×1,5, 2 м — направляющие (паз 7 мм под лист 6)</td><td class="n">7</td><td class="n">186</td><td class="n">1 302</td><td>Сатурн Уфа, в наличии. Мебельная раздвижная система стоит 3 000/3 м — не нужна</td></tr>
+      <tr><td class="n">17</td><td>Уплотнитель щёточный 7×6 самоклеящийся, м</td><td class="n">12</td><td class="n">21,90</td><td class="n">263</td><td>КДМ Уфа, 146 м в наличии</td></tr>
+      <tr><td class="n">18</td><td>Двери: гибкое стекло ПВХ 700 мкм 950×2240 (2,13 м²) с кантом ПВХ, 7 люверсов, молния двусторонняя</td><td class="n">2</td><td class="n">4 380</td><td class="n">8 760</td><td>Тенты Поволжья: 953 ₽/м² + люверс 50 + молния 1000. Окна-Тент от 880 ₽/м²</td></tr>
+      <tr><td class="n"></td><td><b>ИТОГО материалы</b></td><td class="n"></td><td class="n"></td><td class="n"><b>117 600</b></td><td>без каркаса, фундамента и работ</td></tr>
+    </tbody>
+  </table>
+  <p class="cap"><b>Нумерация сквозная и отражена в 3D-модели:</b> при наведении на деталь подсказка начинается с номера позиции этой таблицы; [—] — каркас и закупленное ранее (брус обрешётки, полки под трубу). <b>По разделам:</b> крыша (лист, профили, уголки, крепёж) — 66 300; водосбор (жёлоб, капельник) — 6 700; накопитель с обвеской — 30 700; капельный полив — 3 600; окна — 1 600; двери — 8 800. Брус обрешётки 45×45 закуплен владельцем и в смету не входит. Цены взяты с сайтов продавцов 19.09.2026; позиции без наличия в Уфе (труба Ø200, тройники) — под заказ с доставкой 3–7 дней. Доставка и возможный рост цен не учтены — закладывайте 10 %.</p>
+  <p class="cap"><b>Две находки при проверке цен, которые изменили решения.</b> Первое: фабричная мебельная раздвижная система под стекло стоит 3 000–4 700 ₽ за хлыст, а её функцию выполняет обычный алюминиевый швеллер 10×10×1,5 по 186 ₽ — внутренний просвет 7 мм точно под лист 6 мм; два швеллера рядом дают двойную направляющую, нижний паз подрезается до 5 мм. Экономия около 11 тыс. ₽. Второе: труба Ø250 в Уфе не продаётся в розницу, а её обвеска непропорционально дорога — тройник 250/110 стоит 5 520 ₽ против 1 776 ₽ у 200-го, заглушка 3 287 против 357. Накопитель на Ø250 обошёлся бы в 49 700 ₽ (98 ₽ за литр) против 25 900 ₽ на Ø200 (80 ₽/л) и 11 800 ₽ на Ø160 (57 ₽/л).</p>
+</section>
+<section class="sheet" id="s-orders">
+  <div class="sheet-head"><h2>Заказы поставщикам</h2><span class="no">Лист 12</span><span class="scale">цены на 19.09.2026</span></div>
+  <p class="cap"><b>Заказ 1 — Полигаль Восток, Уфа.</b> Офис Пархоменко 153/1, оф. 215; склад Собинова 22; +7 917 800-83-11, ufa@polygalvostok.com. Доставка по городу в день заказа, есть резка в размер и бесплатное хранение до весны.</p>
+  <table>
+    <thead><tr><th>№</th><th>Позиция (по спецификации, лист 7)</th><th>Кол-во</th><th>Цена, ₽</th><th>Сумма, ₽</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td>Поликарбонат сотовый Полигаль Стандарт ГОСТ 6,0 мм прозрачный, 2100×6000, вес листа 16,38 кг</td><td class="n">6 листов</td><td class="n">8 513</td><td class="n">51 078</td></tr>
+      <tr><td class="n">3</td><td>Профиль соединительный разъёмный 6–10 мм прозрачный, 6000 мм (база + крышка)</td><td class="n">4</td><td class="n">779</td><td class="n">3 115</td></tr>
+      <tr><td class="n">6</td><td>Профиль соединительный неразъёмный «Колибри» 6,0 мм прозрачный, 6000 мм</td><td class="n">3</td><td class="n">378</td><td class="n">1 134</td></tr>
+      <tr><td class="n">5</td><td>Профиль торцевой «Колибри» 6,0 мм прозрачный, 2100 мм</td><td class="n">40</td><td class="n">53,31</td><td class="n">2 132</td></tr>
+      <tr><td class="n">7</td><td>Лента герметизирующая 25 мм для СПК 4–8 мм (SOLIDTAPE), рулон</td><td class="n">2</td><td class="n">425</td><td class="n">850</td></tr>
+      <tr><td class="n">7</td><td>Лента перфорированная 25 мм для СПК 4–8 мм (PERFOTAPE), рулон</td><td class="n">2</td><td class="n">418</td><td class="n">836</td></tr>
+      <tr><td class="n">8</td><td>Шайба для монтажа СПК БН прозрачная Ø38, комплект с саморезом и колпачком</td><td class="n">450</td><td class="n">9,12</td><td class="n">4 104</td></tr>
+      <tr><td class="n"></td><td><b>Итого заказ 1</b></td><td class="n"></td><td class="n"></td><td class="n"><b>63 249</b></td></tr>
+    </tbody>
+  </table>
+  <p class="cap"><b>Уточнить у менеджера при заказе 1:</b> длину рулона лент (нужно не менее 35 м сплошной и 27 м перфорированной — если рулон короче 25 м, увеличить количество); есть ли коньковый профиль под 6 мм (в каталоге только 8–10 мм — если появится, снять его из заказа 2); стоимость резки в размер по карте раскроя листа 9 и условия хранения до монтажа.</p>
+
+  <p class="cap" style="margin-top:18px"><b>Заказ 2 — остальные поставщики.</b> Разбит по продавцам; позиции можно заказывать независимо друг от друга, на монтаж они нужны в порядке этапов.</p>
+  <table>
+    <thead><tr><th>Поставщик</th><th>Позиции</th><th>Сумма, ₽</th></tr></thead>
+    <tbody>
+      <tr><td><b>2.1</b> ufapolicarbonat.ru<br>8 917 800-00-95</td><td>Профиль соединительный коньковый К 4–6 мм, L 6 м — 1 шт (поз. 4)</td><td class="n">1 050</td></tr>
+      <tr><td><b>2.2</b> Döcke, Уфа<br>ufa.dtm.ru</td><td>Водосток Standard 120/80 (поз. 9): жёлоб 3 м — 5; заглушка жёлоба — 4; воронка — 2; кронштейн ПВХ — 22; соединитель жёлобов — 2</td><td class="n">4 969</td></tr>
+      <tr><td><b>2.3</b> ВсеИнструменты<br>доставка 3–7 дней</td><td>Накопитель (поз. 11): труба НПВХ SN4 Ø200×3000 (Хемкор) — 4 шт; хомут 8" 207–219 с резиной и гайкой М10 (Terma) — 10 шт</td><td class="n">20 930</td></tr>
+      <tr><td><b>2.4</b> Лемана ПРО, Уфа<br>Мега / Планета</td><td>Накопитель и обвязка (поз. 11, 12): тройник наружный 87° 200×110 — 2; заглушка наружная 200 — 4; труба наружная SN4 110×1000 — 2; отвод наружный 87° 110 — 4; манжета переходная 124×110 — 2; труба 50, 0,5 м — 2; отвод 50 87° — 4</td><td class="n">7 284</td></tr>
+      <tr><td><b>2.5</b> ЦентрМК, Уфа<br>Маршала Жукова 10</td><td>Планка карнизная оцинкованная 2,5 м — 6 шт (капельник, поз. 10)</td><td class="n">1 764</td></tr>
+      <tr><td><b>2.6</b> Проконсим / Роса163, Уфа</td><td>Разбор накопителя (поз. 13): кран шаровой ¾" — 2; фильтр косой сетчатый ¾" — 2; врезка в ёмкость ¾" с гайкой и прокладками — 2</td><td class="n">2 466</td></tr>
+      <tr><td><b>2.7</b> Сатурн, Уфа<br>+7 347 279-83-88</td><td>Швеллер алюминиевый 10×10×10×1,5, 2 м — 7 шт (направляющие окон, поз. 15)</td><td class="n">1 302</td></tr>
+      <tr><td><b>2.8</b> Крепёж-Уфа<br>Самаркандская 4/1</td><td>Уголок крепёжный равносторонний 40×40×40×2 оцинк. — 100 шт (поз. 2); саморезы 4×30 — 1000 шт; 4,8×60 — 100 шт; 5×50 — 200 шт (поз. 9)</td><td class="n">2 025</td></tr>
+      <tr><td><b>2.9</b> КДМ, Уфа<br>Новочеркасская 16</td><td>Уплотнитель щёточный самоклеящийся 7×6 мм, метраж — 12 м (поз. 16)</td><td class="n">263</td></tr>
+      <tr><td><b>2.10</b> «В Огородном», Уфа / ВИ</td><td>Полив (поз. 14): лента капельная эмиттерная 100 м, шаг 30 см — 1; старт-коннекторы 16 мм, уп. 4 шт — 2; распределитель 4-канальный ¾" — 2; шланг ¾" 25 м — 1</td><td class="n">3 564</td></tr>
+      <tr><td><b>2.11</b> Тенты Поволжья, Уфа<br>ufa.tent-opt.ru</td><td>Двери из гибкого стекла (поз. 17): полотно ПВХ 700 мкм 950×2240 с кантом ПВХ — 2 шт; люверсы Ø12 — 14; молния двусторонняя по высоте 2240 — 4 (по две на дверь)</td><td class="n">8 760</td></tr>
+      <tr><td></td><td><b>Итого заказ 2</b></td><td class="n"><b>54 377</b></td></tr>
+      <tr><td></td><td><b>ВСЕГО заказ 1 + заказ 2</b></td><td class="n"><b>117 626</b></td></tr>
+    </tbody>
+  </table>
+  <p class="cap"><b>Порядок закупки по этапам монтажа.</b> Первым — заказ 1 и позиции 2.1, 2.8 (лист, профили, уголки, крепёж): это кровля. Вторым — 2.2 и 2.5 (жёлоб с капельником) сразу после кровли, до дождей. Третьим — 2.3, 2.4, 2.6 (накопитель): трубу Ø200 заказывать заранее, срок 3–7 дней. Четвёртым — 2.7 и 2.9 (окна) и 2.10 (полив). Двери 2.11 — последними, по фактическим размерам проёмов после сборки портала, а не по чертежу.</p>
+  <p class="cap"><b>Что проверить при получении.</b> Вес одного листа поликарбоната на весах продавца: норма 16,4 кг, облегчённый весит 10–13 и под снеговой район V не годится. Глубина паза алюминиевого швеллера — просвет должен быть 7 мм под лист 6 мм. Диаметр хомутов: 207–219 мм под трубу Ø200.</p>
+</section>
+<section class="sheet" id="s-montazh">
+  <div class="sheet-head"><h2>Порядок монтажа по операциям</h2><span class="no">Лист 13</span><span class="scale">оценка времени — на двоих</span></div>
+  <p class="cap"><b>Правила, действующие на всех этапах.</b> Защитную плёнку с листа снимать только после его установки, сторону с надписями (УФ-слой) — наружу. Соты всегда вдоль стока: на кровле вдоль ската, на стенах, фронтонах и створках сверху вниз. Верхний торец листа закрывается сплошной лентой, нижний — перфорированной, и только потом надевается торцевой профиль. Каждое отверстие в листе сверлится на 2 мм больше диаметра самореза и не ближе 40 мм от кромки; термошайба затягивается до касания, без продавливания. Резать лист — ножовкой с мелким зубом или лобзиком с пилкой по металлу на малых оборотах, соты после реза продуть от стружки. Работы на кровле — только при плюсовой температуре и без ветра.</p>
+  <table>
+    <thead><tr><th>Этап</th><th>Операции по порядку</th><th>Контроль перед следующим этапом</th><th>Время</th></tr></thead>
+    <tbody>
+      <tr><td><b>1</b><br>Подготовка<br>каркаса</td><td>1.1. Проверить плоскость обоих скатов: натянуть шнур от конька к карнизу по каждому стропилу.<br>1.2. Подрезать дверные стойки: наружная часть 140×45 — под низ стропила, внутренние 95 мм — до верхней грани стропила; оконные стойки 90×45 — под низ стропила.<br>1.3. Сделать шаблон: обрезок бруса 45×45 с меткой «+3» — высота верха бруса над верхом стропила.</td><td>Провис шнура по стропилу не более 3 мм. Верх дверных стоек не выше +2865. Шаблон готов.</td><td class="n">2 ч</td></tr>
+      <tr><td><b>2</b><br>Обрешётка<br>(поз. 2)</td><td>2.1. Разметить на стропилах оси брусьев от конька: 280, 560, 840, 1120, 1400 — по всем десяти стропилам одинаково.<br>2.2. Прикрутить уголки 40×40 к стропилам по разметке — по одному на каждый конец бруса, с одной стороны.<br>2.3. Нарезать брусья: 30 шт по 1455 (средние пролёты) и 10 шт по 1432 (крайние), примерить по месту.<br>2.4. Ставить брусья на уголки, верх выставлять по шаблону +3, прикручивать 4 саморезами 4×30 в брус с засверливанием 3 мм и 4 в стропило.</td><td>Верх всех брусьев в одной плоскости со скатом (проверить правилом 2 м поперёк брусьев, зазор до 2 мм). Шаг 280 выдержан, брусья параллельны коньку.</td><td class="n">6 ч</td></tr>
+      <tr><td><b>3</b><br>Профили<br>(поз. 3, 5)</td><td>3.1. Нарезать базы разъёмных профилей по 1800, прикрутить по оси каждого стропила саморезами 4,8×60 с шагом 300, начиная от конька.<br>3.2. Проверить, что полки баз лежат на одной высоте с верхом брусьев (+3).<br>3.3. Нарезать торцевой профиль на нижние кромки листов — 8 шт по 1480.</td><td>Расстояние между осями соседних баз 1500 ±2 по всей длине ската. Полка базы и верх бруса в одной плоскости.</td><td class="n">3 ч</td></tr>
+      <tr><td><b>4</b><br>Кровля<br>(поз. 1, 4, 7, 8)</td><td>4.1. Раскроить листы по карте (лист 9): 8 заготовок 1480×1800.<br>4.2. На каждой заготовке: верхний торец — сплошная лента, нижний — перфорированная, на нижний надеть торцевой профиль.<br>4.3. Уложить лист в пролёт: верхняя кромка с зазором 30 до оси конька, нижняя со свесом 48 по скату.<br>4.4. Просверлить 15 отверстий Ø7 (3 на каждый брус, шаг ≈370), закрепить термошайбами.<br>4.5. Защёлкнуть крышки разъёмных профилей.<br>4.6. Установить коньковый профиль на обе кромки.</td><td>Все восемь листов на месте, свес одинаков (проверить шнуром вдоль карниза). Зазор между кромками соседних листов в профиле 20. Течей при поливе из шланга нет.</td><td class="n">8 ч</td></tr>
+      <tr><td><b>5</b><br>Карниз<br>(поз. 9, 10)</td><td>5.1. Прикрутить капельник (планку карнизную) под кромкой листа, отогнутым краем вниз, к обвязке.<br>5.2. Разметить кронштейны жёлоба: ось жёлоба +2062 у заднего торца, с уклоном 3 мм/м вниз к переднему (у воронки +2044). Шаг кронштейнов 600.<br>5.3. Навесить жёлоб, поставить заглушки, врезать воронки в 300 мм от переднего торца.</td><td>Верх наружной кромки жёлоба ниже линии продолжения ската на 20–30 мм (проверить правилом, приложив его к скату). Вода из ведра, вылитая на скат, уходит в воронку, мимо не льётся.</td><td class="n">4 ч</td></tr>
+      <tr><td><b>6</b><br>Стены и<br>фронтоны<br>(поз. 1, 5, 6, 8)</td><td>6.1. Раскроить стеновые заготовки 1500×1655 и фронтонные части.<br>6.2. Просверлить в стенах отверстия под ввод Ø110 (ось +1870) и перелив Ø50 (+1985) в 2,4–2,7 м от переднего торца, поставить манжеты.<br>6.3. Закрыть торцы лентами, надеть U-профили сверху и снизу.<br>6.4. Ставить листы снаружи стоек, стыки — в Н-профиль, крепить термошайбами с шагом 400.<br>6.5. Зашить фронтоны тремя частями, стыки по дверным стойкам.</td><td>Верх стенового листа +2225, под кромкой кровли. Листы не «играют» при нажатии рукой, шайбы не продавлены.</td><td class="n">8 ч</td></tr>
+      <tr><td><b>7</b><br>Накопитель<br>(поз. 11–13)</td><td>7.1. Прикрутить полки 45×90×300 к рёбрам стоек: верх полки у переднего торца +1770, с понижением 30 мм к заднему.<br>7.2. Собрать трубу на земле: две по 3000 в раструб, спереди тройник 200/110 отростком к стене, заглушки.<br>7.3. Уложить трубу на полки, затянуть хомуты.<br>7.4. Смонтировать ввод: воронка → спуск Ø110 → два отвода → сквозь манжету в отросток тройника.<br>7.5. Перелив Ø50 с верха трубы до +1985 и наружу.<br>7.6. В заднюю заглушку — врезку ¾", кран, фильтр.</td><td>Уклон 5 мм/м проверить уровнем: перепад по длине 30 мм. Залить 2 ведра воды: течей нет, вода уходит в кран полностью. Ввод и перелив ниже дна жёлоба.</td><td class="n">6 ч</td></tr>
+      <tr><td><b>8</b><br>Окна<br>(поз. 15, 16)</td><td>8.1. Нарезать швеллеры по 775; для нижних направляющих подрезать внутреннюю полку до 5 мм.<br>8.2. Прикрутить по два швеллера вплотную сверху (под обвязкой) и снизу (на лежне), в нижних просверлить дренаж Ø3 через 300.<br>8.3. Наклеить щёточный уплотнитель по стойкам.<br>8.4. Раскроить 8 створок 400×1545, закрыть торцы лентами, на вертикальные кромки надеть U-профиль.<br>8.5. Вставить створки: подъём в верхний паз, опускание в нижний.</td><td>Створка ходит одним пальцем, не выпадает при отклонении. Перекрытие створок в закрытом положении не менее 25 мм.</td><td class="n">5 ч</td></tr>
+      <tr><td><b>9</b><br>Полив<br>(поз. 14)</td><td>9.1. От крана — фильтр, шланг Ø20 вниз и вдоль грядки к гребёнке у заднего конца.<br>9.2. Уложить по 4 ленты на грядку через 200 мм, эмиттерами вверх.<br>9.3. Подключить ленты старт-коннекторами, концы заглушить загибом.<br>9.4. Промыть систему при открытых концах лент, затем заглушить.</td><td>При открытом кране капает из всех эмиттеров, включая дальние. Расход около 35 л/ч на грядку.</td><td class="n">3 ч</td></tr>
+      <tr><td><b>10</b><br>Двери<br>(поз. 17)</td><td>10.1. Замерить готовые проёмы по факту, передать размеры изготовителю (полотно = проём + 50 с каждой стороны и + 30 сверху).<br>10.2. Прикрутить планки молний к дверным стойкам.<br>10.3. Навесить полотно по люверсам саморезами с широкими шайбами к торцевой обвязке.<br>10.4. Пристегнуть стропы для скрутки.</td><td>Молнии застёгиваются без натяга. Полотно перекрывает проём со всех сторон. В скрученном виде проём свободен.</td><td class="n">2 ч</td></tr>
+      <tr><td></td><td><b>Итого</b></td><td>Приёмка: пролить кровлю шлангом 10 минут — сухо внутри, вода в накопителе; открыть кран — работает полив.</td><td class="n"><b>47 ч</b><br>6 дней</td></tr>
+    </tbody>
+  </table>
+  <p class="cap"><b>Чего делать нельзя.</b> Крепить лист саморезом без термошайбы или в отверстие впритык — лист лопнет от температурного хода (на 1800 мм ход до 5 мм). Ставить лист без лент на торцах — соты забьются пылью и зацветут за один сезон. Класть жёлоб выше линии ската — сорвёт первым сходом снега. Заполнять накопитель до морозов и не открыть кран — трубу разорвёт. Сворачивать двери на морозе ниже −15 °C — ПВХ треснет по сгибу.</p>
+  <p class="cap"><b>Инструмент.</b> Шуруповёрт с битой PH2 и насадкой под шайбы, сверло 3 мм (по дереву) и 7 мм (по листу, лучше ступенчатое), ножовка с мелким зубом или лобзик, правило 2 м, уровень 1 м, шнурка, рулетка 5 м, нож, стремянка и козлы, струбцины для прижима листа при сверлении.</p>
+</section>
+<section class="sheet" id="s-calc">
+  <div class="sheet-head"><h2>Расчётные основания и нерешённое</h2><span class="no">Лист 8</span></div>
+  <div class="grid2">
+    <div>
+      <b>Проверено расчётом</b>
+      <ul>
+        <li>Лист 6 мм, V район, ширина 1,48, соты вдоль ската: допустимый шаг опор по таблице поставщика 0,56 м. Фактические пролёты 280 между брусьями, 260 от последнего бруса до карниза, 60–280 у конька. Запас 50 %. Круглый год без обслуживания.</li>
+        <li>Брус 45×45, пролёт 1455, полоса 280, нормальная к скату составляющая снега 183 кг/м²: напряжение 8,9 МПа при допустимых 13, прогиб 8,7 мм при допустимых для обрешётки 1/150 = 9,7. Четыре бруса на скат не проходят по прогибу. Опорная реакция на конец бруса около 40 кг — уголок 2 мм на 4 саморезах держит с многократным запасом.</li>
+        <li>Коллизии обрешётки (проверено по 3D-модели владельца): треугольные держатели коньковых балок (140 высотой, низ на +3100, край на x=260) — первый брус на 280 проходит в 19 мм от них, уголок тоже; запас исчезает, если держатель сделать выше 160. Дверной портал: оконная стойка 90×45 (x=470…515) срезана под низ стропила — второй брус на 560 над ней с запасом 48; дверная стойка 140×45 (x=425…470) запилена под стропило, её внутренние 95 мм поднимаются до верхней грани стропила — второй брус проходит рядом с ней с зазором 8 мм по горизонтали (брус начинается на x=478), пересечения нет; при монтаже допускается касание, брус можно дополнительно прихватить к стойке сбоку. Остальные брусья от портала дальше 190 мм.</li>
+        <li>Ветер: отсос до 60 кг/м² на лист 1480×1800 — 160 кг на лист, 15 термошайб по 4,8×50 в брусья, около 11 кг на саморез при допустимых 40–60.</li>
+        <li>Водосбор по норме Уфы (станция 28722): май–сентябрь 267 мм, с крыши 17,1 м² при потерях 15 % — 3,9 м³ за сезон; расход двух грядок 8 м² — 4,2 м³ (4 л/м² в день в пик). Баланс нулевой: накопитель 510 л переживает 16 дней без дождя, в сухое лето нужен долив шлангом в воронку. Максимум суточных осадков 59 мм = 1000 л — лишнее через перелив; жёлоб Ø125, ввод Ø110 и перелив Ø50 при ливне 1 мм/мин загружены не более чем на четверть.</li>
+        <li><b>Диаметр накопителя: Ø200, утверждён 19.09.2026.</b> 325 л, 10 дней автономности, 25 900 ₽. Отклонены: Ø160 (208 л, 6,5 дня, 11 800 ₽) — не перекрывает типичное сухое окно 7–12 дней; Ø250 (507 л, 16 дней, 49 700 ₽) — 24 тыс. ₽ за 6 дополнительных дней при бесплатном доливе, в рознице Уфы не продаётся.</li>
+        <li>Снег и жёлоб: наружная кромка жёлоба на 26 мм ниже линии продолжения ската — сходящий пласт проходит над ним; жёлоб на зиму не снимается.</li>
+        <li>Створка окна 400×1545 из листа 6 мм при ветре 60 кг/м²: прогиб около 15 мм, из пазов глубиной 12/5 не выходит.</li>
+        <li>Полив: напор от накопителя 1,5–1,8 м (0,15–0,18 бар); 4 ленты по 5 м на грядку дают около 35 л/ч — 5 мм на грядку за 35 минут.</li>
+      </ul>
+    </div>
+    <div>
+      <b>Не доказано, проверяется макетом или первым сезоном</b>
+      <ul>
+        <li>Таблица несущей способности по конкретной марке листа.</li>
+        <li>Расход капельных лент при напоре 1,5 м по паспорту конкретной ленты.</li>
+        <li>Коньковый профиль: марка под 6 мм и угол 108°.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<footer class="site">Проект подготовлен для согласования. Размеры каркаса — из 3D-модели владельца. Не проверено: несущая способность листа 6 мм взята из таблицы поставщика; цены действительны на 19.09.2026 и без доставки. Вопросы к поставщику перечислены на листе 12.</footer>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+
+const NS='http://www.w3.org/2000/svg';
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function rect(p,x,y,w,h,c,extra){const r=el('rect',{x,y,width:w,height:h,class:c},p);if(extra)for(const k in extra)r.setAttribute(k,extra[k]);return r;}
+function line(p,x1,y1,x2,y2,c){return el('line',{x1,y1,x2,y2,class:c},p);}
+function poly(p,pts,c){return el('polygon',{points:pts.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' '),class:c},p);}
+function pline(p,pts,c){return el('polyline',{points:pts.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' '),class:c},p);}
+function txt(p,x,y,s,c,anchor,rot){const t=el('text',{x,y,class:c||'','text-anchor':anchor||'start'},p);if(rot)t.setAttribute('transform','rotate('+rot+' '+x+' '+y+')');t.textContent=s;return t;}
+function arrow(p,x,y,ang){const a=ang*Math.PI/180,L=7,W=2.2;const p1=[x-L*Math.cos(a)+W*Math.sin(a),y-L*Math.sin(a)-W*Math.cos(a)],p2=[x-L*Math.cos(a)-W*Math.sin(a),y-L*Math.sin(a)+W*Math.cos(a)];const q=poly(p,[[x,y],p1,p2],'');q.setAttribute('fill','var(--dim)');q.setAttribute('stroke','none');}
+function dimH(p,x1,x2,y,s,ye,opt){opt=opt||{};const g=el('g',{class:'dim'},p);if(ye!==undefined){const o=y<ye?-4:4;line(g,x1,ye,x1,y+o,'ext');line(g,x2,ye,x2,y+o,'ext');}line(g,x1,y,x2,y,'');arrow(g,x1,y,0);arrow(g,x2,y,180);const m=(x1+x2)/2;if(Math.abs(x2-x1)<34&&!opt.inside){txt(g,Math.max(x1,x2)+8,y+4,s,'dm','start');}else txt(g,m,y-4,s,'dm','middle');}
+function dimV(p,y1,y2,x,s,xe,opt){opt=opt||{};const g=el('g',{class:'dim'},p);if(xe!==undefined){const o=x<xe?-4:4;line(g,xe,y1,x+o,y1,'ext');line(g,xe,y2,x+o,y2,'ext');}line(g,x,y1,x,y2,'');arrow(g,x,y1,90);arrow(g,x,y2,-90);const m=(y1+y2)/2;if(opt.right)txt(g,x+6,m+4,s,'dm','start');else txt(g,x-6,m+4,s,'dm','end');}
+function leader(p,px,py,lx,ly,s,anchor,s2){anchor=anchor||'start';el('circle',{cx:px,cy:py,r:2,class:'ldrdot'},p);line(p,px,py,lx,ly,'ldr');const t=txt(p,anchor==='start'?lx+5:lx-5,ly+4,s,'',anchor);if(s2)txt(p,anchor==='start'?lx+5:lx-5,ly+18,s2,'mu',anchor);return t;}
+function pcX(p,x,y,w,h,cell,cls){rect(p,x,y,w,h,cls||'pc');for(let i=x+cell;i<x+w-2;i+=cell)line(p,i,y+1,i,y+h-1,'pcl');}
+function pcL(p,x,y,w,h,cls){rect(p,x,y,w,h,cls||'pc');if(h>5)line(p,x+1,y+h*0.5,x+w-1,y+h*0.5,'pcl');}
+function hatchDefs(svg,id){const d=el('defs',{},svg);const pt=el('pattern',{id:id,width:8,height:8,patternUnits:'userSpaceOnUse',patternTransform:'rotate(45)'},d);const l=el('line',{x1:0,y1:0,x2:0,y2:8},pt);l.setAttribute('style','stroke:var(--ink);stroke-width:.7');return 'url(#'+id+')';}
+function woodH(p,x,y,w,h,pat){rect(p,x,y,w,h,'wood');rect(p,x,y,w,h,'',{fill:pat,stroke:'none'});}
+function woodPoly(p,pts,pat){poly(p,pts,'wood');const q=poly(p,pts,'');q.setAttribute('fill',pat);q.setAttribute('stroke','none');}
+const BEAMS=[280,560,840,1120,1400];
+
+/* ---------- Лист 1: план ---------- */
+(function(){
+  const svg=document.getElementById('l5');const pat=hatchDefs(svg,'h5');
+  const g=el('g',{},svg);
+  const k=0.135,X=u=>60+u*k,YA=v=>300-v*k,YB=v=>300+v*k;
+  txt(g,X(6000)+90,44,'Скат А (развёрнут вверх)','ttl');txt(g,60,566,'Скат Б','ttl');
+  for(let i=0;i<=4;i++){const x=X(i===0?22.5:i===4?5977.5:i*1500);rect(g,x-3,YA(1677),6,1677*2*k,'woodbg');}
+  for(const b of BEAMS)for(const Y of [YA(b),YB(b)]){const r=rect(g,X(0),Y-3,6000*k,6,'hid');r.setAttribute('fill','var(--woodbg)');}
+  for(let b=0;b<4;b++){
+    const u0=b*1500,ux=X(u0+10),uw=1480*k;
+    rect(g,ux,YA(1724),uw,1800*k,'pc');rect(g,ux,YA(1724),uw,1800*k,'',{fill:pat,stroke:'none',opacity:.25});
+    rect(g,ux,YB(-76),uw,1800*k,'pc');rect(g,ux,YB(-76),uw,1800*k,'',{fill:pat,stroke:'none',opacity:.25});
+    txt(g,X(u0+750),YA(1400),'пролёт '+(b+1),'mu','middle');
+  }
+  for(let i=0;i<=4;i++){const x=X(i*1500);rect(g,x-4,YA(1724),8,3448*k,'alu');}
+  rect(g,X(-20),296,6040*k,8,'alu');
+  rect(g,X(-30),YA(1724)-16,6060*k,10,'tank');rect(g,X(-30),YB(1724)+6,6060*k,10,'tank');
+  el('circle',{cx:X(5700)+14,cy:YA(1724)-11,r:6,class:'tank'},g);el('circle',{cx:X(5700)+14,cy:YB(1724)+11,r:6,class:'tank'},g);
+  dimH(g,X(0),X(1500),YA(1724)-30,'1500',YA(1724));
+  dimH(g,X(0),X(6000),YB(1724)+32,'6000',YB(1724));
+  dimV(g,YA(1724),YA(-76),X(6000)+40,'1800',X(6000));
+  BEAMS.forEach((b,i)=>dimV(g,YB(0),YB(b),X(0)-26-i*22,String(b),X(0)));
+  const cutA=X(2250);line(g,cutA,YA(1150),cutA,YA(850),'cut');txt(g,cutA+6,YA(1140),'А','ttl');txt(g,cutA+6,YA(845),'А','ttl');
+  line(g,X(3750)-10,YB(-40),X(3750)-10,YB(1760),'cut');txt(g,X(3750)-28,YB(-50),'Б','ttl');txt(g,X(3750)-28,YB(1760)+14,'Б','ttl');
+  const mk=(x,y,t)=>{el('circle',{cx:x,cy:y,r:12,class:'ldr'},g);txt(g,x,y+5,t,'ttl','middle');};
+  mk(X(5300),YB(1660),'В');mk(X(3750),YB(860),'Г');mk(X(5300),300,'Д');
+  leader(g,X(6000)+14,YA(1724)-11,X(6000)+90,YA(1724)-40,'воронки и трубы в бочку','start','у переднего торца, обе стороны');
+  leader(g,X(4500),YA(1724)-11,X(6000)+90,YA(1600),'жёлоб Ø125 по карнизу','start','уклон 3 мм/м к переднему торцу');
+  leader(g,X(6000),300,X(6000)+90,300,'коньковый профиль');
+  leader(g,X(5200),YA(500),X(6000)+90,YA(430),'лист 1480×1800, один на пролёт','start','разъёмный профиль по стропилам');
+  leader(g,X(5300),YA(560)+3,X(6000)+90,YA(880),'брусья 45×45 под листами','start','шаг 280: оси 280, 560, 840, 1120, 1400');
+})();
+
+/* ---------- Лист 1б: торец ---------- */
+(function(){
+  const svg=document.getElementById('l5b');const pat=hatchDefs(svg,'h5b');
+  const g=el('g',{},svg);
+  const ax=550,k=0.14,Y0=540;
+  const Xm=x=>ax+x*k, Ym=y=>Y0-y*k;
+  const P=(v,w,side)=>[Xm(side*(67.5+0.809*v+0.588*w)),Ym(3240-0.588*v+0.809*w)];
+  for(const sd of [1,-1]){const x0=Math.min(Xm(sd*1425),Xm(sd*1235));
+    rect(g,x0,Ym(600),190*k,600*k,'stone');rect(g,x0,Ym(645),140*k,45*k,'woodbg');
+    rect(g,sd>0?Xm(1380):Xm(-1425),Ym(2210),45*k,(2210-645)*k,'woodbg');
+    rect(g,sd>0?Xm(1285):Xm(-1425),Ym(2255),140*k,45*k,'wood');}
+  line(g,Xm(-1235),Ym(0),Xm(1235),Ym(0),'ldr');
+  for(const sd of [1,-1]){const x0=sd>0?Xm(435):Xm(-1235);rect(g,x0,Ym(200),800*k,200*k,'wood');rect(g,x0,Ym(200),800*k,200*k,'',{fill:pat,stroke:'none',opacity:.3});}
+  txt(g,Xm(835),Ym(90),'грядка 800','','middle');txt(g,Xm(-835),Ym(90),'грядка 800','','middle');txt(g,Xm(0),Ym(150),'дорожка 870','mu','middle');
+  rect(g,Xm(-1425),Ym(2345),2850*k,90*k,'woodbg');txt(g,Xm(0),Ym(2360),'стяжка 90×45','mu','middle');
+  poly(g,[[Xm(-70),Ym(3240)],[Xm(70),Ym(3240)],[Xm(262),Ym(3100)],[Xm(-262),Ym(3100)]],'woodbg');
+  for(const sd of [1,-1]){poly(g,[[Xm(sd*67.5),Ym(3240)],[Xm(sd*1425),Ym(2255)],[Xm(sd*1272),Ym(2255)],[Xm(sd*67.5),Ym(3129)]],'woodbg');}
+  woodH(g,Xm(-67.5),Ym(3240),45*k,90*k,pat);woodH(g,Xm(22.5),Ym(3240),45*k,90*k,pat);
+  for(const sd of [1,-1])for(const b of BEAMS){woodPoly(g,[P(b-22.5,-42,sd),P(b+22.5,-42,sd),P(b+22.5,3,sd),P(b-22.5,3,sd)],pat);}
+  poly(g,[P(-76,3,1),P(1724,3,1),P(1724,9,1),P(-76,9,1)],'pc');
+  poly(g,[P(-76,3,-1),P(1724,3,-1),P(1724,9,-1),P(-76,9,-1)],'pc');
+  // дверные стойки портала: 140×45 (x 425…470) и оконная 90×45 (470…515), верх под стропило
+  for(const sd of [1,-1]){const yI=x=>3240-(x-67.5)*0.7265-111;
+    poly(g,[[Xm(sd*425),Ym(0)],[Xm(sd*470),Ym(0)],[Xm(sd*470),Ym(yI(470))],[Xm(sd*425),Ym(yI(425))]],'woodbg');
+    poly(g,[[Xm(sd*470),Ym(645)],[Xm(sd*515),Ym(645)],[Xm(sd*515),Ym(yI(515))],[Xm(sd*470),Ym(yI(470))]],'woodbg');}
+  // окна: две створки 400 в проёме 515…1290, высота 645…2210; направляющие
+  for(const sd of [1,-1]){const xa=Math.min(Xm(sd*515),Xm(sd*1290));
+    rect(g,xa,Ym(2210),775*k,1565*k,'pc');line(g,Xm(sd*902.5),Ym(2200),Xm(sd*902.5),Ym(655),'pcl');
+    rect(g,xa,Ym(2210),775*k,10*k,'alu');rect(g,xa,Ym(655),775*k,10*k,'alu');}
+  // дверь: полотно ПВХ 950×2240, люверсы, молнии
+  rect(g,Xm(-475),Ym(2240),950*k,2240*k,'film');rect(g,Xm(-475),Ym(2240),950*k,50*k,'edge');rect(g,Xm(-475),Ym(50),950*k,50*k,'edge');
+  for(let q=0;q<7;q++){el('circle',{cx:Xm(-450+q*150),cy:Ym(2215),r:2,class:'steel'},g);}
+  line(g,Xm(-425),Ym(2190),Xm(-425),Ym(60),'cut');line(g,Xm(425),Ym(2190),Xm(425),Ym(60),'cut');
+  // жёлобы: открытые лотки ниже линии ската, ось +2062
+  for(const sd of [1,-1]){const cx=Xm(sd*1485),cy=Ym(2062),r=62*k;
+    el('path',{d:'M '+(cx-r)+' '+cy+' A '+r+' '+r+' 0 0 0 '+(cx+r)+' '+cy,class:'tankl'},g);
+    const ln=P(1724,3,sd),ex=Xm(sd*1650),ey=Ym(3240-0.588*1724+0.809*3-(1650-1455)*0.7265);line(g,ln[0],ln[1],ex,ey,'hid');}
+  // накопители Ø250 на полках у стоек, ввод из жёлоба, перелив
+  for(const sd of [1,-1]){el('circle',{cx:Xm(sd*1170),cy:Ym(1870),r:100*k,class:'tank'},g);
+    rect(g,Math.min(Xm(sd*1020),Xm(sd*1320)),Ym(1770),300*k,45*k,'woodbg');
+    pline(g,[[Xm(sd*1485),Ym(2000)],[Xm(sd*1485),Ym(1870)],[Xm(sd*1270),Ym(1870)]],'tankl');
+    pline(g,[[Xm(sd*1170),Ym(1970)],[Xm(sd*1170),Ym(1985)],[Xm(sd*1500),Ym(1985)]],'tankl');}
+  for(const sd of [1,-1])for(let kx=0;kx<4;kx++){el('circle',{cx:Xm(sd*(535+kx*200)),cy:Ym(210),r:3,class:'tank'},g);}
+  line(g,ax,Ym(3450),ax,Ym(-60),'axis');txt(g,ax+6,Ym(3450)-2,'ось','mu');
+  dimH(g,Xm(-1425),Xm(1425),Ym(-100),'2850',Ym(0));
+  dimH(g,Xm(0),Xm(1235),Ym(300),'1235',Ym(200));dimH(g,Xm(0),Xm(435),Ym(340),'435',Ym(200));
+  dimV(g,Ym(3240),Ym(0),Xm(1425)+40,'3240',Xm(1425));dimV(g,Ym(2255),Ym(0),Xm(1425)+70,'2255',Xm(1425));
+  dimV(g,Ym(1970),Ym(0),Xm(-1425)-30,'1970',Xm(-1170));
+  txt(g,Xm(1425)+46,Ym(2600),'36°','dm','start');
+  leader(g,P(400,6,-1)[0],P(400,6,-1)[1],235,90,'[1] лист 6 мм, один на пролёт','end');
+  leader(g,P(700,-40,-1)[0],P(700,-40,-1)[1],252,215,'брусья 45×45 [—], уголки [2]','end');
+  leader(g,Xm(-1485),Ym(2062)-4,235,300,'[10] жёлоб Ø125, ось +2062','end','верх ниже линии ската на 26');
+  leader(g,Xm(-1170),Ym(1870),235,370,'[12] накопитель ПВХ Ø200, верх +1970','end','325 л; полка 45×90 у каждой стойки');
+  leader(g,Xm(-535),Ym(210),235,470,'[15] капельные ленты, 4 на грядку','end');
+  leader(g,P(500,6,1)[0],P(500,6,1)[1],850,90,'[1] лист 6 мм, один на пролёт');
+  leader(g,Xm(8),Ym(3290),850,50,'[4] коньковый профиль на кромках');
+  leader(g,Xm(1485),Ym(1900),850,215,'[13] ввод Ø110 из воронки жёлоба','start','сквозь стену на +1870');
+  leader(g,Xm(1400),Ym(1985),850,265,'[13] перелив Ø50 наружу на +1985');
+  leader(g,Xm(902.5),Ym(1400),850,330,'[1]+[16] окно: две створки 400×1545','start','в алюминиевых направляющих');
+  leader(g,Xm(300),Ym(1100),850,400,'[18] дверь: гибкое стекло ПВХ 950×2240','start','люверсы, молнии, скрутка вверх');
+})();
+
+/* ---------- Лист 2: разрез А-А ---------- */
+(function(){
+  const svg=document.getElementById('l1');const pat=hatchDefs(svg,'h1');const g=el('g',{},svg);
+  woodH(g,455,300,90,180,pat);
+  rect(g,440,294,120,6,'alu');
+  rect(g,490,254,20,40,'alu');
+  pcX(g,200,282,280,12,32);pcX(g,520,282,360,12,32);
+  rect(g,440,280,40,2,'seal');rect(g,520,280,40,2,'seal');
+  rect(g,430,266,140,6,'alu');rect(g,430,272,12,10,'alu');rect(g,558,272,12,10,'alu');
+  line(g,500,300,500,400,'screw');
+  dimH(g,455,545,512,'45',480);dimH(g,440,560,200,'60',294);dimH(g,480,520,222,'20',282);dimH(g,430,570,180,'70 крышка',266);
+  dimV(g,282,294,170,'6',200);dimV(g,266,300,660,'34',570,{right:true});
+  leader(g,500,330,930,60,'[9] Саморез 4,8×60','start','через базу в стропило, шаг 300');
+  leader(g,560,268,930,110,'[3] Крышка разъёмного профиля','start','защёлкивается на базу, уплотнитель к листу');
+  leader(g,870,288,930,165,'[1] Лист 6 мм','start','ширина 1480, кромка на полке базы');
+  leader(g,556,296,930,225,'[3] База разъёмного профиля 60×3','start','полка под лист с двух сторон');
+  leader(g,545,430,930,470,'Стропило 90×45','start','по модели каркаса');
+  txt(g,200,540,'Стандартный узел кровли из поликарбоната: лист не сверлится, зазор 20 компенсирует тепловое расширение.','mu');
+})();
+
+/* ---------- Лист 3: разрез Б-Б ---------- */
+(function(){
+  const svg=document.getElementById('l2');const pat=hatchDefs(svg,'h2');const g=el('g',{},svg);
+  const X=v=>80+v*0.5;
+  rect(g,X(-140),300,70,45,'woodbg');txt(g,X(-135),340,'конёк','mu');
+  rect(g,80,300,838,45,'woodbg');
+  rect(g,X(1677)-70,345,70,22,'woodbg');txt(g,X(1677)-66,362,'обвязка','mu');
+  const bb=rect(g,80,297,X(1724)-80,3,'alu');bb.setAttribute('opacity','.4');
+  for(const b of BEAMS){woodH(g,X(b)-11,298.5,22,22.5,pat);}
+  pcL(g,X(-76),294,X(1724)-X(-76),3);
+  const rp=pline(g,[[X(-40),292],[X(-88),292],[X(-90),301],[X(-70),301]],'');rp.setAttribute('style','fill:none;stroke:var(--alu);stroke-width:2.5');
+  poly(g,[[X(1724)+4,302],[X(1724)+4,318],[X(1724)+30,318],[X(1724)+30,302],[X(1724)+26,302],[X(1724)+26,314],[X(1724)+8,314],[X(1724)+8,302]],'tank');
+  dimH(g,X(-76),80,420,'76',294);dimH(g,80,917,532,'1677',300);dimH(g,917,942,420,'48',300);
+  BEAMS.forEach((b,i)=>dimH(g,80,X(b),442+i*16,String(b),300));
+  leader(g,X(-88),296,60,175,'Коньковый профиль, зажим кромок');
+  leader(g,X(500),295,400,205,'Лист кровли 6 мм, 1800 от конька до карниза','start');
+  leader(g,X(1724)+17,310,985,236,'Жёлоб Ø125');
+  leader(g,X(840),334,X(840)+40,535,'Брусья 45×45, шаг 280','start');
+})();
+
+/* ---------- Лист 4: карниз с жёлобом ---------- */
+(function(){
+  const svg=document.getElementById('l3');const pat=hatchDefs(svg,'h3');const g=el('g',{},svg);
+  const c=Math.cos(36*Math.PI/180),sn=Math.sin(36*Math.PI/180);
+  const S=(v,w)=>[600+(v-1677)*2*c+w*2*sn, 420+(v-1677)*2*sn-w*2*c];
+  poly(g,[S(1540,0),S(1677,0),[294,420],S(1540,-90)],'woodbg');
+  woodH(g,320,420,280,90,pat);
+  rect(g,510,510,90,450,'woodbg');rect(g,330,510,180,450,'woodbg');
+  rect(g,600,S(1725,-13)[1]-20,12,960-(S(1725,-13)[1]-20),'pc');rect(g,598,S(1725,-13)[1]-28,16,10,'alu');
+  const bb=poly(g,[S(1540,0),S(1724,0),S(1724,3),S(1540,3)],'alu');bb.setAttribute('opacity','.4');
+  poly(g,[S(1540,3),S(1724,3),S(1724,9),S(1540,9)],'pc');pline(g,[S(1540,6),S(1724,6)],'pcl');
+  poly(g,[S(1716,2),S(1726,2),S(1726,10),S(1716,10),S(1716,9),S(1724,9),S(1724,3),S(1716,3)],'alu');
+  poly(g,[S(1724,-13),S(1726,-13),S(1726,2),S(1724,2)],'alu');
+  for(let i=0;i<3;i++){poly(g,[S(1724,-13+i*5),S(1721,-10.5+i*5),S(1724,-8+i*5)],'alu');}
+  const e=S(1725,-13);const cx=e[0]+60,cy=e[1]+306; // ось жёлоба +2062: на 30 наружу и 153 ниже точки капельника
+  const rl=[S(1724,0),[S(1724,0)[0]+400*0.809,S(1724,0)[1]+400*0.588]];line(g,rl[0][0],rl[0][1],rl[1][0],rl[1][1],'hid');
+  el('path',{d:'M '+(cx-125)+' '+(cy-20)+' L '+(cx-125)+' '+cy+' A 125 125 0 0 0 '+(cx+125)+' '+cy+' L '+(cx+125)+' '+(cy-30)+' L '+(cx+115)+' '+(cy-30)+' L '+(cx+115)+' '+cy+' A 115 115 0 0 1 '+(cx-115)+' '+cy+' L '+(cx-115)+' '+(cy-20)+' Z',class:'tank'},g);
+  rect(g,612,cy-60,8,70,'steel');line(g,620,cy-10,cx-125,cy-10,'steel');rect(g,cx-130,cy-30,10,30,'steel');
+  line(g,590,cy-40,640,cy-40,'screw');
+  const lx=cx+125,ly=S(1724,0)[1]+(cx+125-S(1724,0)[0])*0.7265;line(g,lx,ly,lx,cy-125,'ext');txt(g,lx+6,(ly+cy-125)/2+4,'26','dm');
+  function dimS(v1,v2,w,wobj,label){const g2=el('g',{class:'dim'},g);const a=S(v1,w),b=S(v2,w);const a0=S(v1,wobj),b0=S(v2,wobj);line(g2,a0[0],a0[1],S(v1,w+3)[0],S(v1,w+3)[1],'ext');line(g2,b0[0],b0[1],S(v2,w+3)[0],S(v2,w+3)[1],'ext');line(g2,a[0],a[1],b[0],b[1],'');arrow(g2,a[0],a[1],36);arrow(g2,b[0],b[1],216);const m=S((v1+v2)/2,w+5);txt(g2,m[0],m[1],label,'dm','middle',36);}
+  dimS(1677,1724,28,9,'48 по скату');
+  dimH(g,600,S(1724,3)[0],640,'40',420);
+  dimV(g,420,510,300,'45',320);dimH(g,320,600,530,'140',510);
+  leader(g,S(1600,6)[0],S(1600,6)[1],760,170,'Лист 6 мм, один на пролёт');
+  leader(g,S(1726,-5)[0],S(1726,-5)[1],760,260,'[5] Торцевой профиль с капельником','start','торец сот — перфорированная лента');
+  leader(g,cx+100,cy-10,760,760,'[10] Жёлоб ПВХ Ø125, ось +2062','start','дно +2000, верх +2124; уклон 3 мм/м к воронке');
+  leader(g,rl[1][0]-20,rl[1][1]-12,760,630,'Линия продолжения ската','start','жёлоб ниже неё на 26 — снег проходит над ним');
+  // капельник: полоса 0,5 мм под кромкой листа, отогнута вниз к середине жёлоба
+  const d0=S(1712,-13),d1=[cx-10,cy-125-20];pline(g,[[d0[0],d0[1]],[d0[0]+30,d0[1]+14],[d1[0],d1[1]]],'').setAttribute('style','fill:none;stroke:var(--steel);stroke-width:2.5');
+  leader(g,(d0[0]+d1[0])/2,(d0[1]+d1[1])/2,760,540,'[11] Капельник: планка карнизная под кромкой','start','отогнута вниз, край над серединой жёлоба — вода не перелетает');
+  leader(g,606,e[1]+60,760,820,'[1] Стеновой лист 6 мм, верх +2225','start','U-профиль, под кромкой кровли');
+  leader(g,616,cy-40,760,880,'[10] Кронштейн жёлоба','start','через стеновой лист к обвязке, шаг 600');
+  leader(g,400,395,760,110,'Стропило 90×45, опирается на обвязку остриём');
+  leader(g,450,470,760,578,'Верхняя обвязка 140×45 плашмя, верх +2255');
+  leader(g,555,700,760,690,'Стойка 90×45 (наружная грань = стена)');
+  txt(g,220,50,'Заполнение между стропилами над обвязкой — по проекту каркаса.','mu');
+})();
+
+/* ---------- Лист 5а: опирание на брус ---------- */
+(function(){
+  const svg=document.getElementById('l4a');const pat=hatchDefs(svg,'h4a');const g=el('g',{},svg);
+  const X=v=>60+(v-700)*2;
+  woodH(g,X(817.5),300,90,90,pat);rect(g,X(817.5),298,90,2,'tape');
+  const bb=rect(g,60,294,640,3,'alu');bb.setAttribute('opacity','.4');
+  pcL(g,60,282,640,12);
+  rect(g,X(817.5)-4,302,4,80,'steel');rect(g,X(817.5)-4,378,80,4,'steel');line(g,X(840),262,X(840),330,'screw');rect(g,X(840)-12,262,24,5,'steel');
+  dimH(g,X(817.5),X(862.5),470,'45',390);dimH(g,X(700),X(840),500,'840 от конька до оси бруса',390);
+  dimV(g,282,294,40,'6',60);dimV(g,300,390,40,'45',60);
+  leader(g,300,288,230,140,'[1] Лист кровли 6 мм','start','лежит на бруса́х, крепится к каждому');
+  leader(g,X(840),299,700,110,'Лента СВМПЭ или войлок 1 мм','end','лист не скрипит при расширении');
+  leader(g,X(840),350,720,560,'Брус 45×45','end','верх +3, вровень с базой профиля; сухой, без сквозных сучков');
+  leader(g,X(815),330,X(815)-60,590,'[2] Уголок 40×40×40×2 к стропилу','start','4 самореза 4×30, сверление 3 мм');leader(g,X(840),264,440,165,'[8] Саморез с термошайбой','start','3 на брус, отверстие +2 мм');
+  txt(g,60,70,'Лист крепится к каждому брусу тремя саморезами с термошайбами, отверстие +2 мм; брус — на перфорированных уголках.','mu');
+})();
+
+
+/* ---------- Лист 9: раскрой ---------- */
+(function(){
+  const svg=document.getElementById('l9');const g=el('g',{},svg);
+  const k=0.058,SW=2100*k,SH=6000*k,gap=64,x0=40,y0=48;
+  const names=['А','Б','В','Г','Д','Е'];
+  const piece=(sx,sy,x,y,w,h,lab,cls,pts)=>{const X=x0+sx*(SW+gap)+x*k,Y=y0+sy*k;
+    if(pts){poly(g,pts.map(q=>[X+q[0]*k,Y+q[1]*k]),cls||'pc');}else{rect(g,X,Y,w*k,h*k,cls||'pc');}
+    if(lab){const ls=lab.split('|');ls.forEach((l,i)=>txt(g,X+w*k/2,Y+h*k/2+4+(i-(ls.length-1)/2)*14,l,'dm','middle'));}};
+  const off=(sx,y,x,w,h)=>{const X=x0+sx*(SW+gap)+x*k,Y=y0+y*k;const r=rect(g,X,Y,w*k,h*k,'ghost');};
+  for(let i=0;i<6;i++){const X=x0+i*(SW+gap);rect(g,X,y0,SW,SH,'woodbg');txt(g,X+SW/2,y0-14,'Лист '+names[i]+' · 2100×6000','ttl','middle');}
+  // А, Б: 3 полосы 1800 → К + остаток 620
+  for(const sx of [0,1]){for(let j=0;j<3;j++){piece(sx,j*1800,0,0,1480,1800,'К 1480×1800');off(sx,j*1800,1480,620,1800);}off(sx,5400,0,2100,600);}
+  // В: 2 полосы К, затем 2 Ф, остаток 745
+  for(let j=0;j<2;j++){piece(2,j*1800,0,0,1480,1800,'К 1480×1800');off(2,j*1800,1480,620,1800);}
+  piece(2,3600,0,0,1000,1655,'Ф|1000×1655');piece(2,3600,1000,0,1000,1655,'Ф|1000×1655');off(2,3600,2000,100,1655);off(2,5255,0,2100,745);
+  // Г, Д: 3 С + остаток 600 + треугольники внизу
+  const mid=[[0,985],[940,985],[940,341],[470,0],[0,341]]; // средняя часть, вершина вверху
+  const tri=(mirror)=>mirror?[[0,644],[955,644],[955,0]]:[[0,644],[955,644],[0,0]];
+  for(const sx of [3,4]){for(let j=0;j<3;j++){piece(sx,j*1655,0,0,1500,1655,'С 1500×1655');}off(sx,0,1500,600,4965);
+    piece(sx,4965,0,0,940,985,'Т ср.','pc',mid);piece(sx,4965,940,0,955,644,sx===3?'Т лев.':'Т прав.','pc',tri(sx===3));off(sx,4965,1895,205,1035);}
+  // Е: 2 С, 2 Ф, треугольники боковые
+  for(let j=0;j<2;j++){piece(5,j*1655,0,0,1500,1655,'С 1500×1655');}off(5,0,1500,600,3310);
+  piece(5,3310,0,0,1000,1655,'Ф|1000×1655');piece(5,3310,1000,0,1000,1655,'Ф|1000×1655');off(5,3310,2000,100,1655);
+  piece(5,4965,0,0,955,644,'Т прав.','pc',tri(false));piece(5,4965,955,0,955,644,'Т лев.','pc',tri(true));off(5,4965,1910,190,1035);
+  // подписи
+  txt(g,x0,y0+SH+30,'Соты во всех заготовках идут вдоль длинной стороны листа (вертикально на чертеже): на крыше — вдоль ската, на стенах и фронтонах — сверху вниз.','mu');
+  txt(g,x0,y0+SH+48,'Пунктир — обрезки. Буквы: К — крыша, С — стена, Ф — фронтон у двери, Т — треугольник фронтона.','mu');
+})();
+
+
+/* ---------- Лист 10: накопитель ---------- */
+(function(){
+  const svg=document.getElementById('l10');const pat=hatchDefs(svg,'h10');const g=el('g',{},svg);
+  const k=0.15,ky=0.4,X=z=>40+(z+3000)*k,Y=y=>440-(y-1400)*ky; // по высоте масштаб увеличен в 2,5 раза
+  // стена изнутри: обвязка, стяжки, стойки (ребро 90)
+  rect(g,X(-3000),Y(2255),6000*k,45*ky,'woodbg');txt(g,X(-2900),Y(2225),'верхняя обвязка 140×45, верх +2255','mu');
+  for(const z of [-1500,0,1500]){rect(g,X(z-67.5),Y(2345),135*k,90*ky,'woodbg');}
+  txt(g,X(0),Y(2360),'стяжки 90×45','mu','middle');
+  for(const z of [-2977.5,-1500,0,1500,2977.5]){rect(g,X(z-45),Y(2210),90*k,(2210-1400)*ky,'woodbg');}
+  txt(g,X(1500),Y(1450),'стойка','mu','middle');
+  // жёлоб за стеной (пунктир): дно от +2018 сзади до +2000 у воронки
+  line(g,X(-3000),Y(2018),X(2700),Y(2000),'hid');line(g,X(-3000),Y(2018+124),X(3000),Y(2000+124),'hid');txt(g,X(-2950),Y(2160),'жёлоб за стеной (пунктир), дно +2018 → +2000, уклон 3 мм/м к воронке','mu');
+  // воронка, спуск, ввод сквозь стену
+  poly(g,[[X(2640),Y(2000)],[X(2760),Y(2000)],[X(2735),Y(1920)],[X(2665),Y(1920)]],'tank');
+  rect(g,X(2672),Y(1920),56*k,(1920-1870)*ky,'tank');
+  el('ellipse',{cx:X(2700),cy:Y(1870),rx:55*k,ry:55*ky,class:'tank'},g);line(g,X(2700)-6,Y(1870)-6,X(2700)+6,Y(1870)+6,'screw');line(g,X(2700)+6,Y(1870)-6,X(2700)-6,Y(1870)+6,'screw');
+  // труба-накопитель с уклоном, тройник, заглушки
+  poly(g,[[X(-2860),Y(1940)],[X(2860),Y(1970)],[X(2860),Y(1770)],[X(-2860),Y(1740)]],'tank');
+  rect(g,X(2560),Y(1978),300*k,216*ky,'',{fill:'none',stroke:'var(--ink)','stroke-width':1.2});txt(g,X(2560)+4,Y(1785),'тройник','mu');
+  rect(g,X(2860),Y(1976),8,212*ky,'tank');rect(g,X(-2860)-8,Y(1946),8,212*ky,'tank');
+  // перелив
+  pline(g,[[X(2350),Y(1970)],[X(2350),Y(1985)]],'tankl');el('ellipse',{cx:X(2350),cy:Y(1985),rx:25*k+2,ry:25*ky,class:'tank'},g);
+  // полки и хомуты
+  for(const z of [-2907,-1500,0,1500,2907]){const yb=1770-(2860-z)/5720*30;rect(g,X(z-45),Y(yb),90*k,45*ky,'wood');
+    rect(g,X(z-6),Y(yb+200+8),12,(200+16)*ky,'',{fill:'none',stroke:'var(--steel)','stroke-width':1.6});}
+  // задний конец: врезка, кран, фильтр, спуск
+  line(g,X(-2710),Y(1740),X(-2710),Y(1560),'tankl');rect(g,X(-2710)-7,Y(1570),14,10,'steel');rect(g,X(-2710)-5,Y(1520),10,8,'steel');
+  pline(g,[[X(-2710),Y(1512)],[X(-2710),Y(1440)],[X(-2710)-6,Y(1425)],[X(-2710)+6,Y(1412)],[X(-2710),Y(1400)]],'tankl');
+  txt(g,X(-2600),Y(1565),'кран ¾" — полив и слив на зиму','mu');txt(g,X(-2600),Y(1518),'фильтр сетчатый','mu');txt(g,X(-2600),Y(1440),'шланг Ø20 к гребёнке у заднего конца грядки','mu');
+  // отметки справа
+  const xm=X(3000)+30;
+  for(const [y,t,dy] of [[2255,'+2255 верх обвязки',0],[2000,'+2000 дно жёлоба у воронки',-4],[1985,'+1985 перелив',6],[1970,'+1970 верх трубы спереди',16],[1870,'+1870 ось ввода',0],[1770,'+1770 низ трубы спереди',0]]){line(g,xm-8,Y(y),xm,Y(y),'ext');txt(g,xm+4,Y(y)+4+dy,t,'dm');}
+  // размеры
+  dimH(g,X(-2860),X(2860),Y(1560),'5720 = две трубы 3000, стык раструбом',Y(1740));
+  dimH(g,X(2700),X(3000),Y(2070),'300',Y(2000));
+  dimH(g,X(0),X(1500),Y(1520),'1500 — шаг опор',Y(1740));
+  txt(g,X(-1000),Y(1880),'ПВХ Ø200 SN4, уклон 5 мм/м к заднему торцу, 163 л','','middle');
+  leader(g,X(2700),Y(1960),X(1700),Y(2075),'Воронка с сеткой, спуск Ø110, колено, ввод сквозь стену на +1870','end');
+  leader(g,X(2350),Y(1985),X(1200),Y(2040),'Перелив Ø50 наружу на +1985','end');
+  leader(g,X(1500),Y(1750),X(1600),Y(1620),'Полка 45×90×300 к ребру стойки + хомут 8"','start');
+  txt(g,40,20,'Зад (глухой торец)','mu');txt(g,X(3000),20,'Перед (вход)','mu','end');txt(g,X(0),20,'масштаб по высоте увеличен в 2,5 раза','mu','middle');
+})();
+
+/* ---------- Лист 11а: окно ---------- */
+(function(){
+  const svg=document.getElementById('l11a');const pat=hatchDefs(svg,'h11a');const g=el('g',{},svg);
+  const k=0.2,X=x=>60+(x-470)*k,Y=y=>390-(y-600)*k; // фасад: проём 515…1290, высота 645…2210
+  rect(g,X(470),Y(2255),(1425-470)*k,45*k,'woodbg');rect(g,X(470),Y(645),(1425-470)*k,45*k,'woodbg');
+  rect(g,X(470),Y(2210),45*k,1565*k,'woodbg');rect(g,X(1290),Y(2210),135*k,1565*k,'woodbg');
+  rect(g,X(515),Y(2210),775*k,10*k,'alu');rect(g,X(515),Y(655),775*k,10*k,'alu');
+  rect(g,X(890),Y(2200),400*k,1545*k,'pc');rect(g,X(515),Y(2200),400*k,1545*k,'pc');
+  rect(g,X(905),Y(2190),10*k,1525*k,'alu');rect(g,X(890),Y(2190),10*k,1525*k,'alu');
+  dimH(g,X(515),X(1290),Y(560),'775',Y(645));dimH(g,X(515),X(915),Y(2300),'400',Y(2210));
+  dimV(g,Y(2210),Y(645),X(1425)+24,'1565',X(1425));
+  leader(g,X(700),Y(2205),330,Y(2205),'[16] Направляющая верхняя','start','два швеллера 10×10, паз 10');
+  leader(g,X(700),Y(1750),330,Y(1750),'[1] Створка А, наружный паз','start','сдвигается на створку Б');
+  leader(g,X(895),Y(1450),330,Y(1450),'[5] U-профиль на кромке','start','ручка и ребро жёсткости');
+  leader(g,X(1100),Y(1150),330,Y(1150),'[1] Створка Б, внутренний паз','start','обычно неподвижна');
+  leader(g,X(700),Y(660),330,Y(700),'[16] Направляющая нижняя на лежне','start','паз подрезан до 5, дренаж Ø3/300');
+  txt(g,X(492),Y(1400),'оконная стойка 90×45','mu','middle',-90);txt(g,X(1357),Y(1400),'угловая стойка','mu','middle',-90);
+  // сечение по направляющим М 1:1 (2 px = 1 мм)
+  const sx=60,sy=570;txt(g,sx,sy-64,'Сечение по нижней направляющей, М 1:1','ttl');
+  const a=[[0,0],[52,0],[52,-24],[48,-24],[48,-4],[32,-4],[32,-24],[20,-24],[20,-4],[4,-4],[4,-24],[0,-24]].map(q=>[sx+q[0]+40,sy+q[1]+40]);poly(g,a,'alu');
+  rect(g,sx+40+6,sy+40-24-40,12,60,'pc');rect(g,sx+40+34,sy+40-24-40,12,60,'pc');
+  rect(g,sx+40+34-4,sy+40-24-40-20,20,20,'alu');
+  dimH(g,sx+40,sx+40+52,sy+58,'26',sy+40);dimH(g,sx+40+4,sx+40+20,sy-12,'7',sy+16);dimV(g,sy+16,sy+40,sx+130,'12',sx+92);
+  txt(g,sx+160,sy+4,'два швеллера 10×10×1,5 рядом: просвет 7 под лист 6;','mu');txt(g,sx+160,sy+22,'верхняя глубина 10, нижняя подрезана до 5;','mu');txt(g,sx+160,sy+40,'вертикальная кромка створки в U-профиле 10×10','mu');
+})();
+
+/* ---------- Лист 11б: дверь ---------- */
+(function(){
+  const svg=document.getElementById('l11b');const pat=hatchDefs(svg,'h11b');const g=el('g',{},svg);
+  const k=0.15,X=x=>180+x*k,Y=y=>420-y*k;
+  rect(g,X(-600),Y(2255),1200*k,45*k,'woodbg');
+  for(const sd of [1,-1]){rect(g,Math.min(X(sd*425),X(sd*470)),Y(2210),45*k,2210*k,'woodbg');rect(g,Math.min(X(sd*470),X(sd*515)),Y(2210),45*k,(2210-645)*k,'woodbg');}
+  rect(g,X(-475),Y(2240),950*k,2240*k,'film');
+  rect(g,X(-475),Y(2240),950*k,50*k,'edge');rect(g,X(-475),Y(50),950*k,50*k,'edge');rect(g,X(-475),Y(2240),50*k,2240*k,'edge');rect(g,X(425),Y(2240),50*k,2240*k,'edge');
+  for(let q=0;q<7;q++){el('circle',{cx:X(-450+q*150),cy:Y(2215),r:2.5,class:'steel'},g);}
+  line(g,X(-425),Y(2190),X(-425),Y(60),'cut');line(g,X(425),Y(2190),X(425),Y(60),'cut');
+  rect(g,X(-475),Y(100),950*k,50*k,'',{fill:'none',stroke:'var(--ink)','stroke-dasharray':'3 2'});
+  dimH(g,X(-475),X(475),Y(-70),'950',Y(0));dimH(g,X(-425),X(425),Y(-170),'проём 850',Y(0));dimV(g,Y(2240),Y(0),X(-475)-34,'2240',X(-475));
+  leader(g,X(-450),Y(2215),330,Y(2215),'[18] Люверсы Ø12 через 150','start','саморезы с шайбами к обвязке');
+  leader(g,X(425),Y(1500),330,Y(1550),'[18] Молния №10 по всей высоте','start','ответная половина на планке к стойке');
+  leader(g,X(0),Y(1000),330,Y(1000),'[18] Гибкое стекло ПВХ 700 мкм','start','окантовка 50 из тентовой ткани');
+  leader(g,X(0),Y(125),330,Y(250),'Карман с утяжелителем','start','цепь или прут');
+  // свёрнутое состояние
+  const X2=x=>560+x*k*0.5,Y2=y=>600-y*k*0.5;
+  txt(g,X2(0),Y2(2450),'Свёрнута','ttl','middle');
+  rect(g,X2(-600),Y2(2255),1200*k*0.5,45*k*0.5,'woodbg');
+  for(const sd of [1,-1]){rect(g,Math.min(X2(sd*425),X2(sd*470)),Y2(2210),45*k*0.5,2210*k*0.5,'woodbg');}
+  el('circle',{cx:X2(0),cy:Y2(2140),r:70*k*0.5,class:'film'},g);
+  for(const sd of [1,-1]){rect(g,X2(sd*300)-1.5,Y2(2240),3,(2240-2050)*k*0.5,'edge');}
+  txt(g,X2(0),Y2(1850),'рулон Ø140','mu','middle');txt(g,X2(0),Y2(1700),'на двух стропах','mu','middle');txt(g,X2(0),Y2(900),'проём свободен','mu','middle');txt(g,X2(0),Y2(750),'850×2210','mu','middle');
+})();
+
+/* ---------- Лист 5б: конёк ---------- */
+(function(){
+  const svg=document.getElementById('l4b');const pat=hatchDefs(svg,'h4b');const g=el('g',{},svg);
+  const k=1.1,ax=300,Yb=330;
+  const Xm=x=>ax+x*k, Ym=y=>Yb-(y-3240)*k;
+  const P=(v,w,sd)=>[Xm(sd*(67.5+0.809*v+0.588*w)),Ym(3240-0.588*v+0.809*w)];
+  for(const sd of [1,-1]){poly(g,[P(0,0,sd),P(190,0,sd),P(190,-90,sd),P(0,-90,sd)],'woodbg');}
+  woodH(g,Xm(-67.5),Yb,45*k,90*k,pat);woodH(g,Xm(22.5),Yb,45*k,90*k,pat);rect(g,Xm(-22.5),Yb,45*k,90*k,'woodbg');
+  for(const sd of [1,-1]){poly(g,[P(-76,3,sd),P(220,3,sd),P(220,9,sd),P(-76,9,sd)],'pc');pline(g,[P(-76,6,sd),P(220,6,sd)],'pcl');
+    poly(g,[P(-76,2,sd),P(-66,2,sd),P(-66,10,sd),P(-76,10,sd)],'aluo');
+    const jaw=pline(g,[P(-36,0,sd),P(-82,0,sd),P(-82,12,sd),P(-36,12,sd)],'');jaw.setAttribute('style','fill:none;stroke:var(--alu);stroke-width:3');
+    const up=pline(g,[P(-36,12,sd),P(-86,12,sd),[Xm(0),Ym(3290)]],'');up.setAttribute('style','fill:none;stroke:var(--alu);stroke-width:3');}
+  el('circle',{cx:Xm(0),cy:Ym(3290),r:4,class:'steel'},g);
+  dimH(g,Xm(-67.5),Xm(67.5),Yb+90*k+30,'135',Yb+90*k);dimH(g,Xm(-22.5),Xm(22.5),Yb+90*k+52,'45',Yb+90*k);dimV(g,Yb,Yb+90*k,Xm(70)+24,'90',Xm(70),{right:true});
+  dimH(g,P(-76,9,-1)[0],P(-76,9,1)[0],Ym(3330),'30 зазор',Ym(3290));
+  leader(g,P(-60,12,-1)[0],P(-60,12,-1)[1],40,60,'Коньковый профиль Al','start','регулируемый угол, зажим кромок 6 мм');
+  leader(g,Xm(0),Ym(3290),40,120,'Шарнир профиля, между скатами 108°');
+  leader(g,P(150,-45,-1)[0],P(150,-45,-1)[1],40,430,'Стропило 90×45');
+  leader(g,P(-71,6,1)[0],P(-71,6,1)[1],350,130,'Торцевой профиль','start','сплошная лента на торце сот');
+  leader(g,P(140,6,1)[0],P(140,6,1)[1],350,220,'[1] Лист 6 мм','start','длина 1800, до оси с зазором 30');
+  leader(g,Xm(0),Ym(3262),350,300,'Полость над балками','start','внутренний объём, не закрывается');
+  leader(g,Xm(48),Yb+50,350,410,'Коньковые балки 2×90×45','start','зазор 45, вкладыши у стропил');
+  txt(g,40,530,'Листы держат крышки разъёмных профилей по стропилам и коньковый профиль.','mu');
+})();
+
+/* ---------- Лист 6: аксонометрия ---------- */
+(function(){
+  const svg=document.getElementById('l6');const g=el('g',{},svg);
+  const P=(u,v,w)=>[80+0.26*u+0.26*v, 300+0.15*u-0.15*v-0.3*w];
+  function box(p,u0,u1,v0,v1,w0,w1,cls,op){
+    const top=poly(p,[P(u0,v0,w1),P(u1,v0,w1),P(u1,v1,w1),P(u0,v1,w1)],cls);
+    const front=poly(p,[P(u0,v0,w0),P(u1,v0,w0),P(u1,v0,w1),P(u0,v0,w1)],cls);
+    const side=poly(p,[P(u1,v0,w0),P(u1,v1,w0),P(u1,v1,w1),P(u1,v0,w1)],cls);
+    if(op!==undefined){[top,front,side].forEach(q=>q.setAttribute('opacity',op));}
+    front.setAttribute('style','filter:brightness(.92)');side.setAttribute('style','filter:brightness(.84)');
+  }
+  box(g,0,45,0,1677,-90,0,'wood');box(g,1455,1500,0,1677,-90,0,'wood');
+  for(const uc of [22.5,1477.5]){box(g,uc-30,uc+30,-47,1800,0,3,'alu');}
+  for(const b of BEAMS){const va=1677-b;box(g,45,1455,va-22.5,va+22.5,-42,3,'wood');}
+  box(g,-60,1560,-110,-50,-60,-10,'tank');
+  box(g,10,1490,-47,1753,3,9,'pc');
+  for(let u=100;u<1490;u+=150){pline(g,[P(u,-47,9),P(u,1753,9)],'pcl');}
+  box(g,-20,50,-47,1753,9,12,'alu');box(g,1450,1520,-47,1753,9,12,'alu');
+  box(g,-60,1560,1710,1765,9,16,'alu');
+  const L=(u,v,w,lx,ly,t,anc)=>{const q=P(u,v,w);leader(g,q[0],q[1],lx,ly,t,anc||'start');};
+  L(1500,300,-70,900,420,'Стропило 90×45');
+  L(1477,800,3,900,330,'Разъёмный профиль по стропилу');
+  L(750,1677-560,3,560,540,'Брусья 45×45 на бобышках, шаг 280','start');
+  L(750,500,9,800,110,'Лист 6 мм от конька до карниза');
+  L(1500,-80,-30,900,500,'Жёлоб Ø125 под кромкой');
+  L(0,1740,16,120,60,'Коньковый профиль');
+})();
+
+})();
+</script>
+<script>
+
+(function(){
+const host=document.getElementById('view3d');const canvas=host.querySelector('canvas');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xBFD9EE);scene.fog=new THREE.Fog(0xBFD9EE,14000,32000);
+const camera=new THREE.PerspectiveCamera(42,1,50,60000);
+const controls=new THREE.OrbitControls(camera,canvas);controls.target.set(0,1500,0);controls.maxPolarAngle=Math.PI/2-0.02;controls.enableDamping=true;controls.dampingFactor=0.08;
+scene.add(new THREE.HemisphereLight(0xDDEEFF,0x6B7A55,0.75));
+const sun=new THREE.DirectionalLight(0xFFF4E0,1.0);sun.position.set(6000,9000,5000);sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);const sc=sun.shadow.camera;sc.left=-6000;sc.right=6000;sc.top=6000;sc.bottom=-6000;sc.near=1000;sc.far=25000;sun.shadow.bias=-0.0005;scene.add(sun);
+
+const M={
+  wood:new THREE.MeshStandardMaterial({color:0x6B3520,roughness:.8}),
+  woodDark:new THREE.MeshStandardMaterial({color:0x542A18,roughness:.8}),
+  conc:new THREE.MeshStandardMaterial({color:0x8A8C8E,roughness:.95}),
+  stone:new THREE.MeshStandardMaterial({color:0x9A9A94,roughness:.95}),
+  soil:new THREE.MeshStandardMaterial({color:0x4A3524,roughness:1}),
+  soilWet:new THREE.MeshStandardMaterial({color:0x2F2116,roughness:1}),
+  grass:new THREE.MeshStandardMaterial({color:0x5E7D3C,roughness:1}),
+  alu:new THREE.MeshStandardMaterial({color:0xC9CED4,metalness:.7,roughness:.35}),
+  steel:new THREE.MeshStandardMaterial({color:0x6E7883,metalness:.6,roughness:.5}),
+  pc:new THREE.MeshPhysicalMaterial({color:0xBFE3FF,transparent:true,opacity:.42,roughness:.15,metalness:0,side:THREE.DoubleSide,depthWrite:false}),
+  pcVent:new THREE.MeshPhysicalMaterial({color:0x8FE0B0,transparent:true,opacity:.5,roughness:.15,side:THREE.DoubleSide,depthWrite:false}),
+  pipe:new THREE.MeshStandardMaterial({color:0xC8622A,roughness:.6,side:THREE.DoubleSide}), // вся система полива одного цвета
+  tape:new THREE.MeshStandardMaterial({color:0x2E9E6B,roughness:.6}),
+};
+const pick=[];
+function box(w,h,d,x,y,z,mat,spec,parent,noShadow){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=!noShadow;m.receiveShadow=true;if(spec){m.userData.spec=spec;pick.push(m);}(parent||scene).add(m);return m;}
+
+/* ---------- каркас (по модели владельца; конёк 2×90×45, зазор 45) ---------- */
+const W=2850,L=6000,fT=190,fH=600,beltW=140,beltH=45,post=45,postFace=90;
+const plateTop=2255,ridgeTop=3240,ridgeGap=45,ridgeH=90;
+const rTopX=ridgeGap/2+45; // 67.5
+const dx=W/2-rTopX,dy=ridgeTop-plateTop,slen=Math.hypot(dx,dy),th=Math.atan2(dy,dx);
+const cs=Math.cos(th),sn=Math.sin(th);
+// земля
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(40000,40000),M.grass);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+// фундамент
+const doorGap=850,doorPostOuterX=doorGap/2+2*post;
+function conc(x1,x2,y1,y2,z1,z2){box(Math.abs(x2-x1),Math.abs(y2-y1),Math.abs(z2-z1),(x1+x2)/2,(y1+y2)/2,(z1+z2)/2,M.conc,'[—] Фундамент: бессер 190×600 (каркас, вне спецификации)');}
+conc(-W/2,-W/2+fT,0,fH,-L/2,L/2);conc(W/2-fT,W/2,0,fH,-L/2,L/2);
+conc(-W/2+fT,-doorPostOuterX,0,fH,L/2-fT,L/2);conc(doorPostOuterX,W/2-fT,0,fH,L/2-fT,L/2);
+conc(-W/2+fT,-doorPostOuterX,0,fH,-L/2,-L/2+fT);conc(doorPostOuterX,W/2-fT,0,fH,-L/2,-L/2+fT);
+// грядки и дорожки
+const innerW=W-2*fT,bedL=5000,bedW=800,bedH=200,backInnerZ=-L/2+fT,bedZ=backInnerZ+bedL/2;
+const bedR=box(bedW,bedH,bedL,innerW/2-bedW/2,bedH/2,bedZ,M.soil,'[—] Грядка 5000×800, грунт 200');
+const bedLf=box(bedW,bedH,bedL,-innerW/2+bedW/2,bedH/2,bedZ,M.soil,'[—] Грядка 5000×800, грунт 200');
+box(innerW-2*bedW,40,bedL,0,20,bedZ,M.stone,'[—] Дорожка каменная 870');
+box(innerW,40,L-2*fT-bedL,0,20,L/2-fT-(L-2*fT-bedL)/2,M.stone,'[—] Площадка входа');
+// обвязки и стойки
+const sillY=fH+beltH/2;
+box(beltW,beltH,L,-W/2+beltW/2,sillY,0,M.wood,'[—] Нижняя обвязка 140×45 (каркас)');box(beltW,beltH,L,W/2-beltW/2,sillY,0,M.wood,'[—] Нижняя обвязка 140×45 (каркас)');
+for(const zs of [1,-1])for(const xs of [1,-1]){const len=W/2-doorPostOuterX;box(len,beltH,beltW,xs*(doorPostOuterX+len/2),sillY,zs*(L/2-beltW/2),M.wood,'[—] Нижний лежень 140×45 (каркас)');}
+const plateY=plateTop-beltH/2;
+box(beltW,beltH,L,-W/2+beltW/2,plateY,0,M.wood,'[—] Верхняя обвязка 140×45, верх +2255 (каркас)');box(beltW,beltH,L,W/2-beltW/2,plateY,0,M.wood,'[—] Верхняя обвязка 140×45, верх +2255 (каркас)');
+box(W,beltH,beltW,0,plateY,L/2-beltW/2,M.wood,'[—] Верхняя обвязка торцевая 140×45 (каркас)');box(W,beltH,beltW,0,plateY,-L/2+beltW/2,M.wood,'[—] Верхняя обвязка торцевая 140×45 (каркас)');
+const postH=plateTop-beltH-(fH+beltH),postY=fH+beltH+postH/2;
+const rafterZ=[-L/2+22.5,-1500,0,1500,L/2-22.5];
+for(let i=0;i<5;i++){const z=rafterZ[i];
+  for(const s of [1,-1]){box(post,postH,postFace,s*(W/2-post/2),postY,z,M.wood,'[—] Стойка 90×45 (каркас)');box(postFace,postH,post,s*(W/2-post-postFace/2),postY,z,M.wood,'[—] Стойка, ребро 90×45 (каркас)');}
+}
+// дверные стойки (упрощённо)
+// дверные порталы по модели владельца: внутренняя стойка 140×45 и лицевая (оконная) 90×45, верх срезан под низ стропила
+function doorPost(w,d,x,z,spec,drop){drop=(drop===undefined)?90/cs:drop;const tn=Math.tan(th);const hI=ridgeTop-((Math.abs(x)-w/2-rTopX)*tn+drop),hO=ridgeTop-((Math.abs(x)+w/2-rTopX)*tn+drop);
+  const sh=new THREE.Shape();if(x>0){sh.moveTo(0,0);sh.lineTo(w,0);sh.lineTo(w,hO);sh.lineTo(0,hI);}else{sh.moveTo(0,0);sh.lineTo(w,0);sh.lineTo(w,hI);sh.lineTo(0,hO);}sh.lineTo(0,0);
+  const g=new THREE.ExtrudeGeometry(sh,{depth:d,bevelEnabled:false});g.translate(-w/2,0,-d/2);const m=new THREE.Mesh(g,M.wood);m.position.set(x,0,z);m.castShadow=m.receiveShadow=true;m.userData.spec=spec;pick.push(m);scene.add(m);}
+for(const zs of [1,-1])for(const xs of [1,-1]){
+  // широкая дверная стойка 140×45 запилена под стропило: наружные 45 — под низ стропила, внутренние 95 — до верхней грани стропила
+  doorPost(post,45,xs*(doorGap/2+post/2),zs*(L/2-22.5),'[—] Дверная стойка 140×45, часть под стропилом (каркас)');
+  doorPost(post,beltW-45,xs*(doorGap/2+post/2),zs*(L/2-45-(beltW-45)/2),'[—] Дверная стойка 140×45, запил до верха стропила (каркас)',0);
+  doorPost(post,postFace,xs*(doorGap/2+post+post/2),zs*(L/2-postFace/2),'[—] Оконная стойка 90×45, верх под низ стропила (каркас)');}
+// коньковые балки
+box(45,ridgeH,L,rTopX-22.5,ridgeTop-ridgeH/2,0,M.wood,'[—] Коньковая балка 90×45 (каркас)');box(45,ridgeH,L,-(rTopX-22.5),ridgeTop-ridgeH/2,0,M.wood,'[—] Коньковая балка 90×45 (каркас)');
+// стропила, затяжки, стяжки
+function rafterGeo(side){const sh=new THREE.Shape();const hCut=90/Math.sin(th),vCut=90/Math.cos(th);
+  sh.moveTo(side*rTopX,ridgeTop);sh.lineTo(side*W/2,plateTop);sh.lineTo(side*(W/2-hCut),plateTop);sh.lineTo(side*rTopX,ridgeTop-vCut);sh.lineTo(side*rTopX,ridgeTop);
+  const g=new THREE.ExtrudeGeometry(sh,{depth:45,bevelEnabled:false});g.translate(0,0,-22.5);return g;}
+const gR=rafterGeo(1),gL=rafterGeo(-1);
+const triBot=rTopX+140/Math.tan(th);const triSh=new THREE.Shape();triSh.moveTo(-rTopX,ridgeTop);triSh.lineTo(rTopX,ridgeTop);triSh.lineTo(triBot,ridgeTop-140);triSh.lineTo(-triBot,ridgeTop-140);triSh.lineTo(-rTopX,ridgeTop);
+const gTri=new THREE.ExtrudeGeometry(triSh,{depth:45,bevelEnabled:false});gTri.translate(0,0,-22.5);
+const tieTop=plateTop+90,lTieXTop=rTopX+(ridgeTop-tieTop)/Math.tan(th);
+const tieSh=new THREE.Shape();tieSh.moveTo(-W/2,plateTop);tieSh.lineTo(W/2,plateTop);tieSh.lineTo(lTieXTop,tieTop);tieSh.lineTo(-lTieXTop,tieTop);tieSh.lineTo(-W/2,plateTop);
+const gTie=new THREE.ExtrudeGeometry(tieSh,{depth:45,bevelEnabled:false});gTie.translate(0,0,-22.5);
+function addGeo(g,z,mat,spec){const m=new THREE.Mesh(g,mat);m.position.z=z;m.castShadow=m.receiveShadow=true;m.userData.spec=spec;pick.push(m);scene.add(m);return m;}
+for(let i=0;i<5;i++){const z=rafterZ[i];addGeo(gR,z,M.wood,'[—] Стропило 90×45 (каркас), длина по верху '+Math.round(slen));addGeo(gL,z,M.wood,'[—] Стропило 90×45 (каркас), длина по верху '+Math.round(slen));
+  if(i>0&&i<4){addGeo(gTri,z-45,M.woodDark,'[—] Затяжка-трапеция 140×45 (каркас)');addGeo(gTri,z+45,M.woodDark,'[—] Затяжка-трапеция 140×45 (каркас)');addGeo(gTie,z-45,M.woodDark,'[—] Нижняя стяжка 90×45, верх +2345 (каркас)');addGeo(gTie,z+45,M.woodDark,'[—] Нижняя стяжка 90×45, верх +2345 (каркас)');}
+  else{addGeo(gTri,z+(i===0?45:-45),M.woodDark,'[—] Затяжка-трапеция 140×45 (каркас)');}
+  box(ridgeGap,ridgeH,45,0,ridgeTop-ridgeH/2,z,M.woodDark,'[—] Вкладыш конька 45×90 (каркас)');
+}
+
+/* ---------- крыша: система координат ската ---------- */
+// v — вдоль ската от точки конька (x=±67.5, y=3240) к карнизу; w — по нормали вверх
+function P(side,v,w){return new THREE.Vector3(side*(rTopX+cs*v+sn*w),ridgeTop-sn*v+cs*w,0);}
+function roofBox(side,v0,v1,w0,w1,z0,z1,mat,spec,parent,noShadow){
+  const c=P(side,(v0+v1)/2,(w0+w1)/2);const m=new THREE.Mesh(new THREE.BoxGeometry(v1-v0,w1-w0,z1-z0),mat);
+  m.position.set(c.x,c.y,(z0+z1)/2);m.rotation.z=side>0?-th:th;m.castShadow=!noShadow;m.receiveShadow=true;
+  if(spec){m.userData.spec=spec;pick.push(m);}(parent||scene).add(m);return m;}
+const BEAMS=[280,560,840,1120,1400];
+const VENT={1:[],[-1]:[]};
+const vents=[];
+for(const side of [1,-1]){
+  for(let i=0;i<5;i++){const z=rafterZ[i];
+    roofBox(side,-76,1724,0,3,z-30,z+30,M.alu,'[3] База разъёмного профиля 60×3 по стропилу, саморез 4,8×60 через 300');
+    roofBox(side,-76,1724,9,12,z-35,z+35,M.alu,'Крышка разъёмного профиля 70, уплотнитель к листу');
+  }
+  roofBox(side,-90,-36,0,13,-L/2,L/2,M.alu,'[4] Коньковый профиль Al, угол 108°, зажим кромок 6 мм',null,true);
+  for(let i=0;i<4;i++){
+    const z0=rafterZ[i]+22.5,z1=rafterZ[i+1]-22.5;
+    for(const b of BEAMS){roofBox(side,b-22.5,b+22.5,-42,3,z0,z1,M.wood,'[2] Брус обрешётки 45×45 (закуплено; уголки поз. 2), ось '+b+' от конька, верх +3; лист — 3 самореза с термошайбами поз. 8');
+      roofBox(side,b-22.5,b+22.5,-42,-8,z0,z0+2,M.steel,'[2] Уголок перфорированный 40×40×40×2: 4 самореза 4×30 в брус, 4 в стропило');roofBox(side,b-22.5,b+22.5,-42,-8,z1-2,z1,M.steel,'[2] Уголок перфорированный 40×40×40×2: 4 самореза 4×30 в брус, 4 в стропило');}
+    const isVent=VENT[side].includes(i);
+    if(!isVent){
+      roofBox(side,-76,1724,3,9,rafterZ[i]+10,rafterZ[i+1]-10,M.pc,'[1] Лист кровли 6 мм, 1480×1800, соты вдоль ската',null,true);
+    } else {
+      roofBox(side,60-22.5,60+22.5,-67,3,z0,z1,M.wood,'Брусок петель фрамуги, ось 60');
+      roofBox(side,600,1724,3,9,rafterZ[i]+10,rafterZ[i+1]-10,M.pc,'Лист кровли 6 мм ниже фрамуги, от 600 до карниза',null,true);
+      // фрамуга: группа с осью вращения на петле v=60,w=9
+      const hp=P(side,60,9);const g=new THREE.Group();g.position.set(hp.x,hp.y,0);g.rotation.z=side>0?-th:th;scene.add(g);
+      // внутри группы: локальная ось x — вдоль ската от петли, y — по нормали
+      const fr=(v0,v1,w0,w1,zz0,zz1,mat,spec)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(v1-v0,w1-w0,zz1-zz0),mat);m.position.set(side*((v0+v1)/2-60)*(side>0?1:1)*(1),(w0+w1)/2-9,(zz0+zz1)/2);m.castShadow=true;m.receiveShadow=true;if(spec){m.userData.spec=spec;pick.push(m);}g.add(m);return m;};
+      fr(0,600,0,4,rafterZ[i]+11,rafterZ[i+1]-11,M.alu,'Рама фрамуги, труба Al 20×20');
+      fr(0,600,4,10,rafterZ[i]+11,rafterZ[i+1]-11,M.pcVent,'Фрамуга 1478×600, лист 6 мм, открывается термоприводом при 25 °C');
+      vents.push({g,side});
+      // термопривод
+      const ac=P(side,840,3);const am=new THREE.Mesh(new THREE.CylinderGeometry(8,8,420,10),M.steel);am.position.set(ac.x,ac.y+120,(z0+z1)/2);am.rotation.z=side>0?0.9:-0.9;am.userData.spec='Термопривод, ход 300, открывает от 25 °C';pick.push(am);scene.add(am);
+    }
+    roofBox(side,1716,1726,-13,10,rafterZ[i]+10,rafterZ[i+1]-10,M.alu,'[5] Торцевой профиль 6 мм, перфорированная лента (поз. 7); под ним капельник поз. 11');
+  }
+}
+
+/* ---------- вода: жёлобы, трубы-накопители Ø250 под стяжками, капельные ленты ---------- */
+const waterGroup=new THREE.Group();scene.add(waterGroup);
+const gutX=P(1,1724,-13).x+30,gutY=2062; // ось жёлоба +2062: верх +2124 на 26 мм ниже линии продолжения ската над наружной кромкой — сходящий снег проходит над жёлобом
+const M_tank=new THREE.MeshStandardMaterial({color:0xC8622A,roughness:.6});   // ПВХ наружной канализации, рыжий
+const M_tankFit=new THREE.MeshStandardMaterial({color:0xB0521E,roughness:.6});
+const tankR=100,tankX=1170,tankZ0=-2860,tankZ1=2860,tankTopFront=1970,tankSlope=30; // верх +1970 спереди (ниже перелива +1985 и дна жёлоба +2000), уклон 30 мм к заднему торцу
+function cyl(r,len,x,y,z,mat,spec,rot){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,20),mat);m.position.set(x,y,z);if(rot)m.rotation.set(rot[0],rot[1],rot[2]);m.castShadow=m.receiveShadow=true;if(spec){m.userData.spec=spec;pick.push(m);}waterGroup.add(m);return m;}
+function seg(r,a,b,mat,spec){const A=new THREE.Vector3(...a),B=new THREE.Vector3(...b);const d=B.clone().sub(A);const len=d.length();const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,14),mat);m.position.copy(A.clone().add(B).multiplyScalar(.5));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());m.castShadow=true;if(spec){m.userData.spec=spec;pick.push(m);}waterGroup.add(m);return m;}
+for(const side of [1,-1]){
+  const gx=side*gutX;
+  const gg=new THREE.CylinderGeometry(62,62,L+120,20,1,true,0,Math.PI);gg.rotateX(Math.PI/2);gg.rotateZ(-Math.PI/2); // нижняя половина, открыт вверх, вдоль z
+  const gut=new THREE.Mesh(gg,M.pipe);gut.position.set(gx,gutY,0);gut.userData.spec='[10] Жёлоб ПВХ Ø125 Döcke: дно +2000, верх +2124 — ниже линии ската на 26; уклон 3 мм/м к воронке';pick.push(gut);waterGroup.add(gut);
+  for(const ze of [L/2+60,-L/2-60]){const cap=new THREE.Mesh(new THREE.CircleGeometry(62,20,Math.PI,Math.PI),M.pipe);cap.position.set(gx,gutY,ze);waterGroup.add(cap);}
+  // накопитель: труба ПВХ Ø250 SN4, длина 5720, ось x=±1150, верх +2000 спереди, уклон 5 мм/м назад
+  const tx=side*tankX,yF=tankTopFront-tankR,yB=yF-tankSlope,len=tankZ1-tankZ0;
+  seg(tankR,[tx,yF,tankZ1],[tx,yB,tankZ0],M_tank,'[12] Труба-накопитель ПВХ Ø200 SN4, 2×3000 с раструбом, 163 л; верх +1970, ось +1870, уклон 5 мм/м назад');
+  // передний конец: тройник 250/110 87°, отросток к боковой стене на оси трубы (+1875) — ввод из жёлоба
+  const inZ=2700,inY=yF; // ось ввода = ось накопителя спереди
+  cyl(tankR+6,300,tx,yF,inZ,M_tankFit,'[12] Тройник ПВХ 200/110 87°, отросток к боковой стене',[Math.PI/2,0,0]);
+  seg(55,[tx,inY,inZ],[side*1345,inY,inZ],M_tankFit,'[12] Отросток Ø110 тройника');
+  cyl(tankR+6,60,tx,yF,tankZ1-30,M_tankFit,'[12] Заглушка ПВХ Ø200 спереди',[Math.PI/2,0,0]);
+  // ввод: воронка под жёлобом в 300 мм от переднего торца → вниз Ø110 → колено → сквозь боковую стену (отверстие с манжетой) → в отросток тройника
+  cyl(70,90,gx,gutY-62-45,inZ,M.pipe,'[10] Воронка жёлоба с сеткой от листвы; дно жёлоба +2000');
+  seg(55,[gx,gutY-62-90,inZ],[gx,inY,inZ],M.pipe,'[13] Спуск Ø110 от воронки, два отвода 87°');
+  seg(55,[gx,inY,inZ],[side*1345,inY,inZ],M.pipe,'[13] Ввод Ø110 сквозь боковую стену в тройник; ось +1870, ниже дна жёлоба на 130');
+  // перелив-вентиляция Ø50 с верха трубы: стояк до +2050, наружу сквозь боковую стену
+  const ovZ=2350;
+  seg(26,[tx,yF+tankR-10,ovZ],[tx,1985,ovZ],M.pipe,'[13] Перелив Ø50: стояк с верха трубы до +1985 (ниже дна жёлоба +2000)');
+  seg(26,[tx,1985,ovZ],[side*1500,1985,ovZ],M.pipe,'[13] Перелив Ø50 наружу сквозь стену, открытый конец — он же вентиляция');
+  // задний конец: заглушка, врезка ¾", кран, фильтр, спуск к гребёнке
+  cyl(tankR+6,60,tx,yB,tankZ0+30,M_tankFit,'[12] Заглушка ПВХ Ø200 сзади с врезкой ¾" внизу (поз. 14)',[Math.PI/2,0,0]);
+  const outZ=tankZ0+150;
+  seg(14,[tx,yB-tankR,outZ],[tx,1500,outZ],M.pipe,'[14] Отвод ¾": шаровой кран (он же слив на зиму) и сетчатый фильтр');
+  box(60,120,60,tx,1560,outZ,M.steel,'[14] Шаровой кран ¾" и фильтр косой',waterGroup);
+  seg(12,[tx,1500,outZ],[tx,240,outZ],M.pipe,'[15] Шланг Ø20 к гребёнке');
+  seg(12,[tx,240,outZ],[side*(innerW/2-bedW/2),240,outZ],M.pipe);
+  const man=new THREE.Mesh(new THREE.CylinderGeometry(12,12,bedW,10),M.pipe);man.position.set(side*(innerW/2-bedW/2),240,bedZ-bedL/2+60);man.rotation.z=Math.PI/2;man.userData.spec='[15] Гребёнка на 4 ленты со старт-коннекторами';pick.push(man);waterGroup.add(man);
+  seg(12,[side*(innerW/2-bedW/2),240,outZ],[side*(innerW/2-bedW/2),240,bedZ-bedL/2+60],M.pipe);
+  for(let k=0;k<4;k++){const x=side*(innerW/2-bedW+100+k*200);const t=new THREE.Mesh(new THREE.CylinderGeometry(6,6,bedL-100,8),M.pipe);t.position.set(x,bedH+6,bedZ);t.rotation.x=Math.PI/2;t.userData.spec='[15] Капельная лента, капельницы через 300';pick.push(t);waterGroup.add(t);}
+  // опоры: полка 45×90×300 к ребру стойки + хомут Ø250, у каждой стойки
+  for(const z of rafterZ){const yb=yF-(tankZ1-z)/len*tankSlope-tankR;
+    box(300,45,90,side*(W/2-post-postFace-150),yb-22.5,z+(z>0?-70:70)*(Math.abs(z)>2000?1:0),M.woodDark,'[—] Полка 45×90×300 к ребру стойки (из обрезков бруса)',waterGroup);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(tankR+4,4,8,32),M.steel);ring.position.set(tx,yb+tankR,z+(z>0?-70:70)*(Math.abs(z)>2000?1:0));ring.userData.spec='[12] Хомут 8" (207–219) с резиной, шпилька М10 в полку';pick.push(ring);waterGroup.add(ring);}
+}
+
+/* ---------- обшивка стен 6 мм, фронтоны, открывающиеся окна ---------- */
+const wallGroup=new THREE.Group();scene.add(wallGroup);
+const M_wallpc=new THREE.MeshPhysicalMaterial({color:0xBFE3FF,transparent:true,opacity:.32,roughness:.15,side:THREE.DoubleSide,depthWrite:false});
+const wY0=600,wY1=2225; // от верха фундамента до низа кромки кровельного листа
+for(const side of [1,-1]){const xw=side*(W/2+3);
+  for(let i=0;i<4;i++){const zc=-L/2+750+i*1500;box(6,wY1-wY0,1500,xw,(wY0+wY1)/2,zc,M_wallpc,'[1] Стена: лист 6 мм 1500×1655, соты вертикально; термошайбы поз. 8 через 400',wallGroup,true);}
+  for(const z of [-1500,0,1500]){box(10,wY1-wY0,52,side*(W/2+5),(wY0+wY1)/2,z,M.alu,'[6] Н-профиль неразъёмный 6 мм на стойке, саморез в стойку через 400',wallGroup);}
+  box(10,10,L,side*(W/2+5),wY1,0,M.alu,'[5] Торцевой U-профиль 6 мм, верх: сплошная лента (поз. 7), кромка под кровлей',wallGroup);
+  box(10,10,L,side*(W/2+5),wY0+5,0,M.alu,'[5] Торцевой U-профиль 6 мм, низ: перфорированная лента (поз. 7), дренаж',wallGroup);
+}
+// фронтоны: три части над обвязкой, стыки по дверным стойкам ±470
+function gablePiece(pts,z,spec){const sh=new THREE.Shape();sh.moveTo(pts[0][0],pts[0][1]);for(let k=1;k<pts.length;k++)sh.lineTo(pts[k][0],pts[k][1]);sh.lineTo(pts[0][0],pts[0][1]);
+  const g=new THREE.ExtrudeGeometry(sh,{depth:6,bevelEnabled:false});const m=new THREE.Mesh(g,M_wallpc);m.position.z=z;m.userData.spec=spec;pick.push(m);wallGroup.add(m);}
+const yR=x=>ridgeTop-(Math.max(Math.abs(x),rTopX)-rTopX)*Math.tan(th)-2;
+for(const zs of [1,-1]){const z=zs>0?L/2+3:-L/2-9;
+  gablePiece([[-470,plateTop],[470,plateTop],[470,yR(470)],[rTopX,yR(rTopX)],[-rTopX,yR(rTopX)],[-470,yR(470)]],z,'[1] Фронтон, средняя часть 940×985: к стропилам и дверным стойкам');
+  gablePiece([[470,plateTop],[W/2,plateTop],[470,yR(470)]],z,'[1] Фронтон, боковая часть 955×644: стык со средней на дверной стойке');
+  gablePiece([[-470,plateTop],[-W/2,plateTop],[-470,yR(470)]],z,'[1] Фронтон, боковая часть 955×644');
+}
+// окна фронтонов: раздвижные, без рамы. Две створки 400×1555 из листа 6 мм ходят в алюминиевых двойных направляющих
+// (верхняя — под торцевой обвязкой, нижняя — на лежне); вертикальные кромки створок в U-профиле, он же ручка и ребро жёсткости
+const windows=[];
+function makeWindow(xs,zs){const x0=xs*doorPostOuterX,x1=xs*(W/2-post-postFace);const xa=Math.min(x0,x1),xb=Math.max(x0,x1),wdt=xb-xa; // проём 775
+  const yT=plateTop-beltH,yB=fH+beltH; // 2210 / 645
+  const zf=zs*L/2; const zo=zf-zs*5, zi=zf-zs*15; // наружная и внутренняя створки
+  box(wdt,10,20,(xa+xb)/2,yT-5,zf-zs*10,M.alu,'[16] Направляющая верхняя: два швеллера 10×10×1,5, просвет 7 под лист 6; под торцевой обвязкой');
+  box(wdt,10,20,(xa+xb)/2,yB+5,zf-zs*10,M.alu,'[16] Направляющая нижняя: два швеллера 10×10×1,5, паз подрезан до 5; дренаж Ø3/300');
+  const pw=400,ph=yT-yB-20; // створка 400×1545 в свету между направляющими
+  const leafA=new THREE.Group(),leafB=new THREE.Group();scene.add(leafA);scene.add(leafB);
+  const mk=(g,xc,z,spec,edgeSide)=>{box(pw,ph,6,0,0,0,M_wallpc,spec,g,true);box(10,ph-40,10,edgeSide*(pw/2-5),0,0,M.alu,'[5] U-профиль на вертикальной кромке створки — ручка и ребро жёсткости',g);g.position.set(xc,(yT+yB)/2,z);};
+  // A — створка у оконной стойки (наружный паз), B — у угловой стойки (внутренний паз); открывание: A сдвигается на B
+  const xA=xa+ (xs>0?pw/2:wdt-pw/2), xB=xa+(xs>0?wdt-pw/2:pw/2);
+  mk(leafA,xA,zo,'[1] Створка окна 400×1545, лист 6 мм; кромки: сплошная и перфорированная лента (поз. 7)',xs);
+  mk(leafB,xB,zi,'[1] Створка окна 400×1545 (неподвижная в обычном режиме), лист 6 мм',-xs);
+  windows.push({leafA,xA,xB,xs});}
+for(const zs of [1,-1])for(const xs of [1,-1])makeWindow(xs,zs);
+let winOpen=false;
+function setWindows(open){winOpen=open;for(const w of windows){w.leafA.position.x=open?w.xB:w.xA;}}
+setWindows(false);
+
+/* ---------- двери: гибкое стекло ПВХ на люверсах и молниях, скручивание вверх ---------- */
+const M_film=new THREE.MeshPhysicalMaterial({color:0xE6F0F6,transparent:true,opacity:.28,roughness:.25,side:THREE.DoubleSide,depthWrite:false});
+const M_edge=new THREE.MeshStandardMaterial({color:0x4A4F55,roughness:.8});
+const M_zip=new THREE.MeshStandardMaterial({color:0x2A2D30,roughness:.7});
+const doors=[];
+for(const zs of [1,-1]){const z=zs*(L/2+8);const dw=doorGap+2*50,dh=plateTop-beltH+30; // полотно 950×2240: перекрывает проём на 50 по бокам и 30 сверху
+  const closed=new THREE.Group(),open=new THREE.Group();scene.add(closed);scene.add(open);
+  box(dw,dh,1.2,0,dh/2,z,M_film,'[18] Дверь: гибкое стекло ПВХ 700 мкм, полотно 950×2240, окантовка 50; на зиму снимается',closed,true);
+  box(dw,50,4,0,dh-25,z+zs*2,M_edge,'[18] Окантовка верхняя, люверсы Ø12 через 150 — саморезы с шайбами к обвязке',closed);
+  box(dw,50,4,0,25,z+zs*2,M_edge,'[18] Окантовка нижняя с утяжелителем (цепь или прут в кармане)',closed);
+  for(const sd of [1,-1]){box(50,dh,4,sd*(dw/2-25),dh/2,z+zs*2,M_edge,'[18] Окантовка боковая',closed);
+    box(8,dh-100,6,sd*(doorGap/2+5),dh/2,z+zs*4,M_zip,'[18] Молния №10 тракторная: половина на полотне, половина на планке к стойке',closed);
+    box(20,dh-100,4,sd*(doorGap/2+25),dh/2,z+zs*1,M_edge,'[18] Планка молнии на дверной стойке',closed);}
+  for(let k=0;k<7;k++){const r=new THREE.Mesh(new THREE.TorusGeometry(7,2,6,12),M.steel);r.position.set(-dw/2+25+k*150,dh-25,z+zs*5);closed.add(r);}
+  // свёрнутое состояние: рулон под обвязкой, две стропы с фастексами
+  const roll=new THREE.Mesh(new THREE.CylinderGeometry(70,70,dw,20),M_film);roll.rotation.z=Math.PI/2;roll.position.set(0,dh-70,z+zs*60);roll.userData.spec='[18] Дверь свёрнута: рулон Ø140 под обвязкой на двух стропах с фастексами';pick.push(roll);open.add(roll);
+  box(dw,50,4,0,dh-25,z+zs*2,M_edge,'',open);
+  for(const sd of [1,-1]){box(25,200,150,sd*300,dh-90,z+zs*60,M_edge,'[18] Стропа с фастексом',open);}
+  for(const sd of [1,-1]){box(20,dh-100,4,sd*(doorGap/2+25),dh/2,z+zs*1,M_edge,'[18] Планка молнии на дверной стойке',open);}
+  open.visible=false;doors.push({closed,open});}
+function setDoors(rolled){for(const d of doors){d.closed.visible=!rolled;d.open.visible=rolled;}}
+
+/* ---------- дождь ---------- */
+const N=2000;const rainGeo=new THREE.BufferGeometry();const pos=new Float32Array(N*3);const vel=new Float32Array(N);
+for(let i=0;i<N;i++)reset(i,true);
+function reset(i,first){pos[i*3]=(Math.random()-.5)*4200;pos[i*3+1]=4200+(first?Math.random()*2500:Math.random()*400);pos[i*3+2]=(Math.random()-.5)*7400;vel[i]=60+Math.random()*40;}
+rainGeo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+const rain=new THREE.Points(rainGeo,new THREE.PointsMaterial({color:0x2F6FC7,size:22,sizeAttenuation:true,transparent:true,opacity:.8}));rain.visible=false;scene.add(rain);
+function roofY(x){const a=Math.abs(x);if(a<rTopX)return ridgeTop+40;return ridgeTop-(a-rTopX)*dy/dx+12;}
+function stepRain(){for(let i=0;i<N;i++){const ix=i*3;let x=pos[ix],y=pos[ix+1]-vel[i],z=pos[ix+2];const a=Math.abs(x);
+    if(z>-L/2-100&&z<L/2+100&&a<W/2+80){if(y<roofY(x)){reset(i);continue;}}else if(y<10){reset(i);continue;}
+    pos[ix+1]=y;}
+  rainGeo.attributes.position.needsUpdate=true;}
+
+/* ---------- управление ---------- */
+host.querySelector('#rain').addEventListener('change',e=>{rain.visible=e.target.checked;});
+host.querySelector('#water').addEventListener('change',e=>{waterGroup.visible=e.target.checked;});
+host.querySelector('#walls').addEventListener('change',e=>{wallGroup.visible=e.target.checked;});
+host.querySelector('#wins').addEventListener('change',e=>{setWindows(e.target.checked);});
+host.querySelector('#doors').addEventListener('change',e=>{setDoors(e.target.checked);});
+
+/* ---------- плашки: сворачивание и перетаскивание ---------- */
+(function(){
+  const panels=[...host.querySelectorAll('.panel')];const hr=()=>host.getBoundingClientRect();
+  function clamp(el){const h=hr(),r=el.getBoundingClientRect();let x=r.left-h.left,y=r.top-h.top;
+    x=Math.min(Math.max(x,4),Math.max(4,h.width-r.width-4));y=Math.min(Math.max(y,4),Math.max(4,h.height-Math.min(r.height,52)-4));
+    el.style.left=x+'px';el.style.top=y+'px';el.style.right='auto';el.style.bottom='auto';}
+  for(const el of panels){
+    const head=el.querySelector('.head'),fold=el.querySelector('.fold');
+    fold.addEventListener('click',ev=>{ev.stopPropagation();el.classList.toggle('collapsed');
+      fold.textContent=el.classList.contains('collapsed')?'+':'−';fold.title=el.classList.contains('collapsed')?'Развернуть':'Свернуть';clamp(el);});
+    head.addEventListener('dblclick',()=>fold.click());
+    head.addEventListener('pointerdown',ev=>{
+      if(ev.target.closest('.fold'))return;
+      const h=hr(),r=el.getBoundingClientRect();el.style.left=(r.left-h.left)+'px';el.style.top=(r.top-h.top)+'px';el.style.right='auto';el.style.bottom='auto';
+      const dx=ev.clientX-r.left,dy=ev.clientY-r.top;head.setPointerCapture(ev.pointerId);el.style.zIndex=5;
+      for(const q of panels)if(q!==el)q.style.zIndex=4;
+      const move=e2=>{const h2=hr();el.style.left=(e2.clientX-dx-h2.left)+'px';el.style.top=(e2.clientY-dy-h2.top)+'px';};
+      const up=()=>{head.removeEventListener('pointermove',move);head.removeEventListener('pointerup',up);clamp(el);};
+      head.addEventListener('pointermove',move);head.addEventListener('pointerup',up);ev.preventDefault();});
+  }
+  addEventListener('resize',()=>panels.forEach(clamp));
+})();
+let cutOn=false;
+function view(px,py,pz,tx,ty,tz){camera.position.set(px,py,pz);controls.target.set(tx,ty,tz);controls.update();}
+host.querySelector('#vGen').onclick=()=>view(5200,3600,7200,0,1500,0);
+host.querySelector('#vIn').onclick=()=>view(-300,1100,2500,900,2500,-600);
+host.querySelector('#vEave').onclick=()=>view(2700,2900,1500,1300,2350,600);
+host.querySelector('#vRidge').onclick=()=>view(1400,4300,2200,0,3200,600);
+host.querySelector('#vEave').onclick=()=>view(3200,2600,4200,1300,2250,2600);
+host.querySelector('#vTank').onclick=()=>view(-700,1300,3900,1100,1950,1200);
+view(5200,3600,7200,0,1500,0);
+
+/* ---------- подсказки ---------- */
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2(),tip=host.querySelector('#tip');
+canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;
+  ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(pick,false).find(h=>!cutOn||clipPlane.distanceToPoint(h.point)>0);
+  if(hit&&hit.object.userData.spec){tip.textContent=hit.object.userData.spec;tip.style.display='block';const h=hr(),tw=tip.offsetWidth,tx=Math.min(e.clientX-h.left+14,h.width-tw-12);tip.style.left=Math.max(8,tx)+'px';tip.style.top=Math.min(e.clientY-h.top+14,h.height-40)+'px';}else tip.style.display='none';});
+
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==w||canvas.height!==h){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}}
+function animate(){requestAnimationFrame(animate);resize();if(rain.visible)stepRain();controls.update();renderer.render(scene,camera);}
+animate();
+host.querySelector('#fs3d').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else host.requestFullscreen&&host.requestFullscreen();};
+document.addEventListener('fullscreenchange',()=>{const b=host.querySelector('#fs3d');if(b)b.textContent=document.fullscreenElement?'Выйти':'Во весь экран';});
+
+
+})();
+
+</script>
+<script>
+
+/* таблицы — горизонтальная прокрутка на узких экранах */
+(function(){document.querySelectorAll('.sheet table').forEach(t=>{if(t.parentElement.classList.contains('tablewrap'))return;
+ const w=document.createElement('div');w.className='tablewrap';t.parentNode.insertBefore(w,t);w.appendChild(t);});})();
+/* на телефоне плашки 3D свёрнуты, чтобы не закрывать модель */
+(function(){if(innerWidth>760)return;const h=document.getElementById('view3d');if(!h)return;
+ ['#ui','#specPanel','#legend'].forEach(sel=>{const el=h.querySelector(sel);if(!el)return;el.classList.add('collapsed');const f=el.querySelector('.fold');if(f){f.textContent='+';f.title='Развернуть';}});})();
+/* оглавление: подсветка активного раздела */
+(function(){const links=[...document.querySelectorAll('nav.site a')];
+ const targets=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+ const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const id='#'+e.target.id;links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')===id));}});},{rootMargin:'-20% 0px -70% 0px'});
+ targets.forEach(t=>io.observe(t));})();
+
+</script>
+</body>
+</html>
