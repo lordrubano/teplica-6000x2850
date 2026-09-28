@@ -4,16 +4,18 @@
 
 ## Ссылки для монтажников
 
-- Анимация всех 13 шагов (открывается в браузере телефона):
-  https://raw.githack.com/lordrubano/teplica-6000x2850/claude/desktop-version-fea894/montazh/napravlyayushchie/index.html
-- Инструкция для печати (чертежи, шаги, бланк замеров):
-  https://raw.githack.com/lordrubano/teplica-6000x2850/claude/desktop-version-fea894/montazh/napravlyayushchie/instrukciya-napravlyayushchie.pdf
+- Анимация всех 14 шагов (открывается в браузере телефона):
+  https://lordrubano.github.io/teplica-6000x2850/montazh/napravlyayushchie/
+- Инструкция для печати (чертежи, шаги, фотоотчёт):
+  https://lordrubano.github.io/teplica-6000x2850/montazh/napravlyayushchie/instrukciya-napravlyayushchie.pdf
+- Ролик MP4 (можно пересылать в мессенджере):
+  https://lordrubano.github.io/teplica-6000x2850/montazh/napravlyayushchie/rolik-napravlyayushchie.mp4
 
 ## Что в папке
 
 - `index.html` — страница с анимацией.
 - `rolik-napravlyayushchie.mp4` — ролик всех шагов, около 100 секунд, можно пересылать в мессенджере.
-- `instrukciya-napravlyayushchie.pdf` — инструкция, 11 страниц A4.
+- `instrukciya-napravlyayushchie.pdf` — инструкция, 12 страниц A4.
 - `src/animaciya.html` — исходник анимации: шаги, размеры, тексты.
 - `src/instrukciya.html` — макет инструкции.
 - `src/sborka.js` — сборка: страница анимации, кадры шагов, PDF.
@@ -22,6 +24,8 @@
 Тексты шагов в PDF берутся из анимации, поэтому они всегда совпадают.
 
 ## Главные размеры
+
+- Каркас — по фактическому обмеру (лист 14 проекта): пролёты в свету у конька 1459 · 1425 · 1430 · 1453, у карниза Л 1465 · 1430 · 1435 · 1450, у карниза П 1458 · 1425 · 1430 · 1460 мм.
 
 - Направляющая 1800 мм, нижний конец на 48 мм за торец стропила, верхний — 5–10 мм до оси конька.
 - По оси стропила, отклонение не больше 1 мм.

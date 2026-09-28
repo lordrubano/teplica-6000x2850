@@ -13,7 +13,7 @@ const QRCode = require('qrcode');
 const SRC = __dirname;
 const DIST = path.resolve(SRC, '..');
 const TMP = process.env.OUT_TMP || path.join(SRC, '.sborka');
-const ANIM_URL = process.env.ANIM_URL || 'https://raw.githack.com/lordrubano/teplica-6000x2850/claude/desktop-version-fea894/montazh/napravlyayushchie/index.html';
+const ANIM_URL = process.env.ANIM_URL || 'https://lordrubano.github.io/teplica-6000x2850/montazh/napravlyayushchie/';
 const PDF_NAME = 'instrukciya-napravlyayushchie.pdf';
 
 function wrapPage(fragment) {
@@ -62,13 +62,13 @@ async function routes(page) {
     return file;
   };
   const images = [];
-  // момент кадра внутри шага: почти конец, кроме шага 6 — там важнее разметка на стропиле
-  const moment = { 5: 0.45 };
+  // момент кадра внутри шага: почти конец, кроме шага 7 — там важнее разметка на стропиле
+  const moment = { 6: 0.45 };
   for (let i = 0; i < steps.length; i++) {
     const n = String(i + 1).padStart(2, '0');
     images.push(await shot('shag-' + n + '.jpg', i, moment[i] || 0.97));
   }
-  const cover = await shot('obzor.jpg', 11, 0, 'obzor', true);
+  const cover = await shot('obzor.jpg', 12, 0, 'obzor', true);
   await page.close();
 
   // данные для инструкции

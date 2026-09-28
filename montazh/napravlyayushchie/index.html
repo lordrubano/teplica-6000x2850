@@ -32,7 +32,7 @@
 }
 [hidden]{display:none!important}
 html{background:var(--ground)}
-body{background:var(--ground);color:var(--ink);font-family:var(--font-b);font-size:15px;line-height:1.5;padding-inline:clamp(16px,3vw,32px);padding-block:18px 36px}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b);font-size:15px;line-height:1.5;padding-inline:clamp(16px,3vw,32px);padding-block:18px 36px}
 .wrap{max-width:1320px;margin:0 auto;display:grid;gap:14px}
 .top h1{font-family:var(--font-d);font-weight:700;font-size:clamp(23px,3.2vw,31px);line-height:1.1;margin:0;text-wrap:balance}
 .top p{margin:6px 0 0;color:var(--muted);font-size:14.5px;max-width:78ch}
@@ -60,7 +60,7 @@ body{background:var(--ground);color:var(--ink);font-family:var(--font-b);font-si
 .ctrl button{font:500 14px/1 var(--font-b);padding:10px 14px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;min-height:42px}
 .ctrl button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-width:104px}
 button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.dots{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:4px}
+.dots{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:3px}
 .dots button{height:30px;border:0;border-radius:4px;background:var(--chip);color:var(--muted);font:500 12px/1 var(--font-m);cursor:pointer;position:relative;overflow:hidden;padding:0}
 .dots .fill{position:absolute;inset:0;background:var(--accent-soft);transform-origin:left center;transform:scaleX(0)}
 .dots button span{position:relative}
@@ -76,22 +76,29 @@ body.kadr .stage{display:block}
 body.kadr .view{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0}
 body.kadr .lbl{font-size:15px}
 body.kadr .lbl.big{font-size:18px}
+.vbrand{position:absolute;left:22px;top:16px;font:500 16px/1.2 var(--font-b);color:#22303D;background:rgba(255,255,255,.82);padding:5px 10px;border-radius:4px}
+.vcap{position:absolute;left:0;right:0;bottom:0;padding:44px 30px 22px;background:linear-gradient(rgba(12,18,26,0),rgba(12,18,26,.84) 42%);color:#fff}
+.vcap .vn{font:500 16px/1.2 var(--font-m);opacity:.85;letter-spacing:.04em}
+.vcap .vt{font:700 32px/1.12 var(--font-d);margin-top:4px}
+.vcap .vc{font:400 19px/1.35 var(--font-b);opacity:.95;margin-top:6px;max-width:78ch}
 </style>
 
 <div class="wrap">
   <header class="top">
     <h1>Монтаж направляющих</h1>
-    <p>Теплица 6000×2850, скат крыши. Основания соединительного профиля под поликарбонат 6 мм: 13 шагов от проверки стропил до замеров для резки листов.</p>
+    <p>Теплица 6000×2850, скат крыши. Основания соединительного профиля под поликарбонат 6 мм: 14 шагов от проверки стропил до замеров для резки листов. Каркас в анимации — по фактическому обмеру.</p>
   </header>
   <div class="stage">
     <div class="view" id="view">
       <canvas id="c" aria-label="Объёмная анимация монтажа направляющих"></canvas>
       <div id="labels"></div>
       <div class="hint" id="hint">Вращать — пальцем или мышью</div>
+      <div class="vbrand" id="vbrand" hidden>Монтаж направляющих · теплица 6000×2850</div>
+      <div class="vcap" id="vcap" hidden><div class="vn" id="vn"></div><div class="vt" id="vt"></div><div class="vc" id="vc"></div></div>
       <div class="nogl" id="nogl" hidden>Браузер не показывает объёмную графику. Все шаги есть в инструкции для печати — ссылка справа.</div>
     </div>
     <aside class="panel" aria-live="polite">
-      <div class="stepno" id="stepno">Шаг 1 из 13</div>
+      <div class="stepno" id="stepno">Шаг 1 из 14</div>
       <h2 id="title">Пометить стропила</h2>
       <ul class="acts" id="acts"></ul>
       <div class="check"><b>Проверка</b><span id="check"></span></div>
@@ -101,10 +108,11 @@ body.kadr .lbl.big{font-size:18px}
         <button id="next" type="button">Далее</button>
       </div>
       <div class="dots" id="dots" role="group" aria-label="Шаги"></div>
-      <a class="doclink" id="doc" href="instrukciya-napravlyayushchie.pdf" target="_blank" rel="noopener">Инструкция для печати: чертежи, все шаги и бланк замеров</a>
+      <a class="doclink" id="doc" href="instrukciya-napravlyayushchie.pdf" target="_blank" rel="noopener">Инструкция для печати: чертежи и все шаги</a>
     </aside>
   </div>
   <div class="facts">
+    <span>Пролёты у конька <b>1459 · 1425 · 1430 · 1453</b></span>
     <span>Длина <b>1800 мм</b></span>
     <span>Свес у карниза <b>48 мм</b></span>
     <span>До оси конька <b>5–10 мм</b></span>
@@ -120,7 +128,8 @@ body.kadr .lbl.big{font-size:18px}
 (function(){
 'use strict';
 const KADR=/(^|[?&])kadr(\b|=)/.test(location.search);
-if(KADR)document.body.classList.add('kadr');
+const VIDEO=/(^|[?&])video(\b|=)/.test(location.search);
+if(KADR||VIDEO)document.body.classList.add('kadr');
 const REDUCED=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 const view=document.getElementById('view'),canvas=document.getElementById('c'),layer=document.getElementById('labels');
 const $=id=>document.getElementById(id);
@@ -139,12 +148,20 @@ const rTopX=ridgeGap/2+45;                      // наружная грань �
 const dx=W/2-rTopX,dy=ridgeTop-plateTop;
 const slen=Math.hypot(dx,dy);                   // длина стропила по верху, ≈1677
 const th=Math.atan2(dy,dx),cs=Math.cos(th),sn=Math.sin(th);
-const rafterZ=[-L/2+22.5,-1500,0,1500,L/2-22.5];// пары 1…5
+// Фактический обмер каркаса (лист 14 проекта): пролёты в свету между стропилами, мм, от пары 1 к паре 5
+const SPAN_L=[1465,1430,1435,1450];   // карниз ската Л (замер монтажников)
+const SPAN_K=[1459,1425,1430,1453];   // конёк, выставленный по листу 14
+const SPAN_P=[1458,1425,1430,1460];   // карниз ската П (замер монтажников)
+function axes(sp){const a=[-L/2+22.5];sp.forEach(x=>a.push(a[a.length-1]+x+45));return a;}
+const zRidge=axes(SPAN_K),zEave={'1':axes(SPAN_L),'-1':axes(SPAN_P)};
+const rafterZ=zRidge;                          // пары 1…5 у конька
 const SIDES=[1,-1];                             // 1 — скат Л, −1 — скат П
 const ROWS=[280,560,840,1120,1400];             // оси брусков от верхнего конца стропила
 const MARKS=[105,185,465,745,1025,1305,1585,1665]; // отверстия от нижнего конца направляющей
 const BV0=-76,BV1=1724;                         // направляющая 1800: свес 48 у карниза
 const vMark=m=>BV1-m;
+function zAt(side,i,v){const r=zRidge[i],e=zEave[side][i];return r+(e-r)*v/slen;} // ось стропила вдоль ската
+function yawOf(side,i){return -side*Math.atan2(zEave[side][i]-zRidge[i],dx);}
 const Lz0=rafterZ[0];
 // точка на плоскости ската: v — вдоль ската от конька, w — по нормали вверх
 function P(side,v,w){return new THREE.Vector3(side*(rTopX+cs*v+sn*w),ridgeTop-sn*v+cs*w,0);}
@@ -187,6 +204,7 @@ function box(w,h,d,x,y,z,mat){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d
 const U=new THREE.BoxGeometry(1,1,1);
 function um(mat,shadow){const m=new THREE.Mesh(U,mat);m.castShadow=!!shadow;m.receiveShadow=true;m.visible=false;scene.add(m);return m;}
 function placeSlope(m,side,v0,v1,w0,w1,z0,z1){const c=P(side,(v0+v1)/2,(w0+w1)/2);m.position.set(c.x,c.y,(z0+z1)/2);m.rotation.set(0,0,side>0?-th:th);m.scale.set(Math.max(v1-v0,.01),Math.max(w1-w0,.01),Math.max(z1-z0,.01));}
+function placeR(m,side,i,v0,v1,w0,w1,o0,o1){const vm=(v0+v1)/2,c=P(side,vm,(w0+w1)/2);m.position.set(c.x,c.y,zAt(side,i,vm)+(o0+o1)/2);m.rotation.set(0,yawOf(side,i),side>0?-th:th);m.scale.set(Math.max(v1-v0,.01),Math.max(w1-w0,.01),Math.max(o1-o0,.01));}
 function placeZ(m,side,v,w,z0,z1,k){const c=P(side,v,w);m.position.set(c.x,c.y,(z0+z1)/2);m.rotation.set(0,0,side>0?-th:th);m.scale.set(k,k,Math.max(z1-z0,.01));}
 
 /* ---------- каркас ---------- */
@@ -196,7 +214,7 @@ box(W-380,fH,190,0,fH/2,L/2-95,M.found);box(W-380,fH,190,0,fH/2,-L/2+95,M.found)
 for(const s of SIDES){
   box(140,45,L,s*(W/2-70),fH+22.5,0,M.woodDark);
   box(140,45,L,s*(W/2-70),plateTop-22.5,0,M.woodDark);
-  for(const z of rafterZ)box(45,plateTop-45-fH-45,90,s*(W/2-22.5),(fH+45+plateTop-45)/2,z,M.wood);
+  for(const z of zEave[s])box(45,plateTop-45-fH-45,90,s*(W/2-22.5),(fH+45+plateTop-45)/2,z,M.wood);
 }
 for(const zs of [1,-1])box(W,45,140,0,plateTop-22.5,zs*(L/2-70),M.woodDark);
 function rafterGeo(side){const sh=new THREE.Shape(),hCut=90/Math.sin(th),vCut=90/Math.cos(th);
@@ -209,10 +227,13 @@ const tieTop=plateTop+90,lTieXTop=rTopX+(ridgeTop-tieTop)/Math.tan(th),tieSh=new
 tieSh.moveTo(-W/2,plateTop);tieSh.lineTo(W/2,plateTop);tieSh.lineTo(lTieXTop,tieTop);tieSh.lineTo(-lTieXTop,tieTop);tieSh.lineTo(-W/2,plateTop);
 const gTie=new THREE.ExtrudeGeometry(tieSh,{depth:45,bevelEnabled:false});gTie.translate(0,0,-22.5);
 function addGeo(g,z,mat){const m=new THREE.Mesh(g,mat);m.position.z=z;m.castShadow=true;m.receiveShadow=true;scene.add(m);return m;}
-const gR=rafterGeo(1),gL=rafterGeo(-1);
+const gR=rafterGeo(1).translate(-rTopX,0,0),gL=rafterGeo(-1).translate(rTopX,0,0);
+function addRafter(g,side,i){const grp=new THREE.Group();grp.position.set(side*rTopX,0,zRidge[i]);grp.rotation.y=yawOf(side,i);
+  const m=new THREE.Mesh(g,M.wood);m.castShadow=true;m.receiveShadow=true;grp.add(m);scene.add(grp);}
 rafterZ.forEach((z,i)=>{
-  addGeo(gR,z,M.wood);addGeo(gL,z,M.wood);
-  if(i>0&&i<4){addGeo(gTri,z-45,M.woodDark);addGeo(gTri,z+45,M.woodDark);addGeo(gTie,z-45,M.woodDark);addGeo(gTie,z+45,M.woodDark);}
+  addRafter(gR,1,i);addRafter(gL,-1,i);
+  const zt=(zEave['1'][i]+zEave['-1'][i])/2;
+  if(i>0&&i<4){addGeo(gTri,z-45,M.woodDark);addGeo(gTri,z+45,M.woodDark);addGeo(gTie,zt-45,M.woodDark);addGeo(gTie,zt+45,M.woodDark);}
   else addGeo(gTri,z+(i===0?45:-45),M.woodDark);
 });
 box(45,ridgeH,L,rTopX-22.5,ridgeTop-ridgeH/2,0,M.woodDark);box(45,ridgeH,L,-(rTopX-22.5),ridgeTop-ridgeH/2,0,M.woodDark);
@@ -221,9 +242,9 @@ const hiAngles=[];
 for(const s of SIDES)rafterZ.forEach((z,i)=>{
   const dirs=i===0?[1]:i===4?[-1]:[1,-1];
   for(const d of dirs)for(const r of ROWS){
-    const face=z+d*22.5,a=um(M.alu,true),b=um(M.alu,true);
-    placeSlope(a,s,r-62.5,r-22.5,-40,0,Math.min(face,face+d*2),Math.max(face,face+d*2));
-    placeSlope(b,s,r-24.5,r-22.5,-40,0,Math.min(face,face+d*40),Math.max(face,face+d*40));
+    const a=um(M.alu,true),b=um(M.alu,true),f0=d*22.5;
+    placeR(a,s,i,r-62.5,r-22.5,-40,0,Math.min(f0,f0+d*2),Math.max(f0,f0+d*2));
+    placeR(b,s,i,r-24.5,r-22.5,-40,0,Math.min(f0,f0+d*40),Math.max(f0,f0+d*40));
     a.visible=b.visible=true;
     if(s===1&&i===0)hiAngles.push(a,b);
   }
@@ -238,7 +259,7 @@ function makeScrew(){
   const sh=new THREE.Mesh(new THREE.CylinderGeometry(2,1.2,46,10),M.screw);sh.position.y=1.2-23;
   g.add(w,h,sh);g.userData.shank=sh;g.visible=false;scene.add(g);return g;
 }
-function placeScrewRoof(g,side,v,z,lift){const c=P(side,v,3+lift);g.position.set(c.x,c.y,z);g.rotation.set(0,0,side>0?-th:th);g.userData.shank.visible=lift>.5;g.visible=true;}
+function placeScrewRoof(g,side,v,z,lift,yaw){const c=P(side,v,3+lift);g.position.set(c.x,c.y,z);g.rotation.set(0,yaw||0,side>0?-th:th);g.userData.shank.visible=lift>.5;g.visible=true;}
 const axis={},bases={},screws={},alongC={},planeC={},ctrlC={},eaveC={},dimBars={},dimTicks={};
 for(const s of SIDES){
   axis[s]=[];bases[s]=[];screws[s]=[];alongC[s]=[];planeC[s]=[];ctrlC[s]=[];dimBars[s]=[[],[]];dimTicks[s]=[[],[]];
@@ -268,8 +289,8 @@ for(let i=0;i<12;i++){
 const tScrews=[745,1025].map(makeScrew);
 const tCap=um(M.cap,true);
 
-function showBase(s,i,lift){placeSlope(bases[s][i],s,BV0,BV1,lift,lift+3,rafterZ[i]-30,rafterZ[i]+30);bases[s][i].visible=true;}
-function showScrews(s,i,lift){screws[s][i].forEach((g,k)=>placeScrewRoof(g,s,vMark(MARKS[k]),rafterZ[i],lift));}
+function showBase(s,i,lift){placeR(bases[s][i],s,i,BV0,BV1,lift,lift+3,-30,30);bases[s][i].visible=true;}
+function showScrews(s,i,lift){screws[s][i].forEach((g,k)=>{const v=vMark(MARKS[k]);placeScrewRoof(g,s,v,zAt(s,i,v),lift,yawOf(s,i));});}
 function useStrip(g){gStrips[g].visible=false;gHoles[g].forEach(h=>h.visible=false);}
 
 /* ---------- подписи поверх сцены ---------- */
@@ -293,10 +314,13 @@ function drawLabels(){
 const END=[[1,0,0],[1,4,1],[-1,0,2],[-1,4,3]];            // скат, пара, заготовка на щите
 const MID=[[1,1,4],[1,2,5],[1,3,6],[-1,1,7],[-1,2,8],[-1,3,9]];
 const LEVELS=[150,840,1550];
+// ожидаемые расстояния между осями направляющих по обмеру: пролёт в свету + 45
+const EXPECT=[].concat(SPAN_K,SPAN_L,SPAN_K,SPAN_P).map(x=>x+45);
+const ridgeDims=[0,1,2,3].map(()=>um(M.dim));
 const STEPS=[
 {title:'Пометить стропила',
- actions:['Мелом пометить пары стропил цифрами 1–5, от одного фронтона к другому.','Скаты пометить буквами Л и П. Встать у пары 1 лицом к паре 5: слева скат Л, справа — П.'],
- check:'На каждом стропиле видны номер пары и буква ската.',
+ actions:['Мелом пометить пары стропил цифрами 1–5 и скаты буквами Л и П — так же, как при обмере каркаса (лист 14 проекта).','Сверка с обмером: у карниза между парами 1 и 2 в свету на скате Л — 1465 мм, на скате П — 1458 мм.','Если пары ещё не помечены: встать у пары 1 лицом к паре 5, слева — скат Л.'],
+ check:'Метки стоят как при обмере. Пролёт 1 у карниза: Л — 1465 мм, П — 1458 мм, отклонение не больше 2 мм.',
  dur:6500,cams:[{at:0,pos:[4600,5400,-7000],target:[0,2500,0]}],
  apply(t,cur){if(!cur)return;
   rafterZ.forEach((z,i)=>{if(t>.08+i*.1)lab(String(i+1),V(0,ridgeTop+230,z),'num big');});
@@ -307,8 +331,8 @@ const STEPS=[
  dur:9000,cams:[{at:0,pos:[3700,4500,-5200],target:[900,2800,-1700]},{at:.5,pos:[-3700,4500,-5200],target:[-900,2800,-1700]}],
  apply(t,cur){if(!cur)return;const p=t*10.3;let k=0;
   for(const s of SIDES)rafterZ.forEach((z,i)=>{const f=clamp(p-k,0,1);
-    if(f>0){placeSlope(alongC[s][i],s,0,slen*f,8,20,z-6,z+6);alongC[s][i].visible=true;
-      if(f<1)lab('просвет не больше 3 мм',P(s,slen*f,30).setZ(z));}
+    if(f>0){placeR(alongC[s][i],s,i,0,slen*f,8,20,-6,6);alongC[s][i].visible=true;
+      if(f<1)lab('просвет не больше 3 мм',P(s,slen*f,30).setZ(zAt(s,i,slen*f)));}
     k++;});}},
 {title:'Проверить плоскость ската',
  actions:['На каждом скате натянуть шнур поперёк всех пяти стропил: у конька, посередине и у карниза.','Концы шнура закрепить струбцинами на крайних стропилах.'],
@@ -317,19 +341,27 @@ const STEPS=[
  apply(t,cur){if(!cur)return;const f=ease(seg(t,0,.7)),z0=-3120,z1=z0+6240*f;
   for(const s of SIDES)LEVELS.forEach((v,k)=>{placeZ(planeC[s][k],s,v,14,z0,Math.max(z0+1,z1),12);planeC[s][k].visible=true;});
   if(t>.72){const n=['у конька','посередине','у карниза'];LEVELS.forEach((v,k)=>lab(n[k],P(1,v,20).setZ(2600)));lab('просвет не больше 3 мм',P(1,840,20).setZ(-700),'ok');}}},
+{title:'Сверить пролёты у конька',
+ actions:['Рулеткой измерить у конька расстояние в свету между стропилами соседних пар — от боковой грани до боковой грани.','По обмеру (лист 14) от пары 1 к паре 5 должно быть: 1459 · 1425 · 1430 · 1453 мм.','Если получилось 1460 · 1427 · 1430 · 1450 — конёк ещё не выставлен по листу 14.','Каждый пролёт сфотографировать с рулеткой в кадре и отправить владельцу.'],
+ check:'Отклонение не больше 2 мм. Если больше или конёк не выставлен — остановиться и сообщить владельцу.',
+ dur:7000,cams:[{at:0,pos:[2900,5800,-4700],target:[0,3150,-300]}],
+ apply(t,cur){if(!cur)return;const n=Math.floor(seg(t,.05,.7)*4.999);
+  for(let j=0;j<4;j++)if(j<n){const za=zRidge[j]+22.5,zb=zRidge[j+1]-22.5,m=ridgeDims[j];m.scale.set(12,12,zb-za);m.position.set(0,ridgeTop+90,(za+zb)/2);m.rotation.set(0,0,0);m.visible=true;
+    lab(SPAN_K[j]+' мм',V(0,ridgeTop+120,(za+zb)/2),'num big');}
+  if(t>.75)lab('в свету между стропилами, у конька',V(0,ridgeTop+560,zRidge[2]));}},
 {title:'Разметить ось стропила',
  actions:['На верху стропила отложить 22,5 мм от края у конька и у карниза.','Соединить отметки линией по правилу. Так на всех 10 стропилах.'],
  check:'Линия идёт посередине стропила по всей длине.',
  dur:6500,cams:[{at:0,pos:[2500,4250,-4700],target:[760,2800,-2750]}],
  apply(t,cur){const f=cur?ease(seg(t,0,.8)):1;
-  for(const s of SIDES)rafterZ.forEach((z,i)=>{placeSlope(axis[s][i],s,0,Math.max(1,slen*f),.4,1.6,z-2.5,z+2.5);axis[s][i].visible=true;});
+  for(const s of SIDES)rafterZ.forEach((z,i)=>{placeR(axis[s][i],s,i,0,Math.max(1,slen*f),.4,1.6,-2.5,2.5);axis[s][i].visible=true;});
   if(cur&&t>.35)lab('ось: 22,5 мм от края',P(1,Math.min(slen*f,900),8).setZ(Lz0));}},
 {title:'Эталон: примерить первую направляющую',
  actions:['Отрезать от хлыста кусок 1800 мм. Это эталон для всех направляющих.','Положить его на стропило пары 1, скат Л, точно по оси.','Нижний конец выпустить на 48 мм за торец стропила: здесь будет край листа.'],
  check:'Верхний конец не доходит 5–10 мм до оси конька. Если не сходится — остальные не резать, сообщить размер владельцу.',
  dur:7500,cams:[{at:0,pos:[3000,3950,-4900],target:[860,2750,-2900]}],
  apply(t,cur){showBase(1,0,cur?(1-ease(seg(t,0,.45)))*420:0);
-  if(cur&&t>.5){placeSlope(dim48,1,slen,BV1,10,17,Lz0-4,Lz0+4);dim48.visible=true;
+  if(cur&&t>.5){placeR(dim48,1,0,slen,BV1,10,17,-4,4);dim48.visible=true;
     lab('эталон 1800 мм',P(1,820,40).setZ(Lz0));
     lab('48 мм за торец стропила',P(1,BV1,30).setZ(Lz0),'warn');
     lab('5–10 мм до оси конька',P(1,BV0,30).setZ(Lz0),'warn');}}},
@@ -339,14 +371,14 @@ const STEPS=[
  dur:9000,cams:[{at:0,pos:[2450,3950,-4400],target:[800,2780,-2850]},{at:.55,pos:[4500,2150,-1900],target:[2620,700,0]}],
  apply(t,cur){
   if(t<.55){showBase(1,0,0);const n=Math.floor(seg(t,.03,.42)*8.999);
-    MARKS.forEach((mk,k)=>{if(k<n){const v=vMark(mk);placeSlope(marks[k],1,v-3,v+3,3,4.6,Lz0-24,Lz0+24);marks[k].visible=true;}});
+    MARKS.forEach((mk,k)=>{if(k<n){const v=vMark(mk);placeR(marks[k],1,0,v-3,v+3,3,4.6,-24,24);marks[k].visible=true;}});
     hiAngles.forEach(m=>m.material=M.aluHi);
     if(cur){lab('отметки от нижнего конца',P(1,vMark(465),40).setZ(Lz0));if(t>.22)lab('до уголка не меньше 50 мм',P(1,ROWS[2]-42,-10).setZ(Lz0+40),'warn');}
   }else{bases[1][0].visible=false;gStrips[0].visible=true;const n=cur?Math.floor(seg(t,.6,.95)*8.999):8;
     gHoles[0].forEach((h,k)=>h.visible=k<n);
     if(cur)lab('сверло 6 мм — только пластик',V(GX0,GY+70,0),'warn');}}},
 {title:'Пробное крепление с крышкой',
- actions:['На козлах положить эталон на обрезок доски.','Вкрутить 2 самореза 4×50 с шайбой М5 в два соседних отверстия. Бита PZ2, малое усилие.','Защёлкнуть на направляющую короткий кусок крышки поверх саморезов.'],
+ actions:['На козлах положить эталон на обрезок доски.','Вкрутить 2 самореза 4×50 с шайбой М5 в два соседних отверстия. Бита PZ2, малое усилие.','Защёлкнуть на направляющую короткий кусок крышки поверх саморезов.','Сфотографировать эталон с крышкой и отправить владельцу.'],
  check:'Крышка села плотно, головки не мешают. Если не садится — остановиться и прислать фото. После проверки саморезы выкрутить.',
  dur:7500,cams:[{at:0,pos:[2760,1260,380],target:[2425,703,20]}],
  apply(t,cur){if(!cur)return;
@@ -376,8 +408,8 @@ const STEPS=[
  actions:['На каждом скате натянуть шнур по нижним концам направляющих пар 1 и 5.'],
  check:'Шнур натянут без провиса и касается обоих концов.',
  dur:6000,cams:[{at:0,pos:[2700,2800,-4600],target:[1450,2230,-1200]}],
- apply(t,cur,si){if(!cur&&si!==10)return;const f=cur?ease(seg(t,0,.7)):1,z0=rafterZ[0]-40,z1=z0+(rafterZ[4]+80-rafterZ[0])*f;
-  for(const s of SIDES){placeZ(eaveC[s],s,BV1,8,z0,Math.max(z0+1,z1),12);eaveC[s].visible=true;}
+ apply(t,cur,si){if(!cur&&si!==11)return;const f=cur?ease(seg(t,0,.7)):1;
+  for(const s of SIDES){const z0=zAt(s,0,BV1)-40,z1=z0+(zAt(s,4,BV1)+80-zAt(s,0,BV1))*f;placeZ(eaveC[s],s,BV1,8,z0,Math.max(z0+1,z1),12);eaveC[s].visible=true;}
   if(cur&&t>.5)lab('шнур по нижним концам пар 1 и 5',P(1,BV1,40).setZ(0));}},
 {title:'Направляющие на средних стропилах',
  actions:['Пары 2, 3 и 4 на обоих скатах.','Нижний конец направляющей — точно на шнур, сама направляющая — по оси стропила.','Вкрутить все 8 саморезов с шайбами.'],
@@ -388,22 +420,22 @@ const STEPS=[
     const fs=cur?seg(t,.62+k*.05,.74+k*.05):1;if(fs>0)showScrews(s,i,(1-ease(fs))*80);});
   if(cur&&t>.3)lab('нижний конец — точно на шнур',P(1,BV1,40).setZ(rafterZ[2]),'warn');}},
 {title:'Контроль',
- actions:['Направляющие лежат по оси без волн, отклонение не больше 1 мм.','Шайбы прижаты, пластик вокруг не продавлен.','Шнур поперёк ската по направляющим у конька, посередине и у карниза: просвет не больше 3 мм.'],
- check:'Всё выполнено — можно выставлять бруски по направляющим.',
+ actions:['Направляющие лежат по оси без волн, отклонение не больше 1 мм.','Шайбы прижаты, пластик вокруг не продавлен.','Шнур поперёк ската по направляющим у конька, посередине и у карниза: просвет не больше 3 мм.','Сфотографировать каждую направляющую целиком и нижние концы по шнуру, отправить владельцу.'],
+ check:'Всё выполнено и снято на фото — можно выставлять бруски по направляющим.',
  dur:7500,cams:[{at:0,pos:[6500,5700,1300],target:[700,2800,0]}],
  apply(t,cur){if(!cur)return;const f=ease(seg(t,0,.6)),z0=-3120,z1=z0+6240*f;
   for(const s of SIDES)LEVELS.forEach((v,k)=>{placeZ(ctrlC[s][k],s,v,14,z0,Math.max(z0+1,z1),12);ctrlC[s][k].visible=true;});
   if(t>.6){lab('по оси, отклонение не больше 1 мм',P(1,300,30).setZ(rafterZ[1]),'ok');lab('просвет не больше 3 мм',P(1,840,30).setZ(rafterZ[3]),'ok');lab('шайбы прижаты',P(1,1480,30).setZ(rafterZ[2]),'ok');}
   if(t>.85)lab('можно выставлять бруски',V(0,ridgeTop+340,0),'ok big');}},
 {title:'Замеры для резки листов',
- actions:['Рулеткой измерить расстояние между соседними направляющими в 100 мм от конька и в 100 мм от карниза.','Мерить от левого края одной направляющей до левого края соседней — это расстояние между осями.','Всего 16 размеров: скат Л у конька 1–4, у карниза 5–8; скат П у конька 9–12, у карниза 13–16.'],
- check:'Все 16 чисел записаны в бланк и отправлены владельцу.',
+ actions:['Рулеткой измерить расстояние между соседними направляющими в 100 мм от конька и в 100 мм от карниза. Мерить от левого края одной направляющей до левого края соседней — это расстояние между осями.','Всего 16 размеров: скат Л у конька 1–4, у карниза 5–8; скат П у конька 9–12, у карниза 13–16.','По обмеру должно получиться: скат Л у конька 1504 · 1470 · 1475 · 1498, у карниза 1510 · 1475 · 1480 · 1495; скат П у конька 1504 · 1470 · 1475 · 1498, у карниза 1503 · 1470 · 1475 · 1505.','Каждый замер сфотографировать так, чтобы в кадре были рулетка и цифра, или снять одним видео по порядку 1–16.'],
+ check:'Фото или видео всех 16 замеров отправлены владельцу. Если замер отличается от ожидаемого больше чем на 3 мм — сказать об этом в сообщении.',
  dur:8500,cams:[{at:0,pos:[-1600,10600,0],target:[0,2700,0]}],
  apply(t,cur){if(!cur)return;const n=Math.floor(seg(t,0,.85)*16.999);let k=0;
   for(const s of SIDES)[100,1600].forEach((v,r)=>{for(let j=0;j<4;j++){
-    if(k<n){const za=rafterZ[j],zb=rafterZ[j+1];placeZ(dimBars[s][r][j],s,v,26,za,zb,6);dimBars[s][r][j].visible=true;
-      const tk=dimTicks[s][r][j];placeSlope(tk[0],s,v-30,v+30,18,34,za-3,za+3);placeSlope(tk[1],s,v-30,v+30,18,34,zb-3,zb+3);tk[0].visible=tk[1].visible=true;
-      lab(String(k+1),P(s,v,40).setZ((za+zb)/2),'num');}
+    if(k<n){const za=zAt(s,j,v),zb=zAt(s,j+1,v);placeZ(dimBars[s][r][j],s,v,26,za,zb,6);dimBars[s][r][j].visible=true;
+      const tk=dimTicks[s][r][j];placeR(tk[0],s,j,v-30,v+30,18,34,-3,3);placeR(tk[1],s,j+1,v-30,v+30,18,34,-3,3);tk[0].visible=tk[1].visible=true;
+      lab((k+1)+': '+EXPECT[k],P(s,v,40).setZ((za+zb)/2),'num');}
     k++;}});}}
 ];
 const CAMS={obzor:{pos:[5200,4700,-6400],target:[300,2300,0]}};
@@ -415,7 +447,7 @@ function hideAll(){
     planeC[s].forEach(m=>m.visible=false);ctrlC[s].forEach(m=>m.visible=false);eaveC[s].visible=false;
     dimBars[s].forEach(r=>r.forEach(m=>m.visible=false));dimTicks[s].forEach(r=>r.forEach(p=>{p[0].visible=p[1].visible=false;}));
   }
-  marks.forEach(m=>m.visible=false);dim48.visible=false;
+  marks.forEach(m=>m.visible=false);dim48.visible=false;ridgeDims.forEach(m=>m.visible=false);
   gStrips.forEach(m=>m.visible=false);gHoles.forEach(a=>a.forEach(m=>m.visible=false));
   tScrews.forEach(g=>g.visible=false);tCap.visible=false;
   hiAngles.forEach(m=>m.material=M.alu);frameLabels.length=0;
@@ -441,8 +473,16 @@ function updateCam(now){
   if(k>=1)camFrom=null;
 }
 
+function lerpCam(a,b,e){const f=(p,q)=>p.map((v,i)=>v+(q[i]-v)*e);return {pos:f(a.pos,b.pos),target:f(a.target,b.target)};}
+function camAt(si,t){
+  const list=STEPS[si].cams,w=Math.min(.25,1600/STEPS[si].dur);
+  let k=0;for(let j=0;j<list.length;j++)if(list[j].at<=t)k=j;
+  const prev=k>0?list[k-1]:(si>0?STEPS[si-1].cams[STEPS[si-1].cams.length-1]:list[0]);
+  const x=clamp((t-list[k].at)/w,0,1),e=x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+  return lerpCam(prev,list[k],e);
+}
 /* ---------- панель управления ---------- */
-let si=0,t=0,playing=!REDUCED&&!KADR,last=performance.now();
+let si=0,t=0,playing=!REDUCED&&!KADR&&!VIDEO,last=performance.now();
 const dots=$('dots'),fills=[];
 STEPS.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.title=s.title;b.setAttribute('aria-label','Шаг '+(i+1)+': '+s.title);
   const f=document.createElement('i');f.className='fill';const sp=document.createElement('span');sp.textContent=String(i+1);b.append(f,sp);
@@ -483,10 +523,18 @@ function frame(now){
   updateCam(now);controls.update();renderer.render(scene,camera);drawLabels();updateFills();
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame);
+if(!VIDEO)requestAnimationFrame(frame);
 
 // для сборки инструкции: переход к шагу и кадр без анимации
-window.anim={count:STEPS.length,steps:STEPS.map(s=>({title:s.title,actions:s.actions.slice(),check:s.check})),
+const TOTAL=STEPS.reduce((a,s)=>a+s.dur,0);
+if(VIDEO){$('vbrand').hidden=false;$('vcap').hidden=false;}
+function frameAt(ms){
+  let acc=0,i=0;while(i<STEPS.length-1&&ms>=acc+STEPS[i].dur){acc+=STEPS[i].dur;i++;}
+  const tt=clamp((ms-acc)/STEPS[i].dur,0,1);si=i;t=tt;playing=false;camLocked=false;noLabels=false;camFrom=null;
+  applyState(si,t);setCam(camAt(si,t));controls.update();renderer.render(scene,camera);drawLabels();
+  if(VIDEO){$('vn').textContent='Шаг '+(si+1)+' из '+STEPS.length;$('vt').textContent=STEPS[si].title;$('vc').textContent='Проверка: '+STEPS[si].check;}
+}
+window.anim={count:STEPS.length,total:TOTAL,frameAt,steps:STEPS.map(s=>({title:s.title,actions:s.actions.slice(),check:s.check})),
   goto(i,tt,cam,bez){si=i;t=tt;playing=false;camLocked=true;camOverride=cam?CAMS[cam]:null;noLabels=!!bez;const c=camFor(si,t);
     applyState(si,t);wantCam(c,true);controls.update();renderer.render(scene,camera);drawLabels();updateUI();updateFills();}};
 })();
