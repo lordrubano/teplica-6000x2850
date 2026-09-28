@@ -25,7 +25,7 @@
 }
 [hidden]{display:none!important}
 html{background:var(--ground)}
-body{background:var(--ground);color:var(--ink);font-family:var(--font-b);font-size:15px;line-height:1.5;padding-inline:clamp(16px,3vw,32px);padding-block:18px 36px}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b);font-size:15px;line-height:1.5;padding-inline:clamp(16px,3vw,32px);padding-block:18px 36px}
 .wrap{max-width:1320px;margin:0 auto;display:grid;gap:14px}
 .top h1{font-family:var(--font-d);font-weight:700;font-size:clamp(23px,3.2vw,31px);line-height:1.1;margin:0;text-wrap:balance}
 .top p{margin:6px 0 0;color:var(--muted);font-size:14.5px;max-width:78ch}
@@ -69,6 +69,11 @@ body.kadr .stage{display:block}
 body.kadr .view{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0}
 body.kadr .lbl{font-size:15px}
 body.kadr .lbl.big{font-size:18px}
+.vbrand{position:absolute;left:22px;top:16px;font:500 16px/1.2 var(--font-b);color:#22303D;background:rgba(255,255,255,.82);padding:5px 10px;border-radius:4px}
+.vcap{position:absolute;left:0;right:0;bottom:0;padding:44px 30px 22px;background:linear-gradient(rgba(12,18,26,0),rgba(12,18,26,.84) 42%);color:#fff}
+.vcap .vn{font:500 16px/1.2 var(--font-m);opacity:.85;letter-spacing:.04em}
+.vcap .vt{font:700 32px/1.12 var(--font-d);margin-top:4px}
+.vcap .vc{font:400 19px/1.35 var(--font-b);opacity:.95;margin-top:6px;max-width:78ch}
 </style>
 
 <div class="wrap">
@@ -81,6 +86,8 @@ body.kadr .lbl.big{font-size:18px}
       <canvas id="c" aria-label="Объёмная анимация монтажа направляющих"></canvas>
       <div id="labels"></div>
       <div class="hint" id="hint">Вращать — пальцем или мышью</div>
+      <div class="vbrand" id="vbrand" hidden>Монтаж направляющих · теплица 6000×2850</div>
+      <div class="vcap" id="vcap" hidden><div class="vn" id="vn"></div><div class="vt" id="vt"></div><div class="vc" id="vc"></div></div>
       <div class="nogl" id="nogl" hidden>Браузер не показывает объёмную графику. Все шаги есть в инструкции для печати — ссылка справа.</div>
     </div>
     <aside class="panel" aria-live="polite">
@@ -113,7 +120,8 @@ body.kadr .lbl.big{font-size:18px}
 (function(){
 'use strict';
 const KADR=/(^|[?&])kadr(\b|=)/.test(location.search);
-if(KADR)document.body.classList.add('kadr');
+const VIDEO=/(^|[?&])video(\b|=)/.test(location.search);
+if(KADR||VIDEO)document.body.classList.add('kadr');
 const REDUCED=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 const view=document.getElementById('view'),canvas=document.getElementById('c'),layer=document.getElementById('labels');
 const $=id=>document.getElementById(id);
@@ -434,8 +442,16 @@ function updateCam(now){
   if(k>=1)camFrom=null;
 }
 
+function lerpCam(a,b,e){const f=(p,q)=>p.map((v,i)=>v+(q[i]-v)*e);return {pos:f(a.pos,b.pos),target:f(a.target,b.target)};}
+function camAt(si,t){
+  const list=STEPS[si].cams,w=Math.min(.25,1600/STEPS[si].dur);
+  let k=0;for(let j=0;j<list.length;j++)if(list[j].at<=t)k=j;
+  const prev=k>0?list[k-1]:(si>0?STEPS[si-1].cams[STEPS[si-1].cams.length-1]:list[0]);
+  const x=clamp((t-list[k].at)/w,0,1),e=x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+  return lerpCam(prev,list[k],e);
+}
 /* ---------- панель управления ---------- */
-let si=0,t=0,playing=!REDUCED&&!KADR,last=performance.now();
+let si=0,t=0,playing=!REDUCED&&!KADR&&!VIDEO,last=performance.now();
 const dots=$('dots'),fills=[];
 STEPS.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.title=s.title;b.setAttribute('aria-label','Шаг '+(i+1)+': '+s.title);
   const f=document.createElement('i');f.className='fill';const sp=document.createElement('span');sp.textContent=String(i+1);b.append(f,sp);
@@ -476,10 +492,18 @@ function frame(now){
   updateCam(now);controls.update();renderer.render(scene,camera);drawLabels();updateFills();
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame);
+if(!VIDEO)requestAnimationFrame(frame);
 
 // для сборки инструкции: переход к шагу и кадр без анимации
-window.anim={count:STEPS.length,steps:STEPS.map(s=>({title:s.title,actions:s.actions.slice(),check:s.check})),
+const TOTAL=STEPS.reduce((a,s)=>a+s.dur,0);
+if(VIDEO){$('vbrand').hidden=false;$('vcap').hidden=false;}
+function frameAt(ms){
+  let acc=0,i=0;while(i<STEPS.length-1&&ms>=acc+STEPS[i].dur){acc+=STEPS[i].dur;i++;}
+  const tt=clamp((ms-acc)/STEPS[i].dur,0,1);si=i;t=tt;playing=false;camLocked=false;noLabels=false;camFrom=null;
+  applyState(si,t);setCam(camAt(si,t));controls.update();renderer.render(scene,camera);drawLabels();
+  if(VIDEO){$('vn').textContent='Шаг '+(si+1)+' из '+STEPS.length;$('vt').textContent=STEPS[si].title;$('vc').textContent='Проверка: '+STEPS[si].check;}
+}
+window.anim={count:STEPS.length,total:TOTAL,frameAt,steps:STEPS.map(s=>({title:s.title,actions:s.actions.slice(),check:s.check})),
   goto(i,tt,cam,bez){si=i;t=tt;playing=false;camLocked=true;camOverride=cam?CAMS[cam]:null;noLabels=!!bez;const c=camFor(si,t);
     applyState(si,t);wantCam(c,true);controls.update();renderer.render(scene,camera);drawLabels();updateUI();updateFills();}};
 })();
