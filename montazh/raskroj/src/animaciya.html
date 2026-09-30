@@ -795,14 +795,14 @@ const STEPS=[
     else{placeTilt(KUS[i*2],s,vu,dw+PK/2,GUP,GT+dw+PK/2,PK,z0-150,z0+150);placeTilt(KUS[i*2+1],s,GUP,GT+dw+PK/2,vl,GT+dw+PK/2,PK,z0-150,z0+150);}
     if(away>=.6){KUS[i*2].visible=false;KUS[i*2+1].visible=false;}
     placeSlope(STOP[i],s,-8,0,0,CAPI,z0-150,z0+150);STOP[i].position.y+=cy;if(away>=.6)STOP[i].visible=false;
-    if(t>.6)placeSlope(R5[i],s,VUP,VUP+8,0,GT+4,z0-30,z0+30);
+    if(t>.6)placeSlope(R5[i],s,VUP-2,VUP+12,0,GT+14,z0-30,z0+30);
   });
   CAPM.position.set(0,cy,z0);CAPM.rotation.set(0,0,0);CAPM.scale.set(1,1,1);CAPM.visible=away<.6;
   if(t>.04&&t<.62)lab('кусочек листа',P(1,420+(1-ease(seg(t,.42,.62)))*170,80).setZ(z0),'num');
-  if(t>.14&&t<.66)lab('коньковый профиль',V(0,3290+cy,z0),'big');
+  if(t>.14&&t<.58)lab('коньковый профиль',V(0,3290+cy,z0),'big');
   if(t>.42&&t<.62)lab('в захват до упора',P(1,200,60).setZ(z0),'warn');
-  if(t>.6&&t<.8)lab('метка на стропиле',P(1,60,120).setZ(z0),'warn');
-  if(t>.3&&t<.8)lab('направляющая — на 5 мм ниже края профиля',P(-1,GUP+170,20).setZ(z0),'warn');
+  if(t>.6&&t<.8)lab('метка на стропиле',P(1,0,40).setZ(z0),'warn');
+  if(t>.3&&t<.8)lab('направляющая — на 5 мм ниже края профиля',P(-1,GUP+250,20).setZ(z0),'warn');
   if(t>.8){const f=ease(seg(t,.8,.94));
     placeSlope(D5[0],1,VUP,VUP+(BV1-VUP)*f,66,80,z0-9,z0+9);
     placeSlope(D5[1],1,VUP-4,VUP+4,GT,82,z0-9,z0+9);
@@ -925,8 +925,8 @@ const STEPS=[
   const lf=seg(t,.04,.3);
   if(t<.66){redLine(SX-50+xo,ZT,SX-50+xo,ZB,lf);redLine(SX-100+xo,ZT,SX-100+xo,ZB,lf);}
   if(t>.62){lab('Полоса 1',V(SX-25+xo+s1*300,Ly+10,ZT+400),'big');lab('Полоса 2',V(SX-75+xo+s2*160,Ly+10,ZB-400),'big');}
-  if(t>.2)lab('О-Л1 — под створку',V(XT+220+330,Ly,ZT+330),'big');
-  if(t>.8)lab('осталось не меньше 410 мм',V(XT+220-40,Ly,ZT+1420),'ok');
+  if(t>.2)lab('О-Л1 — под створку',V(930,Ly,ZT+170),'big');
+  if(t>.8)lab('осталось не меньше 410 мм',V(700,Ly,ZT+1700),'ok');
  }},
 /* 14 */{dur:8500,cams:[{at:0,pos:[-1800,9500,-6500],target:[0,0,-100]}],
  apply(t){
@@ -1059,7 +1059,7 @@ const STEPS=[
 ];
 STEPS.forEach((s,i)=>Object.assign(s,TXT[i],{part:PARTS[partOf(i)]}));
 // камеры для кадров в инструкции: полоса 3:1, главное — в середине кадра
-const PDFCAM={5:{pos:[0,3235,-3800],target:[0,3075,-2977]},1:{pos:[-4600,2900,0],target:[0,0,0]},2:{pos:[-4300,2700,0],target:[0,650,0]},4:{pos:[-1800,10300,0],target:[0,2700,0]},
+const PDFCAM={5:{pos:[0,3290,-3900],target:[0,3150,-2977]},1:{pos:[-4600,2900,0],target:[0,0,0]},2:{pos:[-4300,2700,0],target:[0,650,0]},4:{pos:[-1800,10300,0],target:[0,2700,0]},
   13:{pos:[-1900,4200,-1880],target:[600,0,-1880]},14:{pos:[-2000,8300,-5200],target:[0,0,-200]},
   16:{pos:[0,3800,-6800],target:[0,0,0]},17:{pos:[-3100,2500,-9000],target:[0,1750,-3000]},18:{pos:[-3600,4200,-300],target:[-100,0,-300]},
   19:{pos:[-200,2500,4100],target:[-100,0,2350]},20:{pos:[-300,5300,-6300],target:[-100,0,-100]}};
