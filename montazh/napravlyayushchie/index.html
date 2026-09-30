@@ -48,6 +48,10 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b
 .lbl.warn{background:#9C5410}.lbl.warn::after{border-top-color:#9C5410}
 .lbl.num{background:#1D5FA6;font-family:var(--font-m);padding:2px 7px}.lbl.num::after{border-top-color:#1D5FA6}
 .lbl.big{font:700 15px/1.2 var(--font-d);letter-spacing:.02em;padding:5px 10px}
+.lbl.lead::after{display:none}
+.ldr{position:absolute;left:0;top:0;height:0;border-top:1.5px solid currentColor;color:rgba(17,25,34,.9);transform-origin:0 0;pointer-events:none}
+.ldr::before{content:"";position:absolute;left:-3px;top:-4px;width:5px;height:5px;border-radius:50%;background:currentColor}
+.ldr.warn{color:#9C5410}.ldr.ok{color:#1B7A50}
 .hint{position:absolute;left:10px;bottom:8px;font-size:12px;color:#22303D;background:rgba(255,255,255,.78);padding:3px 8px;border-radius:4px}
 .nogl{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:#22303D;font-size:15px}
 .panel{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:16px;display:grid;gap:12px}
@@ -113,11 +117,11 @@ body.kadr .lbl.big{font-size:18px}
   </div>
   <div class="facts">
     <span>Пролёты у конька <b>1460 · 1430 · 1427 · 1450</b></span>
-    <span>Длина <b>1800 мм</b></span>
+    <span>Длина <b>по примерке, до 1800 мм</b></span>
     <span>Свес у карниза <b>48 мм</b></span>
-    <span>До оси конька <b>5–10 мм</b></span>
+    <span>Верх <b>на 5 мм ниже края конькового профиля</b></span>
     <span>Отверстия <b>2 круглых 6 мм + 6 овалов 6×12</b></span>
-    <span>Саморез <b>4×50</b> с шайбой <b>М5</b> — 8 шт</span>
+    <span>Саморез <b>4×50</b> с шайбой <b>5,3×15</b> — 8 шт</span>
     <span>Отметки от нижнего конца <b>105 · 185 · 465 · 745 · 1025 · 1305 · 1585 · 1665</b></span>
   </div>
 </div>
@@ -158,7 +162,9 @@ const rafterZ=zRidge;                          // пары 1…5 у конька
 const SIDES=[1,-1];                             // 1 — скат Л, −1 — скат П
 const ROWS=[280,560,840,1120,1400];             // оси брусков от верхнего конца стропила
 const MARKS=[105,185,465,745,1025,1305,1585,1665]; // отверстия от нижнего конца направляющей
-const BV0=-76,BV1=1724;                         // направляющая 1800: свес 48 у карниза
+const EDGE=-36;                                 // край конькового профиля по проекту: v = −36
+const BV0=EDGE+5,BV1=1724;                      // верх направляющей — на 5 мм ниже края профиля (v = −31), нижний конец — свес 48 у карниза
+const GLEN=BV1-BV0;                             // длина эталона и заготовок: 1755
 const vMark=m=>BV1-m;
 function zAt(side,i,v){const r=zRidge[i],e=zEave[side][i];return r+(e-r)*v/slen;} // ось стропила вдоль ската
 function yawOf(side,i){return -side*Math.atan2(zEave[side][i]-zRidge[i],dx);}
@@ -197,7 +203,10 @@ const M={
   screw:std(0xD6A933,{metalness:.7,roughness:.35}),washer:std(0xC3CAD1,{metalness:.8,roughness:.3}),
   cord:new THREE.MeshBasicMaterial({color:0xE8442A}),cordOk:new THREE.MeshBasicMaterial({color:0x1FA36A}),
   axis:new THREE.MeshBasicMaterial({color:0xFF8A00}),mark:new THREE.MeshBasicMaterial({color:0xF06A2A}),
-  dim:new THREE.MeshBasicMaterial({color:0x1D5FA6})
+  dim:new THREE.MeshBasicMaterial({color:0x1D5FA6}),
+  chalk:new THREE.MeshBasicMaterial({color:0xFFFFFF}),
+  ridge:new THREE.MeshStandardMaterial({color:0xD9C8F2,roughness:.3,metalness:0,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}),
+  ridgeLine:new THREE.LineBasicMaterial({color:0x5B3F99,transparent:true,opacity:.8})
 };
 
 function box(w,h,d,x,y,z,mat){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;scene.add(m);return m;}
@@ -254,7 +263,7 @@ for(const s of SIDES)rafterZ.forEach((z,i)=>{
 const holeGeo=new THREE.CylinderGeometry(3,3,.8,16);
 function makeScrew(){
   const g=new THREE.Group();
-  const w=new THREE.Mesh(new THREE.CylinderGeometry(5,5,1.2,20),M.washer);w.position.y=.6;
+  const w=new THREE.Mesh(new THREE.CylinderGeometry(7.5,7.5,1.2,28),M.washer);w.position.y=.6;
   const h=new THREE.Mesh(new THREE.CylinderGeometry(3.9,2,2.4,16),M.screw);h.position.y=2.4;
   const sh=new THREE.Mesh(new THREE.CylinderGeometry(2,1.2,46,10),M.screw);sh.position.y=1.2-23;
   g.add(w,h,sh);g.userData.shank=sh;g.visible=false;scene.add(g);return g;
@@ -274,14 +283,27 @@ for(const s of SIDES){
   for(let r=0;r<2;r++)for(let j=0;j<4;j++){dimBars[s][r].push(um(M.dim));dimTicks[s][r].push([um(M.dim),um(M.dim)]);}
 }
 const marks=MARKS.map(()=>um(M.mark));
-const dim48=um(M.mark);
+const dim48=um(M.mark),dim5=um(M.mark),chalk=um(M.chalk);
+// коньковый профиль (полупрозрачный): дуга с захватами, нижний край — на v = EDGE; z от 0 до 1, длину задаёт масштаб группы
+function makeRidgeProfile(){
+  const e=P(1,EDGE,9),rx=e.x,ye=e.y,ry=50,t=3,n=28,sh=new THREE.Shape();
+  for(let k=0;k<=n;k++){const a=Math.PI*(1-k/n),x=rx*Math.cos(a),y=ye+ry*Math.sin(a);if(k===0)sh.moveTo(x,y);else sh.lineTo(x,y);}
+  for(let k=n;k>=0;k--){const a=Math.PI*(1-k/n);sh.lineTo((rx-t)*Math.cos(a),ye+(ry-t)*Math.sin(a));}
+  const g=new THREE.ExtrudeGeometry(sh,{depth:1,bevelEnabled:false}),grp=new THREE.Group();
+  grp.add(new THREE.Mesh(g,M.ridge),new THREE.LineSegments(new THREE.EdgesGeometry(g,25),M.ridgeLine));
+  for(const sd of SIDES){const c=P(sd,EDGE-9,10.5),m=new THREE.Mesh(U,M.ridge);m.position.set(c.x,c.y,.5);m.rotation.z=sd>0?-th:th;m.scale.set(18,3,1);grp.add(m);}
+  grp.visible=false;scene.add(grp);return grp;
+}
+const ridgePiece=makeRidgeProfile(),ridgeFull=makeRidgeProfile();
+ridgePiece.position.z=-3020;ridgePiece.scale.z=240;
+ridgeFull.position.z=-3010;ridgeFull.scale.z=6020;
 // рабочее место на земле: козлы и щит
 const GX0=2420,GDX=75,GY=700;
 box(1000,40,2100,2850,GY-20,0,M.plank);
 for(const z of [-800,800]){box(900,60,60,2850,GY-70,z,M.woodDark);for(const x of [2450,3250])box(60,GY-100,60,x,(GY-100)/2,z,M.woodDark);}
 const gStrips=[],gHoles=[];
 for(let i=0;i<12;i++){
-  const m=new THREE.Mesh(U,i===0?M.baseT:(i>=10?M.baseSpare:M.base));m.scale.set(60,3,1800);m.position.set(GX0+i*GDX,GY+1.5,0);
+  const m=new THREE.Mesh(U,i===0?M.baseT:(i>=10?M.baseSpare:M.base));m.scale.set(60,3,GLEN);m.position.set(GX0+i*GDX,GY+1.5,900-GLEN/2);
   m.castShadow=true;m.receiveShadow=true;m.visible=false;scene.add(m);gStrips.push(m);
   const hs=[];if(i<10)for(const mk of MARKS){const h=new THREE.Mesh(holeGeo,M.hole);h.position.set(GX0+i*GDX,GY+3.2,900-mk);if(mk!==745&&mk!==1025)h.scale.z=2;h.visible=false;scene.add(h);hs.push(h);}
   gHoles.push(hs);
@@ -294,20 +316,26 @@ function showScrews(s,i,lift){screws[s][i].forEach((g,k)=>{const v=vMark(MARKS[k
 function useStrip(g){gStrips[g].visible=false;gHoles[g].forEach(h=>h.visible=false);}
 
 /* ---------- подписи поверх сцены ---------- */
-const frameLabels=[],pool=[];
-function lab(text,pos,cls){frameLabels.push({text,pos,cls:cls||''});}
+const frameLabels=[],pool=[],pool2=[];
+function lab(text,pos,cls,dx,dy){frameLabels.push({text,pos,cls:cls||'',dx:dx||0,dy:dy||0});}
 function drawLabels(){
-  const w=view.clientWidth,h=view.clientHeight;let n=0;
+  const w=view.clientWidth,h=view.clientHeight,sc=(KADR||VIDEO)?1:Math.min(1,w/1600);let n=0,nl=0;
   for(const q of frameLabels){
     const p=q.pos.clone().project(camera);
     if(p.z>1||p.z<-1||Math.abs(p.x)>1.02||Math.abs(p.y)>1.02)continue;
     let el=pool[n];if(!el){el=document.createElement('div');layer.appendChild(el);pool.push(el);}
     if(el._t!==q.text){el.textContent=q.text;el._t=q.text;}
-    const c='lbl '+q.cls;if(el.className!==c)el.className=c;
-    el.style.transform='translate('+((p.x+1)/2*w).toFixed(1)+'px,'+((1-p.y)/2*h).toFixed(1)+'px) translate(-50%,calc(-100% - 7px))';
+    const dx=q.dx*sc,dy=q.dy*sc,lead=!!(dx||dy),c='lbl '+q.cls+(lead?' lead':'');if(el.className!==c)el.className=c;
     el.hidden=false;n++;
+    const px=(p.x+1)/2*w,py=(1-p.y)/2*h;let lx=px+dx;
+    if(lead){const hw=el.offsetWidth/2;lx=clamp(lx,hw+4,w-hw-4);}
+    el.style.transform='translate('+lx.toFixed(1)+'px,'+(py-dy).toFixed(1)+'px) translate(-50%,calc(-100% - 7px))';
+    if(lead){let ld=pool2[nl];if(!ld){ld=document.createElement('div');layer.appendChild(ld);pool2.push(ld);}
+      const ex=lx-px,ey=-(dy+7);ld.className='ldr '+q.cls;ld.style.width=Math.hypot(ex,ey).toFixed(1)+'px';
+      ld.style.transform='translate('+px.toFixed(1)+'px,'+py.toFixed(1)+'px) rotate('+Math.atan2(ey,ex).toFixed(4)+'rad)';ld.hidden=false;nl++;}
   }
   for(let i=n;i<pool.length;i++)pool[i].hidden=true;
+  for(let i=nl;i<pool2.length;i++)pool2[i].hidden=true;
 }
 
 /* ---------- шаги ---------- */
@@ -327,7 +355,7 @@ const STEPS=[
   if(t>.62){lab('Скат Л',P(1,900,150).setZ(-600),'big');lab('Скат П',P(-1,900,150).setZ(-600),'big');}}},
 {title:'Проверить стропила вдоль',
  actions:['Приложить правило 2 м или натянуть шнур по верху стропила от конька до карниза.','Проверить так все 10 стропил.'],
- check:'Просвет не больше 3 мм. Горб больше 3 мм — сострогать рубанком. Впадину не подкладывать — сообщить владельцу.',
+ check:'Просвет под правилом вдоль одного стропила не больше 3 мм. Горб больше 3 мм — сострогать рубанком. Впадину не подкладывать — сообщить владельцу.',
  dur:9000,cams:[{at:0,pos:[3700,4500,-5200],target:[900,2800,-1700]},{at:.5,pos:[-3700,4500,-5200],target:[-900,2800,-1700]}],
  apply(t,cur){if(!cur)return;const p=t*10.3;let k=0;
   for(const s of SIDES)rafterZ.forEach((z,i)=>{const f=clamp(p-k,0,1);
@@ -356,18 +384,25 @@ const STEPS=[
  apply(t,cur){const f=cur?ease(seg(t,0,.8)):1;
   for(const s of SIDES)rafterZ.forEach((z,i)=>{placeR(axis[s][i],s,i,0,Math.max(1,slen*f),.4,1.6,-2.5,2.5);axis[s][i].visible=true;});
   if(cur&&t>.35)lab('ось: 22,5 мм от края',P(1,Math.min(slen*f,900),8).setZ(Lz0));}},
-{title:'Эталон: примерить первую направляющую',
- actions:['Отрезать от хлыста кусок 1800 мм. Это эталон для всех направляющих.','Положить его на стропило пары 1, скат Л, точно по оси. Нижний конец выпустить на 48 мм за торец стропила: здесь будет край листа.','Так же приложить эталон ко всем 10 стропилам. Где верхний конец подходит к оси конька ближе 5 мм — поставить мелом отметку на стропиле: эту направляющую потом укоротить сверху.'],
- check:'На всех 10 стропилах верхний конец в 5–10 мм от оси конька или стропило помечено. Если конец не доходит до оси больше чем на 10 мм — остальные не резать, сообщить владельцу.',
- dur:7500,cams:[{at:0,pos:[3000,3950,-4900],target:[860,2750,-2900]}],
- apply(t,cur){showBase(1,0,cur?(1-ease(seg(t,0,.45)))*420:0);
-  if(cur&&t>.5){placeR(dim48,1,0,slen,BV1,10,17,-4,4);dim48.visible=true;
-    lab('эталон 1800 мм — приложить ко всем 10',P(1,820,40).setZ(Lz0));
-    lab('48 мм за торец стропила',P(1,BV1,30).setZ(Lz0),'warn');
-    lab('5–10 мм до оси конька',P(1,BV0,30).setZ(Lz0),'warn');}}},
+{title:'Эталон: примерить коньковый профиль и первую направляющую',
+ actions:['Над парой 1 надеть на конёк конец конькового профиля так, как он будет стоять. Отметить мелом на стропиле ската Л край профиля.','Отрезать от хлыста кусок 1800 мм — это эталон. Положить его на стропило пары 1, скат Л, точно по оси. Нижний конец выпустить на 48 мм за торец стропила: здесь будет край листа.','Верхний конец эталона отрезать на 5 мм ниже меловой метки: под коньковый профиль направляющая не заходит, там лист держит сам профиль.','Так же отметить край профиля на всех 10 стропилах и приложить к ним эталон. Где конец эталона заходит за метку — стропило пометить: эту направляющую укоротить сверху по месту.'],
+ check:'Верхний конец эталона — на 5 мм ниже края конькового профиля. Эталон вышел короче 1700 мм — остановиться и сообщить владельцу.',
+ dur:10500,cams:[{at:0,pos:[1500,3900,-4500],target:[100,3150,-2950]},{at:.26,pos:[470,3620,-3420],target:[58,3268,-2977]},{at:.74,pos:[560,5040,-3579],target:[560,2900,-2884]}],
+ apply(t,cur){
+  if(cur){ridgePiece.position.y=(1-ease(seg(t,0,.18)))*320;ridgePiece.visible=true;}
+  if(!cur||t>.34)showBase(1,0,cur?(1-ease(seg(t,.34,.56)))*420:0);
+  if(!cur)return;
+  const zc=zAt(1,0,EDGE);
+  if(t>.26){placeSlope(chalk,1,EDGE,EDGE+3,0,1.6,zc-28,zc+28);chalk.visible=true;}
+  if(t>.6){placeSlope(dim5,1,EDGE,BV0,4,7,zc-14,zc+14);dim5.visible=true;}
+  if(t>.78){placeR(dim48,1,0,slen,BV1,10,17,-4,4);dim48.visible=true;}
+  if(t>.2)lab('коньковый профиль — только примерить',V(0,ridgeTop+60,-2900),'',0,t>.74?95:0);
+  if(t>.3)lab('метка: край профиля',P(1,EDGE,1).setZ(zc-28),'warn',-175,55);
+  if(t>.62)lab('5 мм ниже края профиля',P(1,BV0,6).setZ(zc+14),'warn',180,55);
+  if(t>.8)lab('свес 48 мм',P(1,BV1,30).setZ(Lz0),'warn');}},
 {title:'Отметить и просверлить отверстия в эталоне',
- actions:['Не снимая эталон, маркером отметить отверстия от нижнего конца: 105, 185, 465, 745, 1025, 1305, 1585, 1665 мм.','Проверить каждую отметку: до уголка не меньше 50 мм, у конька под отметкой нет болта. Если мешает — сдвинуть отметку на 30–50 мм.','На козлах просверлить: два средних отверстия (745 и 1025) — круглые 6 мм; остальные шесть — овал 6×12 вдоль направляющей: два отверстия 6 мм рядом, центры через 6 мм, перемычку убрать сверлом. Сверлить только пластик.'],
- check:'2 круглых отверстия и 6 овалов по средней линии эталона. Овалы дают ход ±3 мм на удлинение от тепла.',
+ actions:['Не снимая эталон, маркером отметить отверстия от нижнего конца: 105, 185, 465, 745, 1025, 1305, 1585, 1665 мм.','Проверить каждую отметку: до уголка не меньше 50 мм, до верхнего конца не меньше 50 мм, у конька под отметкой нет болта. Если мешает — сдвинуть отметку на 30–50 мм.','На козлах просверлить: два средних отверстия (745 и 1025) — круглые 6 мм; остальные шесть — овал 6×12 вдоль направляющей: два отверстия 6 мм рядом, центры через 6 мм, перемычку убрать сверлом. Сверлить только пластик.'],
+ check:'Два круглых отверстия и 6 овалов по средней линии эталона, овалы — вдоль направляющей. Овал просверлен поперёк — досверлить вдоль: получится крест 12×12, шайба 5,3×15 его закроет.',
  dur:9000,cams:[{at:0,pos:[2450,3950,-4400],target:[800,2780,-2850]},{at:.55,pos:[4500,2150,-1900],target:[2620,700,0]}],
  apply(t,cur){
   if(t<.55){showBase(1,0,0);const n=Math.floor(seg(t,.03,.42)*8.999);
@@ -378,17 +413,17 @@ const STEPS=[
     gHoles[0].forEach((h,k)=>h.visible=k<n);
     if(cur){lab('2 круглых 6 мм по центру, 6 овалов 6×12',V(GX0,GY+70,0),'warn');}}}},
 {title:'Пробное крепление с крышкой',
- actions:['На козлах положить эталон на обрезок доски.','Вкрутить 2 самореза 4×50 с шайбой М5 в два средних отверстия. Бита PZ2, малое усилие.','Защёлкнуть на направляющую короткий кусок крышки поверх саморезов. Сфотографировать и отправить владельцу.'],
- check:'Крышка села плотно, головки не мешают. Если не садится — остановиться, прислать фото: тогда нужны саморезы с прессшайбой 4,2×41, 90 шт. После проверки саморезы выкрутить.',
+ actions:['На козлах положить эталон на обрезок доски.','Вкрутить 2 самореза 4×50 с увеличенной шайбой 5,3×15 в два средних отверстия. Бита PZ2.','Защёлкнуть на направляющую короткий кусок крышки поверх саморезов. Сфотографировать и отправить владельцу.'],
+ check:'Шайба лежит ровно между ножками основания, крышка села плотно, головки не мешают. Если нет — остановиться и прислать фото. После проверки саморезы выкрутить.',
  dur:7500,cams:[{at:0,pos:[2760,1260,380],target:[2425,703,20]}],
  apply(t,cur){if(!cur)return;
   [745,1025].forEach((mk,k)=>{const g=tScrews[k],lift=(1-ease(seg(t,.03+k*.15,.33+k*.15)))*160;
     g.position.set(GX0,GY+3+lift,900-mk);g.rotation.set(0,0,0);g.userData.shank.visible=lift>.5;g.visible=true;});
   if(t>.5){const lift=(1-ease(seg(t,.5,.78)))*220;tCap.scale.set(46,9,300);tCap.position.set(GX0,GY+3+4.5+lift,900-885);tCap.visible=true;}
   if(t>.8)lab('крышка села плотно — продолжаем',V(GX0,GY+40,900-885),'ok');
-  else if(t<.5)lab('2 самореза 4×50 с шайбой М5',V(GX0,GY+45,900-885));}},
+  else if(t<.5)lab('2 самореза 4×50 с шайбой 5,3×15',V(GX0,GY+45,900-885));}},
 {title:'Остальные направляющие — по эталону',
- actions:['Из хлыстов нарезать ещё 9 кусков по 1800 мм. Два куска останутся в запасе — их не сверлить.','Каждый кусок положить рядом с эталоном, выровнять нижние концы и перенести отметки угольником.','Просверлить так же, как эталон: два средних круглых 6 мм, шесть овалов 6×12.'],
+ actions:['Из хлыстов нарезать ещё 9 кусков длиной как эталон. Два куска останутся в запасе — их не сверлить.','Каждый кусок положить рядом с эталоном, выровнять нижние концы и перенести отметки угольником.','Просверлить так же, как эталон: два средних круглых 6 мм, шесть овалов 6×12.'],
  check:'У всех 10 направляющих отверстия совпадают с эталоном.',
  dur:7500,cams:[{at:0,pos:[4950,2450,2700],target:[2850,700,0]}],
  apply(t,cur){const n=cur?1+Math.floor(seg(t,0,.8)*9.999):10;
@@ -397,12 +432,13 @@ const STEPS=[
   if(cur){lab('эталон',V(GX0,GY+60,900));if(t>.2)lab('ещё 9 штук по эталону',V(GX0+5*GDX,GY+60,-900));
     if(t>.85)lab('2 куска — запас, не сверлить',V(GX0+10.5*GDX,GY+60,900),'warn');}}},
 {title:'Направляющие на крайних стропилах',
- actions:['Первыми ставятся пары 1 и 5 на обоих скатах. Эталон тоже идёт в дело.','Направляющая по оси стропила, нижний конец на 48 мм за торцом стропила. Если стропило помечено на шаге 6 — укоротить направляющую сверху до 5–10 мм от оси конька.','Вкрутить все 8 саморезов с шайбами: в овалах саморез ставить посередине овала. Затягивать до касания шайбы, пластик не продавливать.'],
+ actions:['Первыми ставятся пары 1 и 5 на обоих скатах. Эталон тоже идёт в дело.','Направляющая по оси стропила, нижний конец на 48 мм за торцом стропила. Если стропило помечено на шаге 6 — укоротить направляющую сверху до 5 мм ниже метки края профиля.','Вкрутить все 8 саморезов с шайбами 5,3×15, в овалах — посередине овала. Затянуть, пока основание плотно прижато и не качается рукой, и остановиться. Пластик под шайбой побелел — отпустить на четверть оборота.'],
  check:'4 направляющие стоят по оси, отклонение не больше 1 мм.',
  dur:8500,cams:[{at:0,pos:[4900,5600,-6800],target:[0,2500,0]}],
  apply(t,cur){END.forEach(([s,i,g],k)=>{const a=k*.13,f=cur?seg(t,a,a+.16):1;
     if(f>0){useStrip(g);showBase(s,i,(1-ease(f))*500);}
     const fs=cur?seg(t,.6+k*.08,.72+k*.08):1;if(fs>0)showScrews(s,i,(1-ease(fs))*80);});
+  if(cur)ridgeFull.visible=true;
   if(cur){lab('сначала крайние: пары 1 и 5',V(0,ridgeTop+320,0),'big');if(t>.6)lab('8 саморезов на каждую',P(1,840,40).setZ(rafterZ[4]));}}},
 {title:'Шнур вдоль карниза',
  actions:['На каждом скате натянуть шнур по нижним концам направляющих пар 1 и 5.'],
@@ -412,18 +448,19 @@ const STEPS=[
   for(const s of SIDES){const z0=zAt(s,0,BV1)-40,z1=z0+(zAt(s,4,BV1)+80-zAt(s,0,BV1))*f;placeZ(eaveC[s],s,BV1,8,z0,Math.max(z0+1,z1),12);eaveC[s].visible=true;}
   if(cur&&t>.5)lab('шнур по нижним концам пар 1 и 5',P(1,BV1,40).setZ(0));}},
 {title:'Направляющие на средних стропилах',
- actions:['Пары 2, 3 и 4 на обоих скатах. Помеченные на шаге 6 — укоротить сверху по месту.','Нижний конец направляющей — точно на шнур, сама направляющая — по оси стропила.','Вкрутить все 8 саморезов с шайбами, в овалах — посередине овала.'],
+ actions:['Пары 2, 3 и 4 на обоих скатах. Помеченные на шаге 6 — укоротить сверху до 5 мм ниже метки края профиля.','Нижний конец направляющей — точно на шнур, сама направляющая — по оси стропила.','Вкрутить все 8 саморезов с шайбами 5,3×15, в овалах — посередине овала. Затяжка — как на шаге 10.'],
  check:'Нижние концы всех пяти направляющих на одной линии.',
  dur:8500,cams:[{at:0,pos:[3700,3500,-5000],target:[1250,2350,-400]}],
  apply(t,cur){MID.forEach(([s,i,g],k)=>{const a=k*.09,f=cur?seg(t,a,a+.14):1;
     if(f>0){useStrip(g);showBase(s,i,(1-ease(f))*500);}
     const fs=cur?seg(t,.62+k*.05,.74+k*.05):1;if(fs>0)showScrews(s,i,(1-ease(fs))*80);});
+  if(cur)ridgeFull.visible=true;
   if(cur&&t>.3)lab('нижний конец — точно на шнур',P(1,BV1,40).setZ(rafterZ[2]),'warn');}},
 {title:'Контроль',
- actions:['Направляющие лежат по оси без волн, отклонение не больше 1 мм.','Шайбы прижаты, пластик вокруг не продавлен, в овалах саморез посередине.','Шнур поперёк ската по направляющим: провис не больше замеренного 28.09 (Л до 7 мм, П до 11 мм). Направляющие повторяют стропила.','Сфотографировать каждую направляющую целиком и нижние концы по шнуру, отправить владельцу.'],
+ actions:['Направляющие лежат по оси без волн, отклонение не больше 1 мм. Верхние концы — на 5 мм ниже края конькового профиля.','Шайбы прижаты, основание не качается, пластик под шайбой не побелел, в овалах саморез посередине.','Шнур поперёк ската по направляющим: провис не больше замеренного 28.09 (Л до 7 мм, П до 11 мм). Направляющие повторяют стропила.','Сфотографировать каждую направляющую целиком и нижние концы по шнуру, отправить владельцу.'],
  check:'Всё выполнено и снято на фото — можно выставлять бруски по направляющим.',
  dur:7500,cams:[{at:0,pos:[6500,5700,1300],target:[700,2800,0]}],
- apply(t,cur){if(!cur)return;const f=ease(seg(t,0,.6)),z0=-3120,z1=z0+6240*f;
+ apply(t,cur){if(!cur)return;ridgeFull.visible=true;const f=ease(seg(t,0,.6)),z0=-3120,z1=z0+6240*f;
   for(const s of SIDES)LEVELS.forEach((v,k)=>{placeZ(ctrlC[s][k],s,v,14,z0,Math.max(z0+1,z1),12);ctrlC[s][k].visible=true;});
   if(t>.6){lab('по оси, отклонение не больше 1 мм',P(1,300,30).setZ(rafterZ[1]),'ok');lab('провис как при замере 28.09',P(1,840,30).setZ(rafterZ[3]),'ok');lab('шайбы прижаты',P(1,1480,30).setZ(rafterZ[2]),'ok');}
   if(t>.85)lab('можно выставлять бруски',V(0,ridgeTop+340,0),'ok big');}},
@@ -447,7 +484,7 @@ function hideAll(){
     planeC[s].forEach(m=>m.visible=false);ctrlC[s].forEach(m=>m.visible=false);eaveC[s].visible=false;
     dimBars[s].forEach(r=>r.forEach(m=>m.visible=false));dimTicks[s].forEach(r=>r.forEach(p=>{p[0].visible=p[1].visible=false;}));
   }
-  marks.forEach(m=>m.visible=false);dim48.visible=false;ridgeDims.forEach(m=>m.visible=false);
+  marks.forEach(m=>m.visible=false);dim48.visible=dim5.visible=chalk.visible=false;ridgePiece.visible=ridgeFull.visible=false;ridgePiece.position.y=0;ridgeDims.forEach(m=>m.visible=false);
   gStrips.forEach(m=>m.visible=false);gHoles.forEach(a=>a.forEach(m=>m.visible=false));
   tScrews.forEach(g=>g.visible=false);tCap.visible=false;
   hiAngles.forEach(m=>m.material=M.alu);frameLabels.length=0;
