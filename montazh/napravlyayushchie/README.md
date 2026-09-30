@@ -16,7 +16,7 @@
 ## Что в папке
 
 - `index.html` — страница с анимацией.
-- `rolik-napravlyayushchie.mp4` — ролик всех шагов, около 100 секунд, можно пересылать в мессенджере.
+- `rolik-napravlyayushchie.mp4` — ролик всех шагов, около 110 секунд, можно пересылать в мессенджере.
 - `instrukciya-napravlyayushchie.pdf` — инструкция, 13 страниц A4.
 - `src/animaciya.html` — исходник анимации: шаги, размеры, тексты.
 - `src/instrukciya.html` — макет инструкции.

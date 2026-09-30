@@ -312,18 +312,19 @@ function useStrip(g){gStrips[g].visible=false;gHoles[g].forEach(h=>h.visible=fal
 const frameLabels=[],pool=[],pool2=[];
 function lab(text,pos,cls,dx,dy){frameLabels.push({text,pos,cls:cls||'',dx:dx||0,dy:dy||0});}
 function drawLabels(){
-  const w=view.clientWidth,h=view.clientHeight;let n=0,nl=0;
+  const w=view.clientWidth,h=view.clientHeight,sc=(KADR||VIDEO)?1:Math.min(1,w/1600);let n=0,nl=0;
   for(const q of frameLabels){
     const p=q.pos.clone().project(camera);
     if(p.z>1||p.z<-1||Math.abs(p.x)>1.02||Math.abs(p.y)>1.02)continue;
     let el=pool[n];if(!el){el=document.createElement('div');layer.appendChild(el);pool.push(el);}
     if(el._t!==q.text){el.textContent=q.text;el._t=q.text;}
-    const lead=!!(q.dx||q.dy),c='lbl '+q.cls+(lead?' lead':'');if(el.className!==c)el.className=c;
-    const px=(p.x+1)/2*w,py=(1-p.y)/2*h;
-    el.style.transform='translate('+(px+q.dx).toFixed(1)+'px,'+(py-q.dy).toFixed(1)+'px) translate(-50%,calc(-100% - 7px))';
+    const dx=q.dx*sc,dy=q.dy*sc,lead=!!(dx||dy),c='lbl '+q.cls+(lead?' lead':'');if(el.className!==c)el.className=c;
     el.hidden=false;n++;
+    const px=(p.x+1)/2*w,py=(1-p.y)/2*h;let lx=px+dx;
+    if(lead){const hw=el.offsetWidth/2;lx=clamp(lx,hw+4,w-hw-4);}
+    el.style.transform='translate('+lx.toFixed(1)+'px,'+(py-dy).toFixed(1)+'px) translate(-50%,calc(-100% - 7px))';
     if(lead){let ld=pool2[nl];if(!ld){ld=document.createElement('div');layer.appendChild(ld);pool2.push(ld);}
-      const ex=q.dx,ey=-(q.dy+7);ld.className='ldr '+q.cls;ld.style.width=Math.hypot(ex,ey).toFixed(1)+'px';
+      const ex=lx-px,ey=-(dy+7);ld.className='ldr '+q.cls;ld.style.width=Math.hypot(ex,ey).toFixed(1)+'px';
       ld.style.transform='translate('+px.toFixed(1)+'px,'+py.toFixed(1)+'px) rotate('+Math.atan2(ey,ex).toFixed(4)+'rad)';ld.hidden=false;nl++;}
   }
   for(let i=n;i<pool.length;i++)pool[i].hidden=true;
