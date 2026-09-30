@@ -13,8 +13,8 @@ const QRCode = require('qrcode');
 const SRC = __dirname;
 const DIST = path.resolve(SRC, '..');
 const TMP = process.env.OUT_TMP || path.join(SRC, '.sborka');
-const ANIM_URL = process.env.ANIM_URL || 'https://lordrubano.github.io/teplica-6000x2850/montazh/napravlyayushchie/';
-const PDF_NAME = 'instrukciya-napravlyayushchie.pdf';
+const ANIM_URL = process.env.ANIM_URL || 'https://lordrubano.github.io/teplica-6000x2850/montazh/raskroj/';
+const PDF_NAME = 'instrukciya-raskroj.pdf';
 
 function wrapPage(fragment) {
   return '<!doctype html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n' +
@@ -44,7 +44,7 @@ async function routes(page) {
   const errors = [];
 
   // кадры шагов
-  const page = await browser.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 1600, height: 700 }, deviceScaleFactor: 1 });
   page.on('pageerror', e => errors.push('анимация: ' + e.message));
   page.on('console', m => { if (m.type() === 'error') errors.push('анимация: ' + m.text()); });
   await routes(page);
@@ -62,13 +62,13 @@ async function routes(page) {
     return file;
   };
   const images = [];
-  // момент кадра внутри шага: почти конец, кроме шага 7 — там важнее разметка на стропиле
-  const moment = { 6: 0.45 };
+  // момент кадра внутри шага: почти конец; там, где важнее процесс (пила, воздух, стопка до тента, рулон) — раньше
+  const moment = { 5: 0.6, 6: 0.86, 7: 0.6, 8: 0.78, 9: 0.5, 10: 0.8, 14: 0.75, 15: 0.7 };
   for (let i = 0; i < steps.length; i++) {
     const n = String(i + 1).padStart(2, '0');
-    images.push(await shot('shag-' + n + '.jpg', i, moment[i] || 0.97));
+    images.push(await shot('shag-' + n + '.jpg', i, moment[i + 1] || 0.97, 'pdf'));
   }
-  const cover = await shot('obzor.jpg', 12, 0, 'obzor', true);
+  const cover = await shot('obzor.jpg', 13, 0.97, 'obzor', true);
   await page.close();
 
   // данные для инструкции
