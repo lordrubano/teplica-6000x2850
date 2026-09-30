@@ -183,9 +183,9 @@ const TXT=[
   "title": "Длина кусков — примерка конькового профиля",
   "actions": [
    "Из полосы 600 нарезать два кусочка шириной 300 мм. Положить их на направляющие по обе стороны конька у пары 1, надписями вверх.",
-   "Сверху надеть конец конькового профиля и задвинуть кусочки вверх в захват до упора. Отметить маркером на направляющей верхний край кусочка.",
-   "От метки до нижнего конца направляющей измерить — это размер А. Повторить на всех 10 направляющих.",
-   "Длина куска для пролёта = меньший из двух размеров А на его направляющих минус 3 мм — зазор на тепло."
+   "Сверху надеть конец конькового профиля и задвинуть кусочки вверх в захват до упора. Отметить маркером на стропиле верхний край кусочка.",
+   "От метки вдоль стропила до нижнего конца направляющей измерить — это размер А. Повторить у всех 10 стропил.",
+   "Длина куска для пролёта = меньший из двух размеров А у его стропил минус 3 мм — зазор на тепло."
   ],
   "check": "Длина не больше 1800 мм, размеры А отличаются не больше чем на 5 мм. Иначе — сообщить владельцу до резки."
  },
@@ -415,6 +415,7 @@ const M={
   tent:std(0x9C9A8C,{roughness:.95,side:THREE.DoubleSide}),cardboard:std(0x8F6E3E,{roughness:.9,transparent:true,opacity:.7,side:THREE.DoubleSide}),
   roofL:std(0x2A64B0,{transparent:true,opacity:.55,side:THREE.DoubleSide,roughness:.5}),roofP:std(0x1F8365,{transparent:true,opacity:.55,side:THREE.DoubleSide,roughness:.5})
 };
+M.guide5=std(0xF1F5F8,{roughness:.4});
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(80000,80000),M.ground);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
 
 function sheetMats(color,op,emis){
@@ -489,15 +490,19 @@ for(const s of SIDES){RQ[s]=[];RQL[s]=[];for(let j=0;j<4;j++){
   const lg=new THREE.BufferGeometry().setFromPoints(cn);const ln=new THREE.LineLoop(lg,new THREE.LineBasicMaterial({color:s===1?0x144F92:0x14785D}));H.add(ln);RQL[s].push(reg(ln));
 }}
 // шаг 5: конёк у пары 1 в разрезе
+const CAPE=95,CAPI=28,CAPO=40;          // край профиля по скату, внутренняя и наружная плоскости дуги (на разрезе толщины крупнее натуральных)
 const capShape=(function(){
   const vAp=w=>-(rTopX+sn*w)/cs,pt=(v,w)=>P(1,v,w),mirror=p=>new THREE.Vector2(-p.x,p.y);
-  const a=pt(95,32),b=pt(vAp(32),32),c=pt(vAp(24),24),d=pt(95,24);   // толщины на разрезе показаны крупнее натуральных
+  const a=pt(CAPE,CAPO),b=pt(vAp(CAPO),CAPO),c=pt(vAp(CAPI),CAPI),d=pt(CAPE,CAPI);
   const sh=new THREE.Shape();sh.moveTo(a.x,a.y);sh.lineTo(b.x,b.y);const am=mirror(a),dm=mirror(d),cm=mirror(c);
   sh.lineTo(am.x,am.y);sh.lineTo(dm.x,dm.y);sh.lineTo(cm.x,cm.y);sh.lineTo(c.x,c.y);sh.lineTo(d.x,d.y);sh.lineTo(a.x,a.y);return sh;})();
 const capGeo=new THREE.ExtrudeGeometry(capShape,{depth:300,bevelEnabled:false});capGeo.translate(0,0,-150);
 const CAPM=ub(M.cap,true);CAPM.geometry=capGeo;
-const STOP=[ub(M.cap,true),ub(M.cap,true)],KUS=[ub(MS.piece[1],true),ub(MS.piece[1],true)],G5=[ub(M.guide,true),ub(M.guide,true)];
+const STOP=[ub(M.cap,true),ub(M.cap,true)],KUS=[0,1,2,3].map(()=>ub(MS.piece[1],true)),G5=[ub(M.guide5,true),ub(M.guide5,true)];
 const R5=[ub(M.cord),ub(M.cord)],D5=[ub(M.dim),ub(M.dim),ub(M.dim),ub(M.dim)];
+function placeTilt(m,side,v0,w0,v1,w1,tk,z0,z1){   // брусок между точками (v0,w0) и (v1,w1) по средней линии, толщина tk
+  const a=P(side,v0,w0),b=P(side,v1,w1),ddx=b.x-a.x,ddy=b.y-a.y,len=Math.hypot(ddx,ddy);
+  m.position.set((a.x+b.x)/2,(a.y+b.y)/2,(z0+z1)/2);m.rotation.set(0,0,Math.atan2(ddy,ddx));m.scale.set(len,tk,Math.max(z1-z0,.01));m.visible=true;}
 // шаг 17: размеры стен, проёмы окон, шаблоны фронтонов
 const WDT=[],WDB=[],WDH=[];for(const s of SIDES){WDT[s]=[0,1,2,3].map(()=>hb(M.dim));WDB[s]=[0,1,2,3].map(()=>hb(M.dim));WDH[s]=[0,1,2,3,4].map(()=>hb(M.dim));}
 const WTK=[];for(let i=0;i<40;i++)WTK.push(hb(M.dim));
@@ -775,32 +780,36 @@ const STEPS=[
   if(t>.78){lab('у конька',V(0,ridgeTop+40,zRidge[4]+800),'warn');lab('у карниза',P(1,BV1,20).setZ(zRidge[4]+800),'warn');lab('у карниза',P(-1,BV1,20).setZ(zRidge[4]+800),'warn');}
   if(t>.85)lab('ширина куска = замер − 20 мм',V(W/2+1100,2300,-300),'ok big');
  }},
-/* 5 */{dur:10000,cams:[{at:0,pos:[-420,4250,-4250],target:[0,3170,-2977]},{at:.7,pos:[450,3050,-6400],target:[760,2760,-2977]}],
+/* 5 */{dur:10000,cams:[{at:0,pos:[0,3310,-3800],target:[0,3170,-2977]},{at:.8,pos:[560,3040,-5600],target:[780,2780,-2977]}],
  apply(t){
   H5.visible=true;
-  const z0=zRidge[0],VUP=-71,GT=7,PT0=8,PT1=22;   // толщины на разрезе показаны крупнее натуральных, чтобы читались
-  const capF=ease(seg(t,.14,.4)),slide=ease(seg(t,.42,.62)),away=ease(seg(t,.72,.84));
-  const cy=(1-capF)*520+away*300;
+  // вид с торца: разрез поперёк конька. Толщины на разрезе показаны крупнее натуральных.
+  const z0=zRidge[0],VUP=0,GT=12,PK=14,GUP=CAPE+5;       // направляющая начинается на 5 мм ниже края конькового профиля
+  const capF=ease(seg(t,.14,.4)),slide=ease(seg(t,.42,.62)),away=ease(seg(t,.66,.78));
+  const cy=(1-capF)*520+away*320;
   [1,-1].forEach((s,i)=>{
-    placeSlope(G5[i],s,BV0,BV1,0,GT,z0-30,z0+30);
-    const dw=(1-ease(seg(t,0,.18)))*230+away*160,off=(1-slide)*170-away*120;
-    placeSlope(KUS[i],s,VUP+off,VUP+off+600,PT0+dw,PT1+dw,z0-150,z0+150);
-    if(away>=.55)KUS[i].visible=false;
-    placeSlope(STOP[i],s,-78,-71,GT,32,z0-150,z0+150);STOP[i].position.y+=cy;if(away>=.55)STOP[i].visible=false;
-    if(t>.62)placeSlope(R5[i],s,VUP-9,VUP-3,GT,GT+16,z0-32,z0+32);
+    placeSlope(G5[i],s,GUP,BV1,0,GT,z0-30,z0+30);
+    // кусочек: выше направляющей лежит прямо на стропиле, ниже — на направляющей
+    const dw=(1-ease(seg(t,0,.18)))*230+away*200,vu=VUP+(1-slide)*170-away*140,vl=vu+600;
+    if(vu>=GUP){placeTilt(KUS[i*2],s,vu,GT+dw+PK/2,vl,GT+dw+PK/2,PK,z0-150,z0+150);KUS[i*2+1].visible=false;}
+    else{placeTilt(KUS[i*2],s,vu,dw+PK/2,GUP,GT+dw+PK/2,PK,z0-150,z0+150);placeTilt(KUS[i*2+1],s,GUP,GT+dw+PK/2,vl,GT+dw+PK/2,PK,z0-150,z0+150);}
+    if(away>=.6){KUS[i*2].visible=false;KUS[i*2+1].visible=false;}
+    placeSlope(STOP[i],s,-8,0,0,CAPI,z0-150,z0+150);STOP[i].position.y+=cy;if(away>=.6)STOP[i].visible=false;
+    if(t>.6)placeSlope(R5[i],s,VUP,VUP+8,0,GT+4,z0-30,z0+30);
   });
-  CAPM.position.set(0,cy,z0);CAPM.rotation.set(0,0,0);CAPM.scale.set(1,1,1);CAPM.visible=away<.55;
-  if(t>.05&&t<.42)lab('два кусочка 300 мм',P(-1,330,60).setZ(z0),'num');
-  if(t>.16&&t<.6)lab('коньковый профиль',V(0,3330+cy,z0),'big');
-  if(t>.42&&t<.62)lab('задвинуть в захват до упора',P(1,380,70).setZ(z0),'warn');
-  if(t>.62&&t<.86)lab('метка — верхний край кусочка',P(1,VUP-6,40).setZ(z0),'warn');
-  if(t>.76){const f=ease(seg(t,.76,.92));
-    placeSlope(D5[0],1,VUP,VUP+(BV1-VUP)*f,66,82,z0-9,z0+9);
-    placeSlope(D5[1],1,VUP-8,VUP+8,GT,88,z0-9,z0+9);
-    if(f>=1)placeSlope(D5[2],1,BV1-8,BV1+8,GT,88,z0-9,z0+9);
+  CAPM.position.set(0,cy,z0);CAPM.rotation.set(0,0,0);CAPM.scale.set(1,1,1);CAPM.visible=away<.6;
+  if(t>.04&&t<.62)lab('кусочек листа',P(1,420+(1-ease(seg(t,.42,.62)))*170,80).setZ(z0),'num');
+  if(t>.14&&t<.66)lab('коньковый профиль',V(0,3290+cy,z0),'big');
+  if(t>.42&&t<.62)lab('в захват до упора',P(1,200,60).setZ(z0),'warn');
+  if(t>.6&&t<.8)lab('метка на стропиле',P(1,60,120).setZ(z0),'warn');
+  if(t>.3&&t<.8)lab('направляющая — на 5 мм ниже края профиля',P(-1,GUP+170,20).setZ(z0),'warn');
+  if(t>.8){const f=ease(seg(t,.8,.94));
+    placeSlope(D5[0],1,VUP,VUP+(BV1-VUP)*f,66,80,z0-9,z0+9);
+    placeSlope(D5[1],1,VUP-4,VUP+4,GT,82,z0-9,z0+9);
+    if(f>=1)placeSlope(D5[2],1,BV1-4,BV1+4,GT,82,z0-9,z0+9);
     lab('А',P(1,(VUP+BV1)/2,74).setZ(z0),'num big');
     if(f>=1)lab('нижний конец направляющей',P(1,BV1,40).setZ(z0),'warn');}
-  if(t>.9)lab('L = A − 3, не больше 1800',P(1,500,170).setZ(z0),'ok big');
+  if(t>.94)lab('L = A − 3, не больше 1800',P(1,520,150).setZ(z0),'ok big');
  }},
 /* 6 */{dur:9500,cams:[{at:0,pos:[-3100,4300,-1500],target:[0,0,-1450]}],
  apply(t){
@@ -916,8 +925,8 @@ const STEPS=[
   const lf=seg(t,.04,.3);
   if(t<.66){redLine(SX-50+xo,ZT,SX-50+xo,ZB,lf);redLine(SX-100+xo,ZT,SX-100+xo,ZB,lf);}
   if(t>.62){lab('Полоса 1',V(SX-25+xo+s1*300,Ly+10,ZT+400),'big');lab('Полоса 2',V(SX-75+xo+s2*160,Ly+10,ZB-400),'big');}
-  if(t>.2)lab('О-Л1 — под створку',V(XT+220+250,Ly,ZT+260),'big');
-  if(t>.8)lab('осталось не меньше 410 мм',V(XT+220+250,Ly,ZT+1450),'ok');
+  if(t>.2)lab('О-Л1 — под створку',V(XT+220+330,Ly,ZT+330),'big');
+  if(t>.8)lab('осталось не меньше 410 мм',V(XT+220-40,Ly,ZT+1420),'ok');
  }},
 /* 14 */{dur:8500,cams:[{at:0,pos:[-1800,9500,-6500],target:[0,0,-100]}],
  apply(t){
@@ -937,7 +946,7 @@ const STEPS=[
       ['Л4','П1','П2'].forEach((c,r)=>{lab(c,V(BX-SX+745,Ly,-3000+(r+.5)*LP+dz(r)),'big');lab('О-'+c,V(BX+SX-305+150,Ly,-3000+(r+.5)*LP+dz(r)),'num');});
       lab('остаток — обрезок',V(BX,Ly,-3000+3*LP+780/2+1.5*170),'warn');
       ['П3','П4'].forEach((c,r)=>{lab(c,V(VX-SX+745,Ly,-3000+(r+.5)*LP+dv(r)),'big');lab('О-'+c,V(VX+SX-305+150,Ly,-3000+(r+.5)*LP+dv(r)),'num');});
-      lab('ЗАПАС 2100×2400',V(VX,Ly,-3000+2*LP+1260+170),'ok big');}
+      lab('ЗАПАС не меньше 2100×2400',V(VX-420,Ly,-3000+2*LP+1260+170),'ok big');}
   }
   if(t>.3){lab('Лист Б',V(BX,Ly,-3150),'big');lab('Лист В',V(VX,Ly,-3150),'big');}
  }},
@@ -1045,12 +1054,12 @@ const STEPS=[
   const rv=ease(seg(t,.74,.84)),re=ease(seg(t,.82,.92));
   if(rv>0){at(SL.resV,1750,-1500,(1-rv)*600);}
   if(re>0){at(SL.resE,1750,1400,(1-re)*600);}
-  if(t>.86){lab('ЗАПАС 2100×2400 — лист В',V(1750,Ly,-1500),'ok big');lab('ЗАПАС около 2100×2000 — лист Е',V(1750,Ly,1400),'ok big');}
+  if(t>.86){lab('ЗАПАС не меньше 2100×2400 — лист В',V(1750,Ly,-1500),'ok big');lab('ЗАПАС около 2100×2000 — лист Е',V(1750,Ly,1400),'ok big');}
  }}
 ];
 STEPS.forEach((s,i)=>Object.assign(s,TXT[i],{part:PARTS[partOf(i)]}));
 // камеры для кадров в инструкции: полоса 3:1, главное — в середине кадра
-const PDFCAM={1:{pos:[-4600,2900,0],target:[0,0,0]},2:{pos:[-4300,2700,0],target:[0,650,0]},4:{pos:[-1800,10300,0],target:[0,2700,0]},
+const PDFCAM={5:{pos:[0,3235,-3800],target:[0,3075,-2977]},1:{pos:[-4600,2900,0],target:[0,0,0]},2:{pos:[-4300,2700,0],target:[0,650,0]},4:{pos:[-1800,10300,0],target:[0,2700,0]},
   13:{pos:[-1900,4200,-1880],target:[600,0,-1880]},14:{pos:[-2000,8300,-5200],target:[0,0,-200]},
   16:{pos:[0,3800,-6800],target:[0,0,0]},17:{pos:[-3100,2500,-9000],target:[0,1750,-3000]},18:{pos:[-3600,4200,-300],target:[-100,0,-300]},
   19:{pos:[-200,2500,4100],target:[-100,0,2350]},20:{pos:[-300,5300,-6300],target:[-100,0,-100]}};

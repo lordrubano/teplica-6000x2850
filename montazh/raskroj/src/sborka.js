@@ -63,7 +63,7 @@ async function routes(page) {
   };
   const images = [];
   // момент кадра внутри шага: почти конец; там, где важнее процесс (пила, воздух, стопка до тента, рулон) — раньше
-  const moment = { 5: 0.6, 6: 0.86, 7: 0.6, 8: 0.78, 9: 0.5, 10: 0.8, 14: 0.75, 15: 0.7 };
+  const moment = { 5: 0.64, 6: 0.86, 7: 0.6, 8: 0.78, 9: 0.5, 10: 0.8, 15: 0.7 };
   for (let i = 0; i < steps.length; i++) {
     const n = String(i + 1).padStart(2, '0');
     images.push(await shot('shag-' + n + '.jpg', i, moment[i + 1] || 0.97, 'pdf'));

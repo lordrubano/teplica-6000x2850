@@ -213,12 +213,12 @@ svg .d{font-family:"Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
   <div class="kicker">Чертёж</div>
   <h2>Примерка конькового профиля — длина кусков</h2>
   <figure>
-    <svg id="dR" viewBox="0 0 1000 630" role="img" aria-label="Разрез у конька: кусочки листа в захвате конькового профиля, размер А"></svg>
-    <figcaption>Разрез у конька у пары 1. Толщины на чертеже увеличены. Кусочки листа шириной 300 мм задвинуты вверх в захват конькового профиля до упора. Метка — верхний край кусочка на направляющей. Размер А — от метки до нижнего конца направляющей.</figcaption>
+    <svg id="dR" viewBox="0 0 1000 700" role="img" aria-label="Разрез у конька: кусочки листа в захвате конькового профиля, размер А"></svg>
+    <figcaption>Разрез у конька у пары 1, вид с торца. Толщины на чертеже увеличены. Направляющая заканчивается на 5 мм ниже края конькового профиля; выше неё кусочек листа шириной 300 мм лежит прямо на стропиле и задвинут вверх в захват до упора. Метка — верхний край кусочка на стропиле. Размер А — от метки вдоль стропила до нижнего конца направляющей.</figcaption>
   </figure>
   <div class="okbox"><h3>Как получить длину куска</h3><ul>
-    <li>Длина куска для пролёта = меньший из двух размеров А на его направляющих минус 3 мм — зазор на тепло: L = A − 3.</li>
-    <li>Размер А измерить на всех 10 направляющих.</li></ul></div>
+    <li>Длина куска для пролёта = меньший из двух размеров А у его стропил минус 3 мм — зазор на тепло: L = A − 3.</li>
+    <li>Размер А измерить у всех 10 стропил.</li></ul></div>
   <div class="note"><h3>Остановиться и сообщить владельцу до резки, если</h3><ul>
     <li>длина больше 1800 мм;</li>
     <li>размеры А отличаются больше чем на 5 мм.</li></ul></div>
@@ -235,7 +235,7 @@ svg .d{font-family:"Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
     <li>Весы — полоса 2100×600 на весах, видна цифра.</li>
     <li>Рулетка на размерах каждого куска: ширина у обоих торцов и длина по обеим кромкам, в кадре виден код куска.</li>
     <li>Торцы с лентой — верхний (сплошная лента) и нижний (перфорированная) каждого куска.</li>
-    <li>Стопка с кодами — видео: кусочки по порядку, сверху Л1, снизу П4.</li>
+    <li>Стопка с кодами — видео: куски по порядку, сверху Л1, снизу П4.</li>
     <li>Видео замеров части 2 — стены, окна, фронтоны, с рулеткой.</li>
     <li>Шаблоны — 6 шаблонов фронтонов из картона.</li></ul></div>
   <div class="okbox"><h3>Как снимать</h3><ul>
@@ -414,27 +414,30 @@ function PG(s,pts,fill,stroke,sw,extra){const a={points:pts.map(p=>p[0].toFixed(
 /* ---------- чертёж Т: разрез у конька, размер А ---------- */
 (function(){
   const s=document.getElementById('dR');
-  const cs=Math.cos(36*Math.PI/180),sn=Math.sin(36*Math.PI/180),rT=67.5,VUP=-71,GL=1724,RL=1677;
-  el('defs',{},s).innerHTML='<clipPath id="cpR"><rect x="40" y="392" width="470" height="218" rx="5"/></clipPath>';
+  const cs=Math.cos(36*Math.PI/180),sn=Math.sin(36*Math.PI/180),rT=67.5,VUP=0,GL=1724,RL=1677,CAPE=95,GUP=CAPE+5;
+  el('defs',{},s).innerHTML='<clipPath id="cpR"><rect x="40" y="392" width="600" height="300" rx="5"/></clipPath>';
+  // точка на плоскости ската: v — вдоль ската от конька, мм; w — по нормали наружу, пикселей
   function ridge(ax,ay,k,ts,vmax,pcs,parent){
     const pt=(side,v,w)=>[ax+side*(rT*k+cs*v*k+sn*w),ay+sn*v*k-cs*w];
     const wp=mm=>mm*k*ts;
     const band=(side,v0,v1,w0,w1,fill,stroke,sw,op)=>PG(parent,[pt(side,v0,w0),pt(side,v1,w0),pt(side,v1,w1),pt(side,v0,w1)],fill,stroke,sw||1,op?{'fill-opacity':op}:null);
     [1,-1].forEach(side=>{const xa=ax+side*22.5*k,xb=ax+side*67.5*k;el('rect',{x:Math.min(xa,xb),y:ay,width:45*k,height:90*k,fill:'#7A4D2B',stroke:'#4E2F18','stroke-width':1},parent);});
-    [1,-1].forEach(side=>{
-      band(side,0,Math.min(RL,vmax),-90*k,0,'#C79B6D','#7A4D2B',1.4);
-      band(side,-76,Math.min(GL,vmax),0,wp(3),'#DDEEFA','#2A6BA8',1);
-      band(side,VUP,VUP+pcs,wp(3.5),wp(9.5),'#BFE0F7','#2A6BA8',1.2);
-      band(side,-78,-71,wp(3),wp(14.5),'#AEB6BE','#5E6770',1);});
     const ap=w=>{const v=-(rT*k+sn*w)/(cs*k);return [ax,ay+sn*v*k-cs*w];};
-    const e=Math.min(vmax,150);
-    PG(parent,[pt(1,e,wp(14.5)),ap(wp(14.5)),pt(-1,e,wp(14.5)),pt(-1,e,wp(10)),ap(wp(10)),pt(1,e,wp(10))],'#AEB6BE','#5E6770',1.2,{'fill-opacity':.85});
-    const m0=pt(1,VUP-6,wp(3)),m1=pt(1,VUP-6,wp(3)+wp(11));L2(parent,m0[0],m0[1],m1[0],m1[1],'#D9382B',2.8);
+    [1,-1].forEach(side=>{
+      band(side,0,Math.min(RL,vmax),-90*k,0,'#C79B6D','#7A4D2B',1.4);                       // стропило
+      band(side,GUP,Math.min(GL,vmax),0,wp(3),'#FFFFFF','#2A6BA8',1.2);                     // направляющая: начинается на 5 мм ниже края профиля
+      // кусочек листа: выше направляющей лежит прямо на стропиле, ниже — на направляющей
+      PG(parent,[pt(side,VUP,0),pt(side,GUP,wp(3)),pt(side,pcs,wp(3)),pt(side,pcs,wp(9)),pt(side,GUP,wp(9)),pt(side,VUP,wp(6))],'#BFE0F7','#2A6BA8',1.2);
+      band(side,-8,0,0,wp(10),'#8C959E','#5E6770',1);                                        // упор
+    });
+    const e=Math.min(vmax,CAPE);
+    PG(parent,[pt(1,e,wp(14)),ap(wp(14)),pt(-1,e,wp(14)),pt(-1,e,wp(10)),ap(wp(10)),pt(1,e,wp(10))],'#AEB6BE','#5E6770',1.2,{'fill-opacity':.9});
+    const m0=pt(1,VUP,0),m1=pt(1,VUP,wp(9)+3);L2(parent,m0[0],m0[1],m1[0],m1[1],'#D9382B',3);
     return {pt,wp};
   }
   // общий вид: обе стороны, размер А вдоль ската Л
-  const K=0.245,AX=470,AY=62,g=ridge(AX,AY,K,4,1800,600,s),pt=g.pt;
-  const off=46,a0=pt(1,VUP,off),a1=pt(1,GL,off);
+  const K=0.245,AX=470,AY=62,g=ridge(AX,AY,K,5,1800,600,s),pt=g.pt,wpp=g.wp;
+  const off=50,a0=pt(1,VUP,off),a1=pt(1,GL,off);
   L2(s,a0[0],a0[1],a1[0],a1[1],'#1D5FA6',1.8);
   [VUP,GL].forEach(v=>{const q0=pt(1,v,2),q1=pt(1,v,off+12);L2(s,q0[0],q0[1],q1[0],q1[1],'#1D5FA6',1.2);});
   const mid=pt(1,(VUP+GL)/2,off);T(s,mid[0]+22,mid[1]-6,'А',{size:30,weight:700,cls:'d',fill:'#1D5FA6'});
@@ -443,19 +446,23 @@ function PG(s,pts,fill,stroke,sw,extra){const a={points:pts.map(p=>p[0].toFixed(
   const ll=pt(1,GL,off);T(s,ll[0]+14,ll[1]-2,'нижний конец',{size:12.5,fill:'#9C5410',anchor:'start'});T(s,ll[0]+14,ll[1]+13,'направляющей',{size:12.5,fill:'#9C5410',anchor:'start'});
   const n2=pt(-1,850,-40*K);T(s,n2[0]+16,n2[1]+42,'стропило 45×90',{size:13,anchor:'start'});L2(s,n2[0]+14,n2[1]+36,n2[0]+2,n2[1]+4,'#1F2933',1);
   const n3=pt(-1,1350,4);T(s,n3[0]-10,n3[1]-30,'направляющая',{size:13,fill:'#2A6BA8',anchor:'end'});L2(s,n3[0]-8,n3[1]-26,n3[0]+2,n3[1]-2,'#2A6BA8',1);
-    T(s,AX+60,24,'метка — верхний край кусочка на направляющей',{size:13,fill:'#D9382B',anchor:'start'});L2(s,AX+56,21,AX+10,AY-6,'#D9382B',1);
-  // крупный узел у конька
-  const ix=40,iy=392,iw=470,ih=218;
+  const n4=pt(-1,330,wpp(5));T(s,n4[0]-70,n4[1]-34,'кусочек листа 300 мм',{size:13,fill:'#2A6BA8',anchor:'end'});L2(s,n4[0]-66,n4[1]-30,n4[0],n4[1],'#2A6BA8',1);
+  T(s,AX+60,24,'метка на стропиле — верхний край кусочка',{size:13,fill:'#D9382B',anchor:'start'});const mk=pt(1,VUP,wpp(9)+3);L2(s,AX+56,21,mk[0]+1,mk[1]-1,'#D9382B',1);
+  T(s,AX-60,24,'коньковый профиль',{size:13,weight:600,anchor:'end'});L2(s,AX-56,21,AX-4,AY-16,'#5E6770',1);
+  // крупно: узел у конька
+  const ix=40,iy=392,iw=600,ih=300;
   el('rect',{x:ix,y:iy,width:iw,height:ih,rx:5,fill:'#F7F9FB',stroke:'#CBD3DB','stroke-width':1},s);
   T(s,ix+12,iy+22,'Узел у конька — крупно',{size:14.5,weight:700,anchor:'start',cls:'d'});
   const gi=el('g',{'clip-path':'url(#cpR)'},s);
-  const ga=ridge(ix+iw/2,iy+128,1.05,2.4,300,270,gi),ip=ga.pt,wq=ga.wp;
-  T(s,ix+iw-12,iy+22,'коньковый профиль (дуга с захватами)',{size:12.5,weight:600,anchor:'end'});const cp=ip(1,60,ga.wp(14.5));L2(s,ix+iw-60,iy+28,cp[0]+4,cp[1]-2,'#5E6770',1);
-  const c2=ip(-1,170,wq(6.5));T(s,ix+12,iy+44,'кусочек листа 300 мм — задвинут до упора',{size:12.5,fill:'#2A6BA8',anchor:'start'});L2(s,ix+60,iy+50,c2[0],c2[1]-2,'#2A6BA8',1);
+  const ga=ridge(ix+iw/2,iy+128,1.4,1.5,250,260,gi),ip=ga.pt,wq=ga.wp;
+  const RX=ix+iw+14;
+  const c1=ip(1,CAPE-10,wq(14));T(s,RX,iy+36,'коньковый профиль с захватами',{size:12.5,weight:600,anchor:'start'});L2(s,RX-2,iy+32,c1[0]+2,c1[1]-1,'#5E6770',1);
+  const m2=ip(1,VUP,wq(9)+3);T(s,RX,iy+86,'метка на стропиле — верхний',{size:12.5,fill:'#D9382B',anchor:'start'});T(s,RX,iy+101,'край кусочка',{size:12.5,fill:'#D9382B',anchor:'start'});L2(s,RX-2,iy+82,m2[0]+3,m2[1],'#D9382B',1);
+  const gu=ip(1,GUP,wq(3));T(s,RX,iy+150,'направляющая — на 5 мм ниже',{size:12.5,fill:'#2A6BA8',anchor:'start'});T(s,RX,iy+165,'края профиля',{size:12.5,fill:'#2A6BA8',anchor:'start'});L2(s,RX-2,iy+146,gu[0]+3,gu[1],'#2A6BA8',1);
+  const c2=ip(-1,60,wq(6));T(s,ix+14,iy+46,'кусочек: выше направляющей лежит',{size:12,fill:'#2A6BA8',anchor:'start'});T(s,ix+14,iy+61,'на стропиле и заходит в захват до упора',{size:12,fill:'#2A6BA8',anchor:'start'});L2(s,ix+70,iy+66,c2[0]-1,c2[1]-1,'#2A6BA8',1);
   // формула
-  el('rect',{x:540,y:414,width:440,height:160,rx:7,fill:'#E6F4EC',stroke:'#1B7A50','stroke-width':1.3},s);
-  T(s,760,474,'L = A − 3',{size:46,weight:700,cls:'d',fill:'#1B7A50'});
-  T(s,760,507,'3 мм — зазор на тепло',{size:15,fill:'#1B7A50'});T(s,760,540,'не больше 1800',{size:20,weight:700,fill:'#1B7A50'});
+  el('rect',{x:662,y:iy+232,width:318,height:58,rx:7,fill:'#E6F4EC',stroke:'#1B7A50','stroke-width':1.3},s);
+  T(s,822,iy+270,'L = A − 3, не больше 1800',{size:22,weight:700,cls:'d',fill:'#1B7A50'});
 })();
 
 document.fonts.ready.then(()=>{window.READY=true;});
