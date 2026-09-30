@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Крыша: раскрой и укладка листов — инструкция</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Roboto+Condensed:wght@500;700&display=swap">
+<style>
+@page{size:A4;margin:13mm 14mm 15mm}
+:root{--ink:#1F2933;--muted:#5B6773;--rule:#CBD3DB;--accent:#1D5FA6;--soft:#EAF1FA;--warn:#8A5200;--warnbg:#FFF3DF;--ok:#1B7A50;--okbg:#E6F4EC;--wood:#C79B6D;--wooddk:#7A4D2B;--pc:#DDEEFA;--pcline:#2A6BA8;--steel:#8C959E}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff}
+body{font-family:"IBM Plex Sans","DejaVu Sans",Arial,sans-serif;font-size:10.2pt;line-height:1.45;color:var(--ink)}
+.page{break-after:page;display:flex;flex-direction:column;gap:4.5mm;height:266mm;overflow:hidden}
+#p-last{break-after:auto}
+#p-prep{font-size:8.6pt;gap:2.4mm;line-height:1.33}
+#p-prep .blk li{margin:.1mm 0}
+#p-prep h3{font-size:10.6pt;margin-bottom:.8mm}
+#p-forks{font-size:9pt;gap:2.6mm;line-height:1.36}
+#p-forks li{margin:.35mm 0}
+#p-why{gap:3.4mm}
+#p-kusok,#p-map,#p-razrez{gap:3mm}
+.forks li b{font-weight:600}
+.hero{height:70mm}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:8.6pt;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+h1{font-family:"Roboto Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:30pt;line-height:1.05;margin:0}
+h2{font-family:"Roboto Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:15.5pt;line-height:1.1;margin:0}
+h3{font-family:"Roboto Condensed","Arial Narrow",sans-serif;font-weight:500;font-size:11.5pt;margin:0 0 1.2mm;letter-spacing:.02em}
+p{margin:0}
+.lead{font-size:11pt;color:var(--muted);max-width:170mm}
+.hero{width:100%;height:76mm;object-fit:cover;border:1px solid var(--rule);border-radius:2mm}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:2mm 8mm}
+.key{border-top:1px solid var(--rule);padding-top:1.3mm}
+.key span{display:block;font-size:8.4pt;color:var(--muted)}
+.key b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:9.8pt}
+.qr{display:flex;gap:6mm;align-items:center;border:1px solid var(--rule);border-radius:2mm;padding:3.5mm}
+.qr svg{width:32mm;height:32mm;flex:none}
+.qr .t b{font-family:"Roboto Condensed",sans-serif;font-size:12.5pt;font-weight:700;display:block;margin-bottom:.8mm}
+.qr .t{font-size:9.2pt;line-height:1.35}
+.qr .url{font-family:"IBM Plex Mono",monospace;font-size:7pt;color:var(--accent);word-break:break-all;margin:.6mm 0 1.4mm}
+.qr .lnk{font-weight:600;font-size:8.8pt}
+.foot{margin-top:auto;font-size:8.2pt;color:var(--muted);border-top:1px solid var(--rule);padding-top:2mm}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:3.4mm 8mm}
+.blk ul{margin:0;padding-left:4.5mm}
+.blk li{margin:.6mm 0}
+.note{background:var(--warnbg);border-left:1mm solid var(--warn);padding:2.6mm 4mm}
+.note h3{color:var(--warn)}
+.note ul{margin:0;padding-left:4.5mm}
+.okbox{background:var(--okbg);border-left:1mm solid var(--ok);padding:2.6mm 4mm}
+.okbox h3{color:var(--ok)}
+.okbox ul{margin:0;padding-left:4.5mm}
+.plain{background:var(--soft);border-left:1mm solid var(--accent);padding:2.6mm 4mm}
+.plain h3{color:var(--accent)}
+.plain ul{margin:0;padding-left:4.5mm}
+figure{margin:0}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:8.8pt;color:var(--muted);margin-top:1.5mm}
+.legend{display:flex;flex-wrap:wrap;gap:1.5mm 6mm;font-size:8.6pt;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:1.6mm}
+.legend i{display:inline-block;width:6mm;height:3.4mm;border:1px solid #555}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:2.4mm}
+.tile{border:1px solid var(--rule);border-radius:1.6mm;padding:2mm 3mm;display:grid;grid-template-columns:auto 1fr;gap:0 3mm;align-items:center}
+.tile b{font-family:"Roboto Condensed",sans-serif;font-size:21pt;line-height:1;color:var(--accent);grid-row:1/3}
+.tile strong{font-size:9.4pt;font-weight:600;line-height:1.2}
+.tile span{font-size:8.4pt;color:var(--muted);line-height:1.25}
+.tile.tot{background:var(--soft);border-color:#B9CDE6}
+.banner{background:var(--ink);color:#fff;border-radius:1.6mm;padding:2.2mm 4mm;font-family:"Roboto Condensed",sans-serif;font-weight:700;font-size:13pt;letter-spacing:.02em}
+.step{display:flex;flex-direction:column;gap:2mm;border-top:1.2pt solid var(--ink);padding-top:2.5mm;flex:1 1 0;min-height:0}
+.step .hd{display:flex;align-items:baseline;gap:3mm}
+.step .no{font-family:"IBM Plex Mono",monospace;font-size:9pt;color:var(--muted);white-space:nowrap}
+.step img{flex:1 1 0;min-height:24mm;width:100%;object-fit:cover;border:1px solid var(--rule);border-radius:1.5mm}
+.step ul{margin:0;padding-left:4.5mm}
+.step li{margin:.5mm 0}
+.chk{background:var(--okbg);border-left:1mm solid var(--ok);padding:1.8mm 3mm;font-size:9.6pt}
+.chk b{font-family:"Roboto Condensed",sans-serif;font-weight:500;letter-spacing:.05em;text-transform:uppercase;font-size:8.6pt;color:var(--ok);margin-right:2mm}
+.boxes{display:grid;grid-template-columns:1fr 1fr;gap:1.6mm 6mm}
+svg text{font-family:"IBM Plex Sans","DejaVu Sans",Arial,sans-serif}
+svg .halo{paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+svg .m{font-family:"IBM Plex Mono",monospace}
+svg .d{font-family:"Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
+.var{border-top:1px solid var(--rule);padding-top:1.6mm}
+.var h3{font-size:12pt;margin:0 0 1mm}
+.var h3.ok{color:var(--ok)}.var h3.warn{color:var(--warn)}.var h3.bad{color:#B3261E}
+.var svg{width:100%;height:auto;display:block}
+.var ul{margin:1mm 0 0;padding-left:4.5mm;font-size:9.4pt}
+.var li{margin:.3mm 0}
+ol.why{margin:0;padding-left:5mm}ol.why li{margin:1mm 0}
+ul.forks{margin:0;padding-left:5mm}
+ul.chg{margin:0;padding-left:4.5mm}ul.chg li{margin:1.4mm 0}
+#p-forks{font-size:10.6pt;line-height:1.5}#p-forks li{margin:1.5mm 0}
+</style>
+</head>
+<body>
+
+<section class="page" id="p-cover">
+  <div class="kicker">Инструкция для монтажников</div>
+  <h1>Крыша: раскрой и укладка листов</h1>
+  <p class="lead">Теплица 6000×2850 · листы А, Б, В · 8 кусков · работа только снизу</p>
+  <img class="hero" id="cover" alt="Крыша с уложенными листами, рядом площадка раскроя">
+  <div class="keys">
+    <div class="key"><span>Работа</span><b>только снизу — на крышу не вставать</b></div>
+    <div class="key"><span>Раскрой крыши</span><b>листы А, Б, В</b></div>
+    <div class="key"><span>Бруски</span><b>по пролётам, не все сразу</b></div>
+    <div class="key"><span>Средние крышки</span><b>заранее, лист задвигается в пазы</b></div>
+    <div class="key"><span>Порядок</span><b>средние пролёты, потом крайние</b></div>
+    <div class="key"><span>Люди</span><b>двое: на стремянке и у карниза</b></div>
+    <div class="key"><span>Кромка листа</span><b>в 10 мм от оси стропила, между листами 20 мм</b></div>
+    <div class="key"><span>Оси брусков от нижнего торца листа</span><b>324 · 604 · 884 · 1164 · 1444 мм</b></div>
+    <div class="key" style="grid-column:1/-1"><span>Крепёж листа</span><b>термошайба без ножки + жёлтый саморез Pz 4×50</b></div>
+  </div>
+  <div class="qr">
+    <div id="qr"></div>
+    <div class="t"><b>Анимация всех 24 шагов</b>Наведите камеру телефона на код — откроется объёмная анимация раскроя и укладки с пояснениями к каждому шагу.
+      <div class="url" id="animurl"></div>
+      <span class="lnk">Ролик всех шагов — можно переслать в мессенджере</span>
+      <div class="url">https://lordrubano.github.io/teplica-6000x2850/montazh/ukladka-kryshi/rolik-ukladka.mp4</div>
+      <span class="lnk">Эта инструкция в электронном виде</span>
+      <div class="url">https://lordrubano.github.io/teplica-6000x2850/montazh/ukladka-kryshi/instrukciya-ukladka.pdf</div>
+      <span class="lnk">Инструкция по направляющим</span>
+      <div class="url">https://lordrubano.github.io/teplica-6000x2850/montazh/napravlyayushchie/</div>
+    </div>
+  </div>
+  <div class="foot" id="foot1"></div>
+</section>
+
+<section class="page" id="p-why">
+  <div class="kicker">Почему так</div>
+  <h2>Главный способ: крышки заранее, лист — в пазы</h2>
+  <p>Крышку на стыке двух листов защёлкивают сверху, когда оба листа уже лежат. В этот момент оба соседних пролёта уже закрыты брусками, а ближний открытый — через один, в 1,5 м: изнутри не достать. Поэтому:</p>
+  <ol class="why">
+    <li>Крышки на средних стропилах (пары 2, 3, 4, оба ската — 6 шт) защёлкиваются заранее, пока все пролёты открыты. Между крышкой и основанием остаются пустые пазы. Крайние стропила (пары 1 и 5) всегда доступны с открытых фронтонов — их крышки с полосами ставятся при укладке крайних пролётов.</li>
+    <li>Лист снизу, от карниза, задвигается вдоль ската в пазы под крышки и верхом — в захват конькового профиля, уложенного заранее. Длину листов меряют этим же способом до раскроя: пробный кусок задвигают в пазы до упора в захват.</li>
+    <li>Термошайбы ставятся из соседнего, ещё открытого пролёта или с открытого фронтона — перегнувшись корпусом; нижние ряды можно снизу у карниза.</li>
+    <li>Порядок пролётов выбирается так, чтобы у каждого пролёта в момент укладки оставался открытый сосед или открытый фронтон (шаг 14, страница «Порядок пролётов — варианты»).</li>
+    <li>Верхняя плёнка снимается сразу после задвигания, до термошайб: потом сверху к ней не подобраться.</li>
+  </ol>
+  <h2 style="margin-top:1mm">Вылет с корпусом</h2>
+  <p>Человек поднимается по стремянке выше, встаёт и перегибается через край по пояс, вытягивается корпусом — вылет рук с корпусом большой, почти всё достаёт. Пояс — на уровне крыши, на стропило кладётся мягкая подкладка. Опираться только на стропило, не на лист. На крышу никто не встаёт.</p>
+  <figure>
+    <svg id="dV" viewBox="0 0 1000 400" role="img" aria-label="Вылет с корпусом: стремянка, подкладка на стропиле, круги 0,8 · 1,15 · 1,5 м"></svg>
+    <figcaption>Разрез поперёк стропил, вид вдоль ската. Слева — стремянка в открытом пролёте, пояс на уровне крыши; стрелка — вылет руки с шуруповёртом от оси ближнего стропила. Отметки — 0,8 · 1,15 · 1,5 м от оси ближнего стропила. Проверка 1 (шаг 5) определяет, сколько рядов термошайб достанет рука.</figcaption>
+  </figure>
+  <div class="foot">Страница 2</div>
+</section>
+
+<section class="page" id="p-order">
+  <div class="kicker">Порядок пролётов</div>
+  <h2>Порядок пролётов — варианты</h2>
+  <p class="lead" style="font-size:9.6pt">Вид сверху: 8 пролётов, скат Л сверху, скат П снизу, конёк посередине. Цифры — очерёдность, зелёные стрелки — откуда работают. Оранжевые края — открытые фронтоны.</p>
+  <div class="var">
+    <h3 class="ok">Лучше: 2 → 3 → 1 → 4</h3>
+    <svg id="dO1" viewBox="0 0 1000 196" role="img" aria-label="Порядок 2, 3, 1, 4"></svg>
+    <ul>
+      <li>Сначала средние пролёты 2 и 3, потом крайние 1 и 4. В каждом пролёте сначала скат Л, потом П.</li>
+      <li>Пролёт 2 — работать из пролётов 1 и 3, с двух сторон. Пролёт 3 — из пролёта 4. Пролёт 1 — с фронтона пары 1. Пролёт 4 — с фронтона пары 5.</li></ul>
+  </div>
+  <div class="var">
+    <h3 class="warn">Можно: 1 → 2 → 3 → 4</h3>
+    <svg id="dO2" viewBox="0 0 1000 196" role="img" aria-label="Порядок 1, 2, 3, 4"></svg>
+    <ul>
+      <li>Пролёт 1 — с фронтона и из пролёта 2, дальше каждый — из следующего, пролёт 4 — с фронтона.</li></ul>
+  </div>
+  <div class="var">
+    <h3 class="bad">Нельзя: 1 → 4 → 2 → 3 — последний средний без доступа, только шаг 23</h3>
+    <svg id="dO3" viewBox="0 0 1000 196" role="img" aria-label="Порядок 1, 4, 2, 3: пролёт 3 без доступа"></svg>
+    <ul>
+      <li>Нельзя сначала оба крайних, потом средние: последний средний пролёт останется без открытого соседа. Если так вышло — шаг 23 (лаз у конька).</li></ul>
+  </div>
+  <div class="foot">Страница 3</div>
+</section>
+
+<section class="page" id="p-prep">
+  <div class="kicker">Подготовка</div>
+  <h2>Что нужно для работы</h2>
+  <div class="plain"><h3>Что должно быть готово</h3><ul id="ready"></ul></div>
+  <div class="cols">
+    <div class="blk"><h3>Инструменты для раскроя</h3><ul>
+      <li>Дисковая пила с мелкозубым твердосплавным диском или лобзик с мелкой пилкой по металлу.</li>
+      <li>Нож 18 мм.</li>
+      <li>Правило 2–2,5 м.</li>
+      <li>2–4 струбцины.</li>
+      <li>Угольник от 600 мм.</li>
+      <li>Рулетка 8 м.</li>
+      <li>Маркер.</li>
+      <li>Кухонные весы.</li>
+      <li>Компрессор или пылесос на выдув.</li>
+      <li>Мягкая щётка.</li>
+      <li>Ножницы.</li></ul></div>
+    <div class="blk"><h3>Инструменты для укладки</h3><ul>
+      <li>Стремянка высокая — пояс на уровне конька.</li>
+      <li>Стремянка помощника.</li>
+      <li>Мягкая подкладка.</li>
+      <li>Шуруповёрт, бита PZ2.</li>
+      <li>Дрель, сверло 7 мм.</li>
+      <li>Козлы.</li>
+      <li>Слабый мыльный раствор.</li>
+      <li>Резиновая киянка.</li>
+      <li>Нейтральный герметик.</li>
+      <li>Шнур.</li></ul></div>
+  </div>
+  <div class="cols">
+    <div class="blk"><h3>Люди — двое</h3><ul>
+      <li>Первый — внутри на стремянке в открытом пролёте (или у открытого фронтона): поднимается так, что пояс на уровне крыши, кладёт на стропило мягкую подкладку и перегибается через него корпусом. Опирается только на стропило, не на лист.</li>
+      <li>Второй — помощник снизу у карниза (с земли или со стремянки, снаружи или между стойками стены): подаёт и толкает лист, снизу крепит нижние ряды термошайб, до которых достаёт.</li>
+      <li>На крышу никто не встаёт.</li></ul></div>
+    <div class="okbox"><h3>Условия</h3><ul>
+      <li>Сухо, без ветра, при плюсовой температуре.</li>
+      <li>На крышу не вставать.</li>
+      <li>На лист не опираться — только на стропило через подкладку.</li>
+      <li>Плёнку снимать как в шагах 16 и 19.</li></ul></div>
+  </div>
+  <div class="blk"><h3>Нормы завода Кинпласт</h3><ul>
+    <li>Резать пилой по дереву или металлу, лучше с диском для пластика. После резки прочистить каналы от стружки сжатым воздухом или пылесосом. Детали хранить вместе с листами.</li>
+    <li>Перед проклейкой снять плёнку на 80–100 мм от открытых торцов. Верхний торец — герметизирующая (сплошная) лента, нижний — перфорированная. Соты на кровле — вдоль ската.</li>
+    <li>Надписи на плёнке — лицевая сторона с защитой от солнца, при монтаже всегда к солнцу. Плёнку с лица снимать только после монтажа листа.</li>
+    <li>Лист расширяется примерно на 3 мм на каждый метр при нагреве на 50 °C. Отверстие под термошайбу — на 3–4 мм больше самореза.</li>
+    <li>Не оставлять листы с открытыми торцами надолго. Не класть на лист тёмные и металлические предметы. Укрывать светлым непрозрачным материалом.</li></ul>
+    <p style="font-size:8pt;color:var(--muted);margin-top:.8mm">По официальной инструкции завода: kinplast.ru/manuals/kin-montazh-sot.pdf</p></div>
+  <div class="foot">Страница 4</div>
+</section>
+
+<section class="page" id="p-forks">
+  <div class="kicker">Развилки</div>
+  <h2>Что делать, если</h2>
+  <ul class="forks">
+    <li><b>Вес полосы 2100×600 меньше 1,4 кг</b> → стоп, остальные листы не резать.</li>
+    <li><b>Вылет с корпусом 1,5 м и дальше</b> → основной способ, при нужде — шаг 22. <b>От 1,15 до 1,5</b> → три ряда. <b>От 0,8 до 1,15</b> → два ряда. <b>Меньше 0,8</b> → стоп, видео владельцу.</li>
+    <li><b>Пробный кусок идёт в пазы рукой</b> → основной способ. <b>Туго</b> → мыльный раствор. <b>Не идёт и с мылом</b> → шаг 22.</li>
+    <li><b>Длина по пробному куску больше 1800 или А различаются больше 5 мм</b> → сообщить владельцу до резки.</li>
+    <li><b>Замер ширины отличается от ожидаемого больше 5 мм</b> → проверить направляющую, сообщить владельцу.</li>
+    <li><b>Кусок вышел меньше размера</b> → на пролёт не ставить, запас в листе В.</li>
+    <li><b>Порядок: пролёт без открытого соседа</b> → шаг 23.</li>
+    <li><b>Есть уплотнительная лента 3×20</b> → на брусок до выставления. <b>Нет</b> → без неё.</li>
+    <li><b>Оси брусков отличаются от разметки до 10 мм</b> → по разметке. <b>Больше</b> → по фактическим осям.</li>
+    <li><b>Лист встал в пазах</b> → вытянуть на 10–20 см, выровнять, мыло; двигать шагами вдвоём.</li>
+    <li><b>Не входит в захват конька</b> → приподнять губу профиля.</li>
+    <li><b>Низ выступает больше 5 мм</b> → подрезать верх и заново заклеить. <b>Не доходит больше 5 мм</b> → запасной лист В.</li>
+    <li><b>Плёнка порвалась</b> → срезать по губе, остаток под губой оставить.</li>
+    <li><b>Отверстие не попало на брусок</b> → новое рядом, пустое — нейтральный герметик.</li>
+    <li><b>Слетела крышка там, где не достать</b> → стоп, видео владельцу.</li>
+    <li><b>Ветер или перерыв</b> → у поставленного листа не меньше 4 термошайб, стопку укрыть.</li>
+  </ul>
+  <div class="foot">Страница 5</div>
+</section>
+
+<section class="page" id="p-map">
+  <div class="kicker">Карта раскроя</div>
+  <h2>Три листа крыши: что откуда режется</h2>
+  <figure>
+    <svg id="dK" viewBox="0 0 1000 850" role="img" aria-label="Карта раскроя листов А, Б, В"></svg>
+  </figure>
+  <div class="legend">
+    <span><i style="background:#DDEEFA;border-color:#2A6BA8"></i>кровельный кусок</span>
+    <span><i style="background:repeating-linear-gradient(45deg,#FBEFD9 0 2px,#C99A52 2px 3px);border-color:#9C5410"></i>обрезок</span>
+    <span><i style="background:#E4F4EA;border-color:#1B7A50"></i>запас — не резать</span>
+    <span><i style="background:#FFF3DF;border-color:#9C5410"></i>полоса 2100×600</span>
+  </div>
+  <p style="font-size:8.6pt;color:var(--muted)">Верх кровельных кусков — у верхней линии полосы. Скос кусков на чертеже увеличен в 12 раз для наглядности.</p>
+  <div class="cols">
+    <div class="blk"><ul>
+      <li>Лист А — Л1, Л2, Л3. Лист Б — Л4, П1, П2. Лист В — П3, П4.</li>
+      <li>Полоса 2100×600 — от торца листа А: из неё вырезают пробный кусок 1455×600 (шаг 8); взвесить — около 1,6 кг.</li></ul></div>
+    <div class="blk"><ul>
+      <li>Обрезки О-Л1…О-П4 — подписать и сохранить: пойдут на окна.</li>
+      <li>Полосы крайних стропил — 4 шт из обрезков О-Л1 и О-П1, ширина около 50 мм, длина — как у кровельного куска рядом.</li>
+      <li>Запас в листе В — не резать, торец закрыть лентой.</li></ul></div>
+  </div>
+  <div class="tiles">
+    <div class="tile"><b>8</b><strong>Кровельные куски</strong><span>Л1…Л4, П1…П4 — листы А, Б, В</span></div>
+    <div class="tile"><b>4</b><strong>Полосы крайних стропил</strong><span>Полоса 1…4 — из обрезков О-Л1 и О-П1</span></div>
+    <div class="tile tot"><b>1</b><strong>Запас в листе В</strong><span>остаток не меньше 2100×2400</span></div>
+  </div>
+  <div class="foot">Страница 6</div>
+</section>
+
+<section class="page" id="p-kusok">
+  <div class="kicker">Чертёж</div>
+  <h2>Кровельный кусок, разметка отверстий и раскладка</h2>
+  <figure>
+    <svg id="dP" viewBox="0 0 1000 452" role="img" aria-label="Кровельный кусок Л1 и разметка отверстий"></svg>
+    <figcaption>Слева — кусок Л1 сверху: верх — у конька, низ — у карниза, соты вдоль длины L, скос увеличен в 12 раз. Справа — тот же кусок с разметкой отверстий: оси брусков от нижнего торца 324 · 604 · 884 · 1164 · 1444 мм, три ряда поперёк, кромка «ОТСЮДА КРЕПИМ» — со стороны, откуда будут крепить лист.</figcaption>
+  </figure>
+  <div class="cols">
+    <div class="blk"><h3>Как лежит кусок</h3><ul>
+      <li>Соты — вдоль ската, надписи на плёнке — наружу.</li>
+      <li>Кромка листа — в 10 мм от оси стропила, между листами 20 мм.</li>
+      <li>Нижний торец — вровень с нижним концом направляющей (свес 48 мм за торец стропила).</li>
+      <li>Верхний торец заходит в захват конькового профиля.</li></ul></div>
+    <div class="blk"><h3>Отверстия под термошайбы</h3><ul>
+      <li>На среднем бруске (884 от низа) — круглое 7 мм, на остальных четырёх — овал 7×12 вдоль ската (два отверстия 7 мм, центры через 5 мм, перемычку убрать).</li>
+      <li>Ряды: ближний — в 370 мм от кромки «ОТСЮДА КРЕПИМ», средний — посередине, дальний — в 370 мм от другой кромки.</li></ul></div>
+  </div>
+  <figure>
+    <svg id="dQ" viewBox="0 0 1000 350" role="img" aria-label="Схема крыши сверху: раскладка кусков Л1–П4 по пролётам"></svg>
+    <figcaption>Схема крыши сверху, пары 1–5 слева направо, скат Л сверху. В каждом пролёте: код куска и две ширины, мм, — у конька и у карниза (замер − 20 мм).</figcaption>
+  </figure>
+  <div class="foot">Страница 7</div>
+</section>
+
+<section class="page" id="p-razrez">
+  <div class="kicker">Чертёж</div>
+  <h2>Разрез по стыку, вид сбоку и лаз у конька</h2>
+  <figure>
+    <svg id="dS" viewBox="0 0 1000 300" role="img" aria-label="Разрез по стыку двух листов над стропилом"></svg>
+    <figcaption>Разрез по стыку двух листов над стропилом. Основание — на стропиле, крышка защёлкнута заранее, губы крышки стоят над основанием. Слева лист уже в пазу, справа паз пуст — лист входит в него вдоль ската, от карниза.</figcaption>
+  </figure>
+  <figure>
+    <svg id="dT" viewBox="0 0 1000 330" role="img" aria-label="Вид сбоку по скату: лист задвигается от карниза в захват конька"></svg>
+    <figcaption>Вид сбоку по скату, скат развёрнут в линию. Помощник у карниза толкает лист, второй на стремянке в соседнем пролёте тянет сверху. Пробный кусок 1455×600 задвигается так же — размер А отмеряется от его нижнего края до нижнего конца направляющей плюс 600.</figcaption>
+  </figure>
+  <figure>
+    <svg id="dL" viewBox="0 0 1000 300" role="img" aria-label="Лаз у конька: лист Л до конца, лист П на 600 мм ниже конька"></svg>
+    <figcaption>Схема лаза у конька (шаг 23), разрез поперёк конька. Лист Л — до конца, лист П — верхом на 600 мм ниже конька. Через лаз поднимаются изнутри и перегибаются через конёк.</figcaption>
+  </figure>
+  <div class="foot">Страница 8</div>
+</section>
+
+<div id="steps"></div>
+
+<section class="page" id="p-report">
+  <div class="kicker">Отчёт владельцу</div>
+  <h2>Фото- и видеоотчёт</h2>
+  <p class="lead">Ничего не записывать на бумаге. Отчёт — только фото и видео, отправить владельцу.</p>
+  <div class="blk"><h3>Что снять</h3><ul>
+    <li>Весы — полоса 2100×600 на весах, видна цифра.</li>
+    <li>Проверки 1 и 2 — на видео.</li>
+    <li>Размер А в каждом пролёте — рулетка в кадре.</li>
+    <li>Рулетка на размерах каждого куска: ширина у обоих торцов и длина по обеим кромкам, в кадре виден код куска.</li>
+    <li>Разметка листа перед сверлением.</li>
+    <li>Каждый пролёт изнутри после закрытия.</li>
+    <li>Линия карниза с обоих скатов.</li>
+    <li>Конёк.</li></ul></div>
+  <div class="okbox"><h3>Как снимать</h3><ul>
+    <li>В кадре крупно рулетка и цифра, код куска виден.</li>
+    <li>Замер отличается от ожидаемого больше чем на 5 мм — сказать об этом в сообщении.</li>
+    <li>Трещина или залом на листе — фото владельцу сразу.</li></ul></div>
+  <div class="blk"><h3>Порядок работ</h3><ol id="order" style="margin:0;padding-left:6mm;columns:2;column-gap:8mm;font-size:9.2pt;line-height:1.35"></ol></div>
+  <div class="foot">Страница 21</div>
+</section>
+
+<section class="page" id="p-last">
+  <div class="kicker">Отчёт владельцу</div>
+  <h2>Что изменено относительно проекта</h2>
+  <div class="blk"><ul class="chg">
+    <li>Раскрой и укладка крыши — одной инструкцией; стены, фронтоны и окна — позже (решение владельца 01.10.2026).</li>
+    <li>Бруски ставятся по пролётам вместе с листами, а не все сразу — работа только снизу (условие владельца 01.10.2026).</li>
+    <li>Крышки на средних стропилах защёлкиваются заранее, листы задвигаются в пазы снизу; длина листа — по пробному куску в пазах; порядок пролётов — сначала средние (дополнение владельца 01.10.2026).</li>
+    <li>Ширина кровельных кусков — по замерам, при сужении пролёта — трапеция; куски «Ф» из карты проекта не режутся.</li>
+    <li>Если по проверке 1 не достать до дальнего ряда — 2 термошайбы на брусок вместо 3; в пролёте с лазом у конька верхний ряд листа П может остаться без термошайб.</li></ul></div>
+  <div class="foot" id="footlast"></div>
+</section>
+
+<script src="data.js"></script>
+<script>
+(function(){
+const D=window.DATA;
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+document.getElementById('cover').src=D.cover;
+document.getElementById('qr').innerHTML=D.qrSvg;
+document.getElementById('animurl').textContent=D.animUrl;
+document.getElementById('foot1').textContent='Редакция инструкции 1 · '+D.date+' · по проекту «Теплица 6000×2850», редакция 8.0, и решениям владельца от 01.10.2026';
+document.getElementById('footlast').textContent='Инструкция подготовлена ИИ-помощником Claude по данным проекта, условиям и решениям владельца и инструкции завода Кинпласт · 01.10.2026';
+
+const ord=document.getElementById('order');D.steps.forEach((st,i)=>{const li=document.createElement('li');li.textContent=st.title;ord.appendChild(li);});
+const rd=document.getElementById('ready');D.steps[0].actions.forEach(a=>{const li=document.createElement('li');li.textContent=a;rd.appendChild(li);});
+// шаги по два на страницу; перед первым шагом каждой части — плашка
+const host=document.getElementById('steps');let page=null,pn=9,prevPart=null;
+D.steps.forEach((s,i)=>{
+  if(i%2===0){page=document.createElement('section');page.className='page';host.appendChild(page);
+    const k=document.createElement('div');k.className='kicker';k.textContent='Шаги '+(i+1)+(i+1<D.steps.length?'–'+(i+2):'')+' из '+D.steps.length;page.appendChild(k);}
+  if(s.part!==prevPart){const b=document.createElement('div');b.className='banner';b.textContent=s.part;page.appendChild(b);prevPart=s.part;}
+  const st=document.createElement('div');st.className='step';
+  st.innerHTML='<div class="hd"><span class="no">Шаг '+(i+1)+'</span><h2></h2></div><img alt=""><ul></ul><div class="chk"><b>Проверка</b><span></span></div>';
+  st.querySelector('h2').textContent=s.title;st.querySelector('img').src=s.img;st.querySelector('img').alt='Шаг '+(i+1)+': '+s.title;
+  const ul=st.querySelector('ul');s.actions.forEach(a=>{const li=document.createElement('li');li.textContent=a;ul.appendChild(li);});
+  st.querySelector('.chk span').textContent=s.check;page.appendChild(st);
+  if(i%2===1||i===D.steps.length-1){const f=document.createElement('div');f.className='foot';f.textContent='Страница '+(pn++);page.appendChild(f);}
+});
+
+/* ---------- общие помощники чертежей ---------- */
+function T(s,x,y,t,o){o=o||{};const a={x:x,y:y,'font-size':o.size||12,fill:o.fill||'#1F2933','text-anchor':o.anchor||'middle'};
+  if(o.weight)a['font-weight']=o.weight;if(o.cls)a.class=o.cls;if(o.rot!=null)a.transform='rotate('+o.rot+' '+x+' '+y+')';return el('text',a,s,t);}
+function L2(s,x0,y0,x1,y1,c,w,dash){const a={x1:x0,y1:y0,x2:x1,y2:y1,stroke:c||'#1F2933','stroke-width':w||1};if(dash)a['stroke-dasharray']=dash;return el('line',a,s);}
+function PG(s,pts,fill,stroke,sw,extra){const a={points:pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' '),fill:fill,stroke:stroke,'stroke-width':sw||1};if(extra)for(const k in extra)a[k]=extra[k];return el('polygon',a,s);}
+
+/* ---------- чертёж В: вылет с корпусом ---------- */
+(function(){
+  const s=document.getElementById('dV');const k=.4,y0=250,xr=250;      // 0,4 px на мм; плоскость крыши — y0; ось ближнего стропила — xr
+  el('defs',{},s).innerHTML='<marker id="arV" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#1D5FA6"/></marker><pattern id="hwV" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#C79B6D"/><line x1="0" y1="0" x2="0" y2="7" stroke="#A97E52" stroke-width="1.4"/></pattern>';
+  // плоскость крыши и стропила в разрезе
+  L2(s,30,y0,970,y0,'#8C959E',1,'6 4');
+  [xr,xr+1505*k].forEach((x,i)=>{el('rect',{x:x-22.5*k,y:y0,width:45*k,height:90*k,fill:'url(#hwV)',stroke:'#1F2933','stroke-width':1},s);});
+  T(s,xr+1505*k,y0+90*k+18,'соседнее стропило, 1505 мм',{size:13,fill:'#5B6773'});
+  T(s,xr,y0+90*k+18,'ближнее стропило',{size:13,fill:'#5B6773'});
+  // мягкая подкладка
+  el('rect',{x:xr-50,y:y0-9,width:100,height:9,rx:3,fill:'#E8873A',stroke:'#9C5410','stroke-width':1},s);
+  T(s,xr,y0-16,'мягкая подкладка',{size:13,fill:'#9C5410'});
+  // стремянка в открытом пролёте
+  const lx=120;
+  L2(s,lx-28,y0+95,lx-2,y0-42,'#3A7BD5',5);L2(s,lx+28,y0+95,lx+2,y0-42,'#3A7BD5',5);
+  for(let y=y0+70;y>y0-40;y-=26){const f=(y0+95-y)/137;L2(s,lx-28+26*f,y,lx+28-26*f,y,'#3A7BD5',3);}
+  T(s,lx,y0+122,'стремянка в открытом пролёте',{size:13,fill:'#2A5FA6'});
+  // вылет: стрелка от стремянки (человека не рисуем), рука с шуруповёртом условно
+  L2(s,lx+4,y0-34,xr+10,y0-26,'#7B8794',12).setAttribute('stroke-linecap','round');
+  L2(s,xr+10,y0-26,xr+290,y0-18,'#1D5FA6',5).setAttribute('marker-end','url(#arV)');
+  el('rect',{x:xr+272,y:y0-34,width:34,height:16,rx:3,fill:'#1F2933'},s);
+  T(s,lx+10,y0-58,'вылет: пояс на уровне крыши, перегнуться через стропило',{size:13.5,weight:600,anchor:'start'});
+  T(s,xr+300,y0-44,'шуруповёрт',{size:13,anchor:'start'});
+  // зоны досягаемости от оси ближнего стропила
+  const zn=[[800,'#2BBF75','0,8 м','2 ряда'],[1150,'#FFC83A','1,15 м','3 ряда'],[1500,'#4A90E2','1,5 м','и крышки после']];
+  zn.forEach(([r,c,a,b],i)=>{
+    const x=xr+r*k,yy=y0+62+i*0;
+    el('rect',{x:xr,y:y0+6+i*0,width:r*k,height:6,fill:c,opacity:.0},s);
+    el('rect',{x:xr+(i?zn[i-1][0]*k:0),y:y0-6,width:(r-(i?zn[i-1][0]:0))*k,height:6,fill:c,opacity:.55},s);
+    L2(s,x,y0-30,x,y0+110+i*0,c,1.6,'5 3');
+    T(s,x,y0+128+i*0,a,{size:15,weight:700,cls:'m',fill:'#1F2933'});
+  });
+  const yl=y0+156;
+  L2(s,xr,yl,xr+1500*k,yl,'#1D5FA6',1.4);
+  zn.forEach(([r])=>L2(s,xr+r*k,yl-6,xr+r*k,yl+6,'#1D5FA6',1.2));L2(s,xr,yl-6,xr,yl+6,'#1D5FA6',1.2);
+  T(s,xr+400*k,yl+22,'2 ряда',{size:15,weight:600,fill:'#1B7A50'});
+  T(s,xr+975*k,yl+22,'3 ряда',{size:15,weight:600,fill:'#8A5200'});
+  T(s,xr+1325*k,yl+22,'и крышки после',{size:15,weight:600,fill:'#1D5FA6'});
+  T(s,500,26,'Вылет рук с корпусом — от оси ближнего стропила',{size:16,weight:700,cls:'d',fill:'#1F2933'});
+  T(s,690,y0-84,'на стропило — только через подкладку,',{size:13,fill:'#5B6773',anchor:'start'});T(s,690,y0-68,'на лист не опираться',{size:13,fill:'#5B6773',anchor:'start'});
+})();
+
+/* ---------- чертежи О: порядок пролётов (вид сверху) ---------- */
+function orderScheme(id,ord,acc,bad){
+  const s=document.getElementById(id);const X=[150,330,510,690,870];
+  el('defs',{},s).innerHTML='<marker id="ar'+id+'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1 L9 5 L0 9 z" fill="#1B9E5F"/></marker>';
+  const yL=[28,88],yP=[112,172],yR=100;
+  // открытые фронтоны
+  [[X[0]-34,X[0]],[X[4],X[4]+34]].forEach(([a,b])=>el('rect',{x:a,y:yL[0],width:b-a,height:yP[1]-yL[0],fill:'#F08A2A',opacity:.45},s));
+  T(s,X[0]-46,(yL[0]+yP[1])/2+4,'фронтон',{size:11.5,fill:'#9C5410',rot:-90});T(s,X[4]+46,(yL[0]+yP[1])/2+4,'фронтон',{size:11.5,fill:'#9C5410',rot:90});
+  for(let b=0;b<4;b++){const n=ord.indexOf(b)+1,isBad=b===bad,col=isBad?'#E0322A':(n<=2?'#2BBF75':'#FFC83A');
+    [yL,yP].forEach((y,r)=>{el('rect',{x:X[b]+6,y:y[0],width:X[b+1]-X[b]-12,height:y[1]-y[0],fill:col,opacity:isBad?.5:.4,stroke:isBad?'#B3261E':'#8C959E','stroke-width':1},s);
+      el('circle',{cx:(X[b]+X[b+1])/2,cy:(y[0]+y[1])/2,r:15,fill:'#1D5FA6'},s);T(s,(X[b]+X[b+1])/2,(y[0]+y[1])/2+6,String(n),{size:18,weight:700,fill:'#fff',cls:'m'});
+      if(isBad&&r===0)T(s,(X[b]+X[b+1])/2,y[0]+16,'нет доступа',{size:13.5,weight:700,fill:'#B3261E'});});}
+  X.forEach((x,i)=>{el('rect',{x:x-5,y:yL[0]-4,width:10,height:yP[1]-yL[0]+8,fill:'#FFD98A',stroke:'#9C7A2E','stroke-width':.9},s);T(s,x,yP[1]+19,'пара '+(i+1),{size:12.5});});
+  L2(s,X[0]-50,yR,X[4]+50,yR,'#5B6773',1,'8 4 2 4');
+  T(s,X[0]-58,(yL[0]+yL[1])/2+5,'Л',{size:16,weight:700,anchor:'end'});T(s,X[0]-58,(yP[0]+yP[1])/2+5,'П',{size:16,weight:700,anchor:'end'});
+  // откуда работают
+  [[yL,0],[yP,1]].forEach(([y])=>{const ym=(y[0]+y[1])/2+22;
+    acc.forEach(([from,to])=>{let xa,xb;
+      if(from==='g0'){xa=X[0]-42;xb=X[0]+38;}else if(from==='g1'){xa=X[4]+42;xb=X[4]-38;}
+      else{const d=to>from?1:-1,xs=X[Math.max(from,to)];xa=xs-d*52;xb=xs+d*44;}
+      L2(s,xa,ym,xb,ym,'#1B9E5F',2.4).setAttribute('marker-end','url(#ar'+id+')');});});
+}
+orderScheme('dO1',[1,2,0,3],[[0,1],[2,1],[3,2],['g0',0],['g1',3]],-1);
+orderScheme('dO2',[0,1,2,3],[['g0',0],[1,0],[2,1],[3,2],['g1',3]],-1);
+orderScheme('dO3',[0,3,1,2],[['g0',0],[1,0],['g1',3],[2,3],[2,1]],2);
+
+/* ---------- чертёж К: карта раскроя листов А, Б, В ---------- */
+(function(){
+  const s=document.getElementById('dK');const sw=240,gap=30,x0=110,y0=112,k=sw/2100;
+  el('defs',{},s).innerHTML='<pattern id="htK" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#FBEFD9"/><line x1="0" y1="0" x2="0" y2="7" stroke="#C99A52" stroke-width="1.6"/></pattern>';
+  const X=(i,mm)=>x0+i*(sw+gap)+mm*k,Y=mm=>y0+mm*k;
+  const C={piece:['#DDEEFA','#2A6BA8'],off:['url(#htK)','#9C5410'],res:['#E4F4EA','#1B7A50'],wt:['#FFF3DF','#9C5410']};
+  const P=(i,pts,c)=>PG(s,pts.map(p=>[X(i,p[0]),Y(p[1])]),C[c][0],C[c][1],1);
+  const R=(x0_,y0_,x1,y1)=>[[x0_,y0_],[x1,y0_],[x1,y1],[x0_,y1]];
+  const t=(i,mx,my,txt,o)=>T(s,X(i,mx),Y(my),txt,o);
+  ['А','Б','В'].forEach((n,i)=>{el('rect',{x:X(i,0),y:Y(0),width:2100*k,height:6000*k,fill:'#fff',stroke:'#8C959E','stroke-width':1},s);
+    t(i,1050,-560,'Лист '+n,{size:21,weight:700,cls:'d'});t(i,1050,-210,'2100×6000',{size:12.5,fill:'#5B6773',cls:'m'});});
+  const LP=1740,EX=12;
+  function roof(i,y,code,w1,w2){const wb=w1+(w2-w1)*EX;
+    P(i,[[0,y],[w1,y],[wb,y+LP],[0,y+LP]],'piece');P(i,[[w1,y],[2100,y],[2100,y+LP],[wb,y+LP]],'off');
+    t(i,w1/2,y+LP*.40,code,{size:20,weight:700,cls:'d'});t(i,w1/2,y+LP*.60,w1+'/'+w2,{size:12,cls:'m'});t(i,w1/2,y+LP*.76,'× L',{size:12,cls:'m'});
+    t(i,(w1+2100)/2+10,y+LP/2,'О-'+code,{size:12,rot:-90,fill:'#8A5200'});}
+  P(0,R(0,0,2100,600),'wt');t(0,1050,250,'полоса 600',{size:12});
+  roof(0,600,'Л1',1485,1490);roof(0,600+LP,'Л2',1455,1455);roof(0,600+2*LP,'Л3',1452,1460);
+  P(0,R(0,600+3*LP,2100,6000),'off');t(0,1050,6000+250,'остаток — обрезок',{size:11,fill:'#8A5200'});
+  roof(1,0,'Л4',1475,1475);roof(1,LP,'П1',1485,1483);roof(1,2*LP,'П2',1455,1450);
+  P(1,R(0,3*LP,2100,6000),'off');t(1,1050,3*LP+400,'остаток — обрезок',{size:11,fill:'#8A5200'});
+  roof(2,0,'П3',1452,1455);roof(2,LP,'П4',1475,1485);
+  P(2,R(0,2*LP,2100,6000),'res');t(2,1050,2*LP+700,'ЗАПАС',{size:20,weight:700,cls:'d',fill:'#1B7A50'});
+  ['не меньше 2100×2400','на один кровельный','кусок — не резать'].forEach((tx,j)=>t(2,1050,2*LP+1100+j*330,tx,{size:11,fill:'#1B7A50'}));
+  T(s,x0,18,'Верх кусков — у верхней линии полосы. Ширины — «у конька / у карниза», мм.',{size:13.5,anchor:'start',fill:'#1F2933'});
+})();
+
+/* ---------- чертёж Р: кровельный кусок и разметка отверстий ---------- */
+(function(){
+  const s=document.getElementById('dP');const k=0.17,px0=150,ty=92,LPx=1740*k,w1=1485*k,ex=12,w2=w1+5*k*ex;
+  el('defs',{},s).innerHTML='<marker id="arP" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#1D5FA6"/></marker><pattern id="dtP" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#fff"/><circle cx="4" cy="4" r="1.7" fill="#6E7780"/></pattern><clipPath id="cpP"><polygon points="'+px0+','+ty+' '+(px0+w1)+','+ty+' '+(px0+w2)+','+(ty+LPx)+' '+px0+','+(ty+LPx)+'"/></clipPath>';
+  const by=ty+LPx;
+  PG(s,[[px0,ty],[px0+w1,ty],[px0+w2,by],[px0,by]],'#DDEEFA','#2A6BA8',1.6);
+  for(let x=px0+6;x<px0+w2;x+=7)el('line',{x1:x,y1:ty,x2:x,y2:by,stroke:'#8FB8DB','stroke-width':.8,'clip-path':'url(#cpP)'},s);
+  el('rect',{x:px0,y:ty,width:w1,height:13,fill:'#CDD3D9',stroke:'#6E7780','stroke-width':1},s);
+  el('polygon',{points:px0+','+(by-13)+' '+(px0+w2)+','+(by-13)+' '+(px0+w2)+','+by+' '+px0+','+by,fill:'url(#dtP)',stroke:'#6E7780','stroke-width':1},s);
+  L2(s,px0,ty-2,px0,by+2,'#1F2933',3.2);
+  T(s,px0+w1/2,ty+11,'сплошная лента',{size:10.5,fill:'#3A4650'});
+  T(s,px0+w2/2,by-16,'перфорированная лента',{size:10.5,fill:'#3A4650'});
+  T(s,px0+w1/2,ty+LPx*.60,'Л1',{size:44,weight:700,cls:'d',fill:'#1F4E8C'});
+  T(s,px0+w1/2,ty+LPx*.60+28,'1485 / 1490 × L',{size:15,cls:'m'});
+  L2(s,px0+w1/2,ty+88,px0+w1/2,ty+48,'#9C5410',2.4);el('polygon',{points:(px0+w1/2)+','+(ty+42)+' '+(px0+w1/2-7)+','+(ty+56)+' '+(px0+w1/2+7)+','+(ty+56),fill:'#9C5410'},s);
+  T(s,px0+w1/2,ty+108,'ВЕРХ — к коньку',{size:14,weight:700,fill:'#9C5410'});
+  T(s,px0+w1/2,ty+LPx*.60+52,'соты вдоль длины',{size:11.5,fill:'#2A6BA8'});
+  L2(s,px0,ty-22,px0+w1,ty-22,'#1D5FA6',1.2);L2(s,px0,ty-28,px0,ty-6,'#1D5FA6',.8);L2(s,px0+w1,ty-28,px0+w1,ty-6,'#1D5FA6',.8);
+  T(s,px0+w1/2,ty-28,'1485 — у конька (замер − 20)',{size:13,fill:'#1D5FA6',cls:'m'});
+  L2(s,px0,by+22,px0+w2,by+22,'#1D5FA6',1.2);L2(s,px0,by+6,px0,by+28,'#1D5FA6',.8);L2(s,px0+w2,by+6,px0+w2,by+28,'#1D5FA6',.8);
+  T(s,px0+w2/2,by+42,'1490 — у карниза (замер − 20)',{size:13,fill:'#1D5FA6',cls:'m'});
+  L2(s,px0-34,ty,px0-34,by,'#1D5FA6',1.2);L2(s,px0-40,ty,px0-28,ty,'#1D5FA6',.8);L2(s,px0-40,by,px0-28,by,'#1D5FA6',.8);
+  T(s,px0-44,(ty+by)/2,'L — по примерке, не больше 1800',{size:13,fill:'#1D5FA6',cls:'m',rot:-90});
+  T(s,px0+16,ty+LPx*.62,'заводская кромка',{size:12,fill:'#1F2933',rot:-90});
+  // разметка отверстий
+  const qx=640,w=1485*k;
+  T(s,qx+w/2+30,36,'Разметка отверстий',{size:15,weight:700,cls:'d'});
+  el('rect',{x:qx,y:ty,width:w,height:LPx,fill:'#DDEEFA',stroke:'#2A6BA8','stroke-width':1.6},s);
+  T(s,qx+w/2,ty+24,'ВЕРХ — к коньку',{size:13,weight:700,fill:'#9C5410'});
+  const M=[324,604,884,1164,1444],cols=[qx+w-370*k,qx+w/2,qx+370*k];
+  M.forEach(m=>{const y=by-m*k;cols.forEach(cx=>{if(m===884)el('circle',{cx:cx,cy:y,r:4.6,fill:'#F06A2A',stroke:'#fff','stroke-width':.8},s);else el('ellipse',{cx:cx,cy:y,rx:3.6,ry:6.6,fill:'#F06A2A',stroke:'#fff','stroke-width':.8},s);});
+    L2(s,qx-18,y,qx,y,'#1D5FA6',.8);T(s,qx-22,y+4,String(m),{size:12.5,anchor:'end',cls:'m',fill:'#1D5FA6'});});
+  L2(s,qx-14,by,qx-14,by-1444*k,'#1D5FA6',1.1);L2(s,qx-20,by,qx-8,by,'#1D5FA6',1);
+  T(s,qx-66,(by+ty)/2+40,'от нижнего торца, мм',{size:12,fill:'#1D5FA6',rot:-90});
+  // ряды поперёк
+  L2(s,qx+w,ty-14,cols[0],ty-14,'#1D5FA6',1.1);L2(s,qx+w,ty-19,qx+w,ty-9,'#1D5FA6',1);L2(s,cols[0],ty-19,cols[0],ty-9,'#1D5FA6',1);
+  T(s,(qx+w+cols[0])/2,ty-20,'370',{size:12.5,cls:'m',fill:'#1D5FA6'});
+  L2(s,qx,ty-14,cols[2],ty-14,'#1D5FA6',1.1);L2(s,qx,ty-19,qx,ty-9,'#1D5FA6',1);L2(s,cols[2],ty-19,cols[2],ty-9,'#1D5FA6',1);
+  T(s,(qx+cols[2])/2,ty-20,'370',{size:12.5,cls:'m',fill:'#1D5FA6'});
+  T(s,cols[1],ty-20,'середина',{size:12,fill:'#1D5FA6'});
+  // ближняя кромка
+  const ax=qx+w+22;L2(s,ax,by-70,ax,ty+80,'#B3261E',3);el('polygon',{points:ax+','+(ty+72)+' '+(ax-7)+','+(ty+88)+' '+(ax+7)+','+(ty+88),fill:'#B3261E'},s);
+  T(s,ax+17,(ty+by)/2+70,'ОТСЮДА КРЕПИМ',{size:13,weight:700,fill:'#B3261E',rot:-90});
+  // подписи
+  T(s,qx+w/2,by+24,'круглое 7 мм — на бруске 884',{size:12.5,fill:'#1B7A50'});
+  T(s,qx+w/2,by+40,'овал 7×12 вдоль ската — на остальных',{size:12.5,fill:'#9C5410'});
+  T(s,qx+w/2,by+58,'три ряда; если по проверке 1 — два, без дальнего',{size:11.5,fill:'#5B6773'});
+})();
+/* ---------- чертёж С: схема крыши сверху ---------- */
+(function(){
+  const s=document.getElementById('dQ');const X=[150,335,520,705,890];
+  const W={l:[[1485,1490],[1455,1455],[1452,1460],[1475,1475]],p:[[1485,1483],[1455,1450],[1452,1455],[1475,1485]]};
+  const CL=['Л1','Л2','Л3','Л4'],CP=['П1','П2','П3','П4'];
+  const yEL=48,yR=175,yEP=302;     // карниз Л, конёк, карниз П
+  el('defs',{},s).innerHTML='';
+  const ex=6;
+  function span(j,row){
+    const up=row==='l',yr=yR,ye=up?yEL:yEP,w=(up?W.l:W.p)[j],xa=X[j]+7,xb=X[j+1]-7;
+    const sk=(w[1]-w[0])*ex*0.12;
+    PG(s,[[xa,yr],[xb,yr],[xb+sk/2,ye],[xa-sk/2,ye]],up?'#DDEAF8':'#DDF1EA',up?'#2A6BA8':'#2B8A6E',1.3);
+    const code=(up?CL:CP)[j];
+    T(s,(xa+xb)/2,(yr+ye)/2+5,code,{size:19,weight:700,cls:'d',fill:'#1F2933'});
+    T(s,(xa+xb)/2,up?yr-10:yr+22,String(w[0]),{size:13,cls:'m',fill:'#1D5FA6'});
+    T(s,(xa+xb)/2,up?ye+19:ye-9,String(w[1]),{size:13,cls:'m',fill:'#1D5FA6'});
+  }
+  for(let j=0;j<4;j++){span(j,'l');span(j,'p');}
+  L2(s,X[0]-40,yR,X[4]+40,yR,'#5B6773',1.2,'8 4 2 4');
+  X.forEach((x,i)=>{el('rect',{x:x-6,y:yEL-8,width:12,height:yEP-yEL+16,fill:'#FFD98A',stroke:'#9C7A2E','stroke-width':.9,opacity:.75},s);T(s,x,yEP+28,'пара '+(i+1),{size:13.5});});
+  T(s,X[0]-50,(yEL+yR)/2+5,'Скат Л',{size:16,weight:600,anchor:'end'});T(s,X[0]-50,(yR+yEP)/2+5,'Скат П',{size:16,weight:600,anchor:'end'});
+  T(s,X[4]+48,yR+5,'конёк',{size:13,fill:'#5B6773',anchor:'start'});T(s,X[4]+48,yEL+5,'карниз',{size:13,fill:'#5B6773',anchor:'start'});T(s,X[4]+48,yEP+5,'карниз',{size:13,fill:'#5B6773',anchor:'start'});
+  T(s,X[0]-40,18,'Числа в пролёте, мм: у линии конька — ширина у конька, у края крыши — ширина у карниза',{size:13.5,anchor:'start',fill:'#1F2933'});
+})();
+
+/* ---------- чертёж Р2: разрез по стыку двух листов над стропилом ---------- */
+(function(){
+  const s=document.getElementById('dS');const cx=360,k=5.6,yT=232;   // ось стропила; px на мм; верх стропила
+  el('defs',{},s).innerHTML='<pattern id="hwS" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#C79B6D"/><line x1="0" y1="0" x2="0" y2="8" stroke="#A97E52" stroke-width="1.6"/></pattern>';
+  el('rect',{x:cx-22.5*k,y:yT,width:45*k,height:62,fill:'url(#hwS)',stroke:'#1F2933','stroke-width':1.2},s);
+  L2(s,cx,62,cx,yT+66,'#5B6773',1,'8 4 2 4');T(s,cx+6,yT+80,'ось стропила',{size:12.5,fill:'#5B6773',anchor:'start'});
+  const yb=yT-3*k;                                           // основание 60×3
+  el('rect',{x:cx-30*k,y:yb,width:60*k,height:3*k,fill:'#DDEEFA',stroke:'#2A6BA8','stroke-width':1.3},s);
+  const ys=yb-6*k;                                           // лист 6 мм: слева в пазу, справа паз пуст
+  el('rect',{x:16,y:ys,width:cx-10*k-16,height:6*k,fill:'#BFE0F7',stroke:'#2A6BA8','stroke-width':1.4},s);
+  el('rect',{x:cx+10*k,y:ys,width:330,height:6*k,fill:'none',stroke:'#2A6BA8','stroke-width':1.3,'stroke-dasharray':'7 4'},s);
+  const yu=yb-7*k,pt=2.5*k;                                  // крышка 70: плита и две губы над основанием
+  el('path',{d:'M'+(cx-35*k)+' '+ys+' V'+(yu-pt)+' H'+(cx+35*k)+' V'+ys+' h-5 V'+yu+' H'+(cx-35*k+5)+' V'+ys+' z',fill:'#AEB6BE','fill-opacity':.8,stroke:'#5E6770','stroke-width':1.4},s);
+  [-1,1].forEach(d=>L2(s,cx+d*10*k,ys+4,cx+d*10*k,112,'#1D5FA6',.9,'3 3'));
+  L2(s,cx-10*k,128,cx+10*k,128,'#1D5FA6',1.5);[cx-10*k,cx,cx+10*k].forEach(x=>L2(s,x,121,x,135,'#1D5FA6',1));
+  T(s,cx-28,120,'10',{size:13,fill:'#1D5FA6',cls:'m'});T(s,cx+28,120,'10',{size:13,fill:'#1D5FA6',cls:'m'});
+  T(s,cx,102,'20 мм между листами',{size:13.5,weight:600,fill:'#1D5FA6'});
+  // лист входит вдоль ската (на нас)
+  el('circle',{cx:cx+10*k+70,cy:ys+3*k,r:11,fill:'#fff',stroke:'#1D5FA6','stroke-width':1.8},s);el('circle',{cx:cx+10*k+70,cy:ys+3*k,r:3.6,fill:'#1D5FA6'},s);
+  // подписи слева
+  T(s,20,ys-12,'лист 6 мм — уже в пазу',{size:13,fill:'#2A6BA8',anchor:'start'});
+  T(s,20,yT+44,'губа крышки прижимает кромку листа',{size:12.5,fill:'#5E6770',anchor:'start'});L2(s,cx-35*k+3,ys+4,cx-35*k-10,yT+30,'#5E6770',1);
+  // подписи справа, со стрелками-выносками
+  const RX=690;
+  T(s,RX,80,'крышка профиля 70 мм,',{size:13,anchor:'start',fill:'#5E6770'});T(s,RX,96,'защёлкнута заранее',{size:13,anchor:'start',fill:'#5E6770'});L2(s,RX-6,92,cx+35*k+2,yu-pt-4,'#5E6770',1);
+  T(s,RX,150,'пустой паз — лист входит',{size:13,anchor:'start',fill:'#2A6BA8'});T(s,RX,166,'в него вдоль ската, от карниза',{size:13,anchor:'start',fill:'#2A6BA8'});L2(s,RX-6,162,cx+10*k+84,ys+3*k,'#2A6BA8',1);
+  T(s,RX,236,'основание — направляющая,',{size:13,anchor:'start',fill:'#2A6BA8'});T(s,RX,252,'60 мм, толщина 3 мм',{size:13,anchor:'start',fill:'#2A6BA8'});L2(s,RX-6,240,cx+30*k+2,yb+8,'#2A6BA8',1);
+  T(s,cx+22.5*k+14,yT+44,'стропило 45×90',{size:12.5,anchor:'start'});
+})();
+
+/* ---------- чертёж Р3: вид сбоку по скату ---------- */
+(function(){
+  const s=document.getElementById('dT');const k=.32,X=v=>52+(v+63)*k,yr=206,gy=yr-7;   // скат развёрнут в линию: v — от конька, мм
+  el('defs',{},s).innerHTML='<marker id="arTg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1 L9 5 L0 9 z" fill="#1B9E5F"/></marker><pattern id="hwT" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#C79B6D"/><line x1="0" y1="0" x2="0" y2="6" stroke="#A97E52" stroke-width="1.4"/></pattern>';
+  T(s,500,22,'Лист задвигается снизу вдоль ската в пазы и верхом — в захват конькового профиля',{size:15,weight:700,cls:'d'});
+  el('rect',{x:X(0),y:yr,width:X(1677)-X(0),height:20,fill:'url(#hwT)',stroke:'#1F2933','stroke-width':1},s);
+  el('rect',{x:X(-31),y:gy,width:X(1724)-X(-31),height:7,fill:'#DDEEFA',stroke:'#2A6BA8','stroke-width':1},s);
+  T(s,X(1000),yr+40,'стропило и направляющая (основание профиля)',{size:12.5,fill:'#5B6773'});
+  el('path',{d:'M'+(X(-63)-10)+' '+(gy-6)+' q0 -34 34 -34 h24 v6 h-22 q-16 0 -16 28 z',fill:'#D9C8F2','fill-opacity':.7,stroke:'#5B3F99','stroke-width':1.3},s);
+  T(s,X(-63)-8,gy-50,'коньковый профиль с захватом',{size:13,anchor:'start',fill:'#5B3F99'});
+  el('rect',{x:X(-63),y:gy-16,width:600*k,height:10,fill:'#FFD98A','fill-opacity':.9,stroke:'#9C5410','stroke-width':1.2},s);
+  T(s,X(-63)+300*k,gy-22,'пробный кусок 600 мм',{size:12.5,fill:'#9C5410'});
+  const ya=100;L2(s,X(-63)+600*k,ya,X(1724),ya,'#1D5FA6',1.5);L2(s,X(-63)+600*k,ya-6,X(-63)+600*k,gy-18,'#1D5FA6',.9,'3 3');L2(s,X(1724),ya-6,X(1724),gy-8,'#1D5FA6',.9,'3 3');
+  T(s,(X(-63)+600*k+X(1724))/2,ya-9,'измерить: от нижнего края куска до конца направляющей, + 600 = А',{size:13,cls:'m',fill:'#1D5FA6'});
+  // лист, входящий от карниза
+  const v0=850,len=1787,yS=gy-17;
+  el('rect',{x:X(v0),y:yS,width:920-X(v0),height:10,fill:'#BFE0F7','fill-opacity':.9,stroke:'#2A6BA8','stroke-width':1.4},s);
+  T(s,X(v0)+8,yS-9,'лист, задвигаемый шагами по 20–30 см',{size:13,fill:'#2A6BA8',anchor:'start'});
+  L2(s,996,yS+5,930,yS+5,'#1B9E5F',3.4).setAttribute('marker-end','url(#arTg)');
+  // стремянка помощника у карниза
+  L2(s,900,yr+150,946,yS+30,'#E8873A',4.5);L2(s,936,yr+150,982,yS+30,'#E8873A',4.5);for(let f=.15;f<.95;f+=.18){const x1=900+46*f,y1=yr+150+(yS+30-yr-150)*f;L2(s,x1,y1,x1+36,y1,'#E8873A',3);}
+  T(s,990,yr+170,'помощник у карниза толкает снизу',{size:13,weight:600,fill:'#1B7A50',anchor:'end'});
+  // второй — на стремянке в соседнем пролёте (фон), тянет сверху
+  const sx=X(640);
+  L2(s,sx-26,yr+110,sx-8,ya+34,'#9DB8E6',4.5);L2(s,sx+22,yr+110,sx+8,ya+34,'#9DB8E6',4.5);for(let y=yr+90;y>ya+44;y-=24)L2(s,sx-24+ (yr+110-y)*.13,y,sx+20-(yr+110-y)*.09,y,'#9DB8E6',2.6);
+  L2(s,sx+10,ya+38,X(v0)+8,yS-3,'#1B9E5F',3.4).setAttribute('marker-end','url(#arTg)');
+  T(s,sx-38,yr+78,'второй — на стремянке',{size:13,weight:600,anchor:'end',fill:'#2A5FA6'});T(s,sx-38,yr+94,'в соседнем пролёте, перегнувшись',{size:12.5,anchor:'end',fill:'#2A5FA6'});T(s,sx-38,yr+110,'корпусом, тянет сверху',{size:12.5,anchor:'end',fill:'#2A5FA6'});
+  T(s,X(0)-14,yr+58,'конёк',{size:12.5,fill:'#5B6773',anchor:'start'});T(s,X(1724)-6,yr+58,'карниз, свес 48 мм',{size:12.5,fill:'#5B6773',anchor:'start'});
+})();
+
+/* ---------- чертёж Р4: лаз у конька (разрез поперёк конька) ---------- */
+(function(){
+  const s=document.getElementById('dL');const k=.2,th=36*Math.PI/180,cs=Math.cos(th),sn=Math.sin(th),RX=500,RY=74;
+  el('defs',{},s).innerHTML='<marker id="arL" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1 L9 5 L0 9 z" fill="#1B9E5F"/></marker>';
+  const pt=(side,v,w)=>[RX+side*(cs*v*k+sn*w),RY+sn*v*k-cs*w];           // v — мм вдоль ската от конька, w — px от плоскости
+  const band=(side,v0,v1,w0,w1,fill,stroke,sw)=>PG(s,[pt(side,v0,w0),pt(side,v1,w0),pt(side,v1,w1),pt(side,v0,w1)],fill,stroke,sw||1);
+  [1,-1].forEach(side=>band(side,0,1677,-7,0,'#C79B6D','#7A4D2B',1.2));
+  band(1,0,1787,0,7,'#BFE0F7','#2A6BA8',1.2);
+  band(-1,600,1787,0,7,'#BFE0F7','#2A6BA8',1.2);
+  [1,-1].forEach(side=>band(side,0,1724,-2.6,0,'#fff','#2A6BA8',1));
+  el('path',{d:'M'+(RX-26)+' '+(RY-8)+' q0 -36 26 -36 q26 0 26 36',fill:'rgba(217,200,242,.6)',stroke:'#5B3F99','stroke-width':1.3},s);
+  T(s,RX,RY-54,'коньковый профиль',{size:12.5,fill:'#5B3F99'});
+  const g0=pt(-1,0,7),g1=pt(-1,600,7);L2(s,g0[0],g0[1],g1[0],g1[1],'#E0322A',3.4,'5 3');
+  T(s,392,56,'лаз у конька',{size:15,weight:700,anchor:'end',fill:'#B3261E'});L2(s,396,60,g0[0]-18,g0[1]+22,'#B3261E',1);
+  T(s,296,204,'лист П — верхом на 600 мм ниже конька',{size:12.5,anchor:'end',fill:'#2A6BA8'});
+  const bp=pt(-1,250,-4);el('rect',{x:bp[0]-6,y:bp[1]-6,width:12,height:12,fill:'none',stroke:'#8A5200','stroke-width':1.5,'stroke-dasharray':'3 2'},s);
+  T(s,bp[0]-14,bp[1]-10,'верхний брусок П — позже',{size:12,anchor:'end',fill:'#8A5200'});
+  // стремянка внутри, стрелка через конёк к листу Л
+  const lx=RX;L2(s,lx-24,268,lx-7,RY+52,'#3A7BD5',4.5);L2(s,lx+24,268,lx+7,RY+52,'#3A7BD5',4.5);for(let y=252;y>RY+60;y-=24){const f=(268-y)/(268-RY-52);L2(s,lx-24+17*f,y,lx+24-17*f,y,'#3A7BD5',2.6);}
+  const f1=pt(1,330,22);
+  el('path',{d:'M'+lx+' '+(RY+46)+' L'+(RX+4)+' '+(RY-8)+' L'+f1[0]+' '+f1[1],fill:'none',stroke:'#1B9E5F','stroke-width':3.6,'stroke-linejoin':'round','marker-end':'url(#arL)'},s);
+  T(s,RX+140,RY-14,'перегнуться через конёк — закрепить лист Л',{size:13,weight:600,anchor:'start',fill:'#1B7A50'});
+  T(s,RX+140,RY+6,'верхние ряды — отсюда, нижние — помощник снизу',{size:12.5,anchor:'start',fill:'#1B7A50'});
+  T(s,RX+160,RY+66,'лист Л — до конца',{size:12.5,anchor:'start',fill:'#2A6BA8'});
+})();
+
+document.fonts.ready.then(()=>{window.READY=true;});
+})();
+</script>
+</body>
+</html>
