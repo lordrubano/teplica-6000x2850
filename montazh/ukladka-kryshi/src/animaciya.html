@@ -1,0 +1,986 @@
+<title>Укладка листов крыши</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Roboto+Condensed:wght@500;700&display=swap">
+<style>
+:root{
+  --ground:#F2F4F6; --paper:#FFFFFF; --ink:#1F2933; --muted:#5B6773; --rule:#D5DBE2;
+  --accent:#1D5FA6; --accent-ink:#FFFFFF; --accent-soft:#DCE8F6;
+  --warn:#8A5200; --ok:#1B7A50; --okbg:#E4F4EA; --chip:#E8ECF0; --sky:#C9DDEE;
+  --font-d:"Roboto Condensed","Arial Narrow",Arial,sans-serif;
+  --font-b:"IBM Plex Sans","Segoe UI",Arial,sans-serif;
+  --font-m:"IBM Plex Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#12171D; --paper:#1A2129; --ink:#E6EAEF; --muted:#9AA5B1; --rule:#33404D;
+    --accent:#86B7F2; --accent-ink:#0B1A2B; --accent-soft:#223650;
+    --warn:#F0B35A; --ok:#5FCF93; --okbg:#143023; --chip:#232C36;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#12171D; --paper:#1A2129; --ink:#E6EAEF; --muted:#9AA5B1; --rule:#33404D;
+  --accent:#86B7F2; --accent-ink:#0B1A2B; --accent-soft:#223650;
+  --warn:#F0B35A; --ok:#5FCF93; --okbg:#143023; --chip:#232C36;
+}
+[hidden]{display:none!important}
+html{background:var(--ground)}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b);font-size:15px;line-height:1.5;padding-inline:clamp(16px,3vw,32px);padding-block:18px 36px}
+.wrap{max-width:1320px;margin:0 auto;display:grid;gap:14px}
+.top h1{font-family:var(--font-d);font-weight:700;font-size:clamp(23px,3.2vw,31px);line-height:1.1;margin:0;text-wrap:balance}
+.top p{margin:6px 0 0;color:var(--muted);font-size:14.5px;max-width:78ch}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:16px;align-items:start}
+@media (max-width:920px){.stage{grid-template-columns:minmax(0,1fr)}}
+.view{position:relative;width:100%;aspect-ratio:16/10;background:var(--sky);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+@media (max-width:920px){.view{aspect-ratio:auto;height:min(58vh,520px);min-height:300px}}
+.view canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lbl{position:absolute;left:0;top:0;background:rgba(17,25,34,.9);color:#fff;font:500 12.5px/1.25 var(--font-b);padding:4px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.22)}
+.lbl::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:rgba(17,25,34,.9)}
+.lbl.ok{background:#1B7A50}.lbl.ok::after{border-top-color:#1B7A50}
+.lbl.warn{background:#9C5410}.lbl.warn::after{border-top-color:#9C5410}
+.lbl.num{background:#1D5FA6;font-family:var(--font-m);padding:2px 7px}.lbl.num::after{border-top-color:#1D5FA6}
+.lbl.big{font:700 15px/1.2 var(--font-d);letter-spacing:.02em;padding:5px 10px}
+.lbl.lead::after{display:none}
+.ldr{position:absolute;left:0;top:0;height:0;border-top:1.5px solid currentColor;color:rgba(17,25,34,.9);transform-origin:0 0;pointer-events:none}
+.ldr::before{content:"";position:absolute;left:-3px;top:-4px;width:5px;height:5px;border-radius:50%;background:currentColor}
+.ldr.warn{color:#9C5410}.ldr.ok{color:#1B7A50}
+.hint{position:absolute;left:10px;bottom:8px;font-size:12px;color:#22303D;background:rgba(255,255,255,.78);padding:3px 8px;border-radius:4px}
+.nogl{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:#22303D;font-size:15px}
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:16px;display:grid;gap:12px}
+.stepno{font-family:var(--font-m);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.part{font-family:var(--font-d);font-weight:500;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin:-6px 0 -4px}
+.panel h2{font-family:var(--font-d);font-weight:700;font-size:22px;line-height:1.15;margin:0;text-wrap:balance}
+.acts{margin:0;padding-left:18px;display:grid;gap:6px}
+.check{background:var(--okbg);border-left:3px solid var(--ok);padding:8px 10px;font-size:14px;border-radius:0 4px 4px 0}
+.check b{display:block;font-family:var(--font-d);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:12px;color:var(--ok);margin-bottom:2px}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.ctrl button{font:500 14px/1 var(--font-b);padding:10px 14px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;min-height:42px}
+.ctrl button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-width:104px}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dots{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px}
+.dots button{height:30px;border:0;border-radius:4px;background:var(--chip);color:var(--muted);font:500 12px/1 var(--font-m);cursor:pointer;position:relative;overflow:hidden;padding:0}
+.dots .fill{position:absolute;inset:0;background:var(--accent-soft);transform-origin:left center;transform:scaleX(0)}
+.dots button span{position:relative}
+.dots button.on{color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.dots button.p2{background:#DDE6EE}
+.dots button.p3{background:#E6E3D3}
+.dots button.p4{background:#EBDDDD}
+.dots button.p5{background:#DCE9DF}
+.doclink{font-size:14px;color:var(--accent);text-underline-offset:3px}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.facts span{background:var(--paper);border:1px solid var(--rule);border-radius:99px;padding:5px 12px;font-size:13px}
+.facts b{font-family:var(--font-m);font-weight:500;font-variant-numeric:tabular-nums}
+body.kadr{padding:0}
+body.kadr .top,body.kadr .panel,body.kadr .facts,body.kadr .hint{display:none}
+body.kadr .wrap{max-width:none;display:block}
+body.kadr .stage{display:block}
+body.kadr .view{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0}
+body.kadr .lbl{font-size:15px}
+body.kadr .lbl.big{font-size:18px}
+body.shot .lbl{font-size:20px}
+body.shot .lbl.big{font-size:23px}
+.vbrand{position:absolute;left:22px;top:16px;font:500 16px/1.2 var(--font-b);color:#22303D;background:rgba(255,255,255,.82);padding:5px 10px;border-radius:4px}
+.vcap{position:absolute;left:0;right:0;bottom:0;padding:44px 30px 22px;background:linear-gradient(rgba(12,18,26,0),rgba(12,18,26,.84) 42%);color:#fff}
+.vcap .vn{font:500 16px/1.2 var(--font-m);opacity:.85;letter-spacing:.04em}
+.vcap .vt{font:700 32px/1.12 var(--font-d);margin-top:4px}
+.vcap .vc{font:400 19px/1.35 var(--font-b);opacity:.95;margin-top:6px;max-width:78ch}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Укладка листов крыши</h1>
+    <p>Теплица 6000×2850, 8 листов сотового поликарбоната 6 мм: 20 шагов от проверок на земле до закрытой крыши. Работа только снизу, изнутри, с лестницы: бруски ставятся по пролётам вместе с листами.</p>
+  </header>
+  <div class="stage">
+    <div class="view" id="view">
+      <canvas id="c" aria-label="Объёмная анимация укладки листов крыши"></canvas>
+      <div id="labels"></div>
+      <div class="hint" id="hint">Вращать — пальцем или мышью</div>
+      <div class="vbrand" id="vbrand" hidden>Укладка листов крыши · теплица 6000×2850</div>
+      <div class="vcap" id="vcap" hidden><div class="vn" id="vn"></div><div class="vt" id="vt"></div><div class="vc" id="vc"></div></div>
+      <div class="nogl" id="nogl" hidden>Браузер не показывает объёмную графику. Все шаги есть в инструкции для печати — ссылка справа.</div>
+    </div>
+    <aside class="panel" aria-live="polite">
+      <div class="stepno" id="stepno">Шаг 1 из 20</div>
+      <div class="part" id="part">Часть 1. Проверка и разметка на земле</div>
+      <h2 id="title">Что должно быть готово</h2>
+      <ul class="acts" id="acts"></ul>
+      <div class="check"><b>Проверка</b><span id="check"></span></div>
+      <div class="ctrl">
+        <button id="prev" type="button">Назад</button>
+        <button id="play" class="main" type="button">Пауза</button>
+        <button id="next" type="button">Далее</button>
+      </div>
+      <div class="dots" id="dots" role="group" aria-label="Шаги"></div>
+      <a class="doclink" id="doc" href="instrukciya-ukladka.pdf" target="_blank" rel="noopener">Инструкция для печати: чертежи и все шаги</a>
+    </aside>
+  </div>
+  <div class="facts">
+    <span>Работа только снизу — <b>на крышу не вставать</b></span>
+    <span>Бруски — <b>по пролётам, не все сразу</b></span>
+    <span>Крышки — <b>заранее</b>, лист задвигается в пазы</span>
+    <span>Порядок: <b>средние пролёты, потом крайние</b></span>
+    <span>Крепить — <b>перегнувшись из соседнего пролёта</b></span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+'use strict';
+const KADR=/(^|[?&])kadr(\b|=)/.test(location.search);
+const VIDEO=/(^|[?&])video(\b|=)/.test(location.search);
+if(KADR||VIDEO)document.body.classList.add('kadr');
+if(KADR)document.body.classList.add('shot');
+const REDUCED=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+const view=document.getElementById('view'),canvas=document.getElementById('c'),layer=document.getElementById('labels');
+const $=id=>document.getElementById(id);
+
+function noGL(){$('nogl').hidden=false;$('hint').hidden=true;}
+if(typeof THREE==='undefined'||!THREE.OrbitControls){noGL();return;}
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:KADR});}catch(e){noGL();return;}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+/* ---------- размеры каркаса, мм (проект «Теплица 6000×2850», ред. 8.0) ---------- */
+const W=2850,L=6000,plateTop=2255,ridgeTop=3240,ridgeGap=45,ridgeH=90,fH=600;
+const rTopX=ridgeGap/2+45;                      // наружная грань коньковой балки от оси
+const dx=W/2-rTopX,dy=ridgeTop-plateTop;
+const slen=Math.hypot(dx,dy);                   // длина стропила по верху, ≈1677
+const th=Math.atan2(dy,dx),cs=Math.cos(th),sn=Math.sin(th);
+// Фактический обмер каркаса (лист 14 проекта): пролёты в свету между стропилами, мм, от пары 1 к паре 5
+const SPAN_L=[1465,1430,1435,1450];   // карниз ската Л (замер монтажников)
+const SPAN_K=[1460,1430,1427,1450];   // конёк фактически, замер 28.09.2026 — каркас принят владельцем как есть
+const SPAN_P=[1458,1425,1430,1460];   // карниз ската П (замер монтажников)
+function axes(sp){const a=[-L/2+22.5];sp.forEach(x=>a.push(a[a.length-1]+x+45));return a;}
+const zRidge=axes(SPAN_K),zEave={'1':axes(SPAN_L),'-1':axes(SPAN_P)};
+const rafterZ=zRidge;                          // пары 1…5 у конька
+const SIDES=[1,-1];                             // 1 — скат Л, −1 — скат П
+const ROWS=[280,560,840,1120,1400];             // оси брусков от верхнего конца стропила
+const MARKS=[105,185,465,745,1025,1305,1585,1665]; // отверстия от нижнего конца направляющей
+const EDGE=-36;                                 // край конькового профиля по проекту: v = −36
+const BV0=EDGE+5,BV1=1724;                      // верх направляющей — на 5 мм ниже края профиля (v = −31), нижний конец — свес 48 у карниза
+const GLEN=BV1-BV0;                             // длина эталона и заготовок: 1755
+const vMark=m=>BV1-m;
+function zAt(side,i,v){const r=zRidge[i],e=zEave[side][i];return r+(e-r)*v/slen;} // ось стропила вдоль ската
+function yawOf(side,i){return -side*Math.atan2(zEave[side][i]-zRidge[i],dx);}
+const Lz0=rafterZ[0];
+// точка на плоскости ската: v — вдоль ската от конька, w — по нормали вверх
+function P(side,v,w){return new THREE.Vector3(side*(rTopX+cs*v+sn*w),ridgeTop-sn*v+cs*w,0);}
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a),0,1);
+const ease=x=>x*x*(3-2*x);
+
+/* ---------- сцена ---------- */
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xC9DDEE);
+scene.fog=new THREE.Fog(0xC9DDEE,18000,48000);
+const camera=new THREE.PerspectiveCamera(38,1.6,30,90000);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.enableDamping=true;controls.dampingFactor=.12;controls.maxPolarAngle=Math.PI/2-.03;
+controls.minDistance=250;controls.maxDistance=30000;
+scene.add(new THREE.HemisphereLight(0xEAF3FF,0x7D7263,.85));
+const sun=new THREE.DirectionalLight(0xFFF6E6,.9);
+sun.position.set(6000,10000,-5000);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-6500,right:6500,top:6500,bottom:-6500,near:1000,far:28000});
+sun.shadow.camera.updateProjectionMatrix();sun.shadow.bias=-.0004;scene.add(sun);
+
+const std=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.8,metalness:0},o||{}));
+const M={
+  ground:std(0x8E877A,{roughness:1}),found:std(0x2A1E17,{roughness:1}),
+  wood:std(0x4A2B15),woodDark:std(0x33200F),plank:std(0x7E6143),
+  alu:std(0xD2D8DE,{metalness:.55,roughness:.35}),aluHi:std(0xF06A2A,{roughness:.5}),
+  base:std(0xEAF4FC,{roughness:.3,transparent:true,opacity:.95}),
+  baseT:std(0xFFD98A,{roughness:.35,transparent:true,opacity:.97}),
+  baseSpare:std(0xC4CCD4,{roughness:.4}),
+  cap:std(0xBFE0F7,{roughness:.2,transparent:true,opacity:.8}),
+  hole:new THREE.MeshBasicMaterial({color:0x1B2733}),
+  screw:std(0xD6A933,{metalness:.7,roughness:.35}),washer:std(0xC3CAD1,{metalness:.8,roughness:.3}),
+  cord:new THREE.MeshBasicMaterial({color:0xE8442A}),cordOk:new THREE.MeshBasicMaterial({color:0x1FA36A}),
+  axis:new THREE.MeshBasicMaterial({color:0xFF8A00}),mark:new THREE.MeshBasicMaterial({color:0xF06A2A}),
+  dim:new THREE.MeshBasicMaterial({color:0x1D5FA6}),
+  chalk:new THREE.MeshBasicMaterial({color:0xFFFFFF}),
+  ridge:new THREE.MeshStandardMaterial({color:0xD9C8F2,roughness:.3,metalness:0,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}),
+  ridgeLine:new THREE.LineBasicMaterial({color:0x5B3F99,transparent:true,opacity:.8})
+};
+
+function box(w,h,d,x,y,z,mat){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;scene.add(m);return m;}
+const U=new THREE.BoxGeometry(1,1,1);
+function um(mat,shadow){const m=new THREE.Mesh(U,mat);m.castShadow=!!shadow;m.receiveShadow=true;m.visible=false;scene.add(m);return m;}
+function placeSlope(m,side,v0,v1,w0,w1,z0,z1){const c=P(side,(v0+v1)/2,(w0+w1)/2);m.position.set(c.x,c.y,(z0+z1)/2);m.rotation.set(0,0,side>0?-th:th);m.scale.set(Math.max(v1-v0,.01),Math.max(w1-w0,.01),Math.max(z1-z0,.01));}
+function placeR(m,side,i,v0,v1,w0,w1,o0,o1){const vm=(v0+v1)/2,c=P(side,vm,(w0+w1)/2);m.position.set(c.x,c.y,zAt(side,i,vm)+(o0+o1)/2);m.rotation.set(0,yawOf(side,i),side>0?-th:th);m.scale.set(Math.max(v1-v0,.01),Math.max(w1-w0,.01),Math.max(o1-o0,.01));}
+function placeZ(m,side,v,w,z0,z1,k){const c=P(side,v,w);m.position.set(c.x,c.y,(z0+z1)/2);m.rotation.set(0,0,side>0?-th:th);m.scale.set(k,k,Math.max(z1-z0,.01));}
+
+/* ---------- каркас ---------- */
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(80000,80000),M.ground);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+box(190,fH,L,-W/2+95,fH/2,0,M.found);box(190,fH,L,W/2-95,fH/2,0,M.found);
+box(W-380,fH,190,0,fH/2,L/2-95,M.found);box(W-380,fH,190,0,fH/2,-L/2+95,M.found);
+for(const s of SIDES){
+  box(140,45,L,s*(W/2-70),fH+22.5,0,M.woodDark);
+  box(140,45,L,s*(W/2-70),plateTop-22.5,0,M.woodDark);
+  for(const z of zEave[s])box(45,plateTop-45-fH-45,90,s*(W/2-22.5),(fH+45+plateTop-45)/2,z,M.wood);
+}
+for(const zs of [1,-1])box(W,45,140,0,plateTop-22.5,zs*(L/2-70),M.woodDark);
+function rafterGeo(side){const sh=new THREE.Shape(),hCut=90/Math.sin(th),vCut=90/Math.cos(th);
+  sh.moveTo(side*rTopX,ridgeTop);sh.lineTo(side*W/2,plateTop);sh.lineTo(side*(W/2-hCut),plateTop);sh.lineTo(side*rTopX,ridgeTop-vCut);sh.lineTo(side*rTopX,ridgeTop);
+  const g=new THREE.ExtrudeGeometry(sh,{depth:45,bevelEnabled:false});g.translate(0,0,-22.5);return g;}
+const triBot=rTopX+140/Math.tan(th),triSh=new THREE.Shape();
+triSh.moveTo(-rTopX,ridgeTop);triSh.lineTo(rTopX,ridgeTop);triSh.lineTo(triBot,ridgeTop-140);triSh.lineTo(-triBot,ridgeTop-140);triSh.lineTo(-rTopX,ridgeTop);
+const gTri=new THREE.ExtrudeGeometry(triSh,{depth:45,bevelEnabled:false});gTri.translate(0,0,-22.5);
+const tieTop=plateTop+90,lTieXTop=rTopX+(ridgeTop-tieTop)/Math.tan(th),tieSh=new THREE.Shape();
+tieSh.moveTo(-W/2,plateTop);tieSh.lineTo(W/2,plateTop);tieSh.lineTo(lTieXTop,tieTop);tieSh.lineTo(-lTieXTop,tieTop);tieSh.lineTo(-W/2,plateTop);
+const gTie=new THREE.ExtrudeGeometry(tieSh,{depth:45,bevelEnabled:false});gTie.translate(0,0,-22.5);
+function addGeo(g,z,mat){const m=new THREE.Mesh(g,mat);m.position.z=z;m.castShadow=true;m.receiveShadow=true;scene.add(m);return m;}
+const gR=rafterGeo(1).translate(-rTopX,0,0),gL=rafterGeo(-1).translate(rTopX,0,0);
+function addRafter(g,side,i){const grp=new THREE.Group();grp.position.set(side*rTopX,0,zRidge[i]);grp.rotation.y=yawOf(side,i);
+  const m=new THREE.Mesh(g,M.wood);m.castShadow=true;m.receiveShadow=true;grp.add(m);scene.add(grp);}
+rafterZ.forEach((z,i)=>{
+  addRafter(gR,1,i);addRafter(gL,-1,i);
+  const zt=(zEave['1'][i]+zEave['-1'][i])/2;
+  if(i>0&&i<4){addGeo(gTri,z-45,M.woodDark);addGeo(gTri,z+45,M.woodDark);addGeo(gTie,zt-45,M.woodDark);addGeo(gTie,zt+45,M.woodDark);}
+  else addGeo(gTri,z+(i===0?45:-45),M.woodDark);
+});
+box(45,ridgeH,L,rTopX-22.5,ridgeTop-ridgeH/2,0,M.woodDark);box(45,ridgeH,L,-(rTopX-22.5),ridgeTop-ridgeH/2,0,M.woodDark);
+// уголки 40×40×40: полка на боковой грани стропила, вторая полка — под будущий брусок
+const hiAngles=[];
+for(const s of SIDES)rafterZ.forEach((z,i)=>{
+  const dirs=i===0?[1]:i===4?[-1]:[1,-1];
+  for(const d of dirs)for(const r of ROWS){
+    const a=um(M.alu,true),b=um(M.alu,true),f0=d*22.5;
+    placeR(a,s,i,r-62.5,r-22.5,-40,0,Math.min(f0,f0+d*2),Math.max(f0,f0+d*2));
+    placeR(b,s,i,r-24.5,r-22.5,-40,0,Math.min(f0,f0+d*40),Math.max(f0,f0+d*40));
+    a.visible=b.visible=true;
+    if(s===1&&i===0)hiAngles.push(a,b);
+  }
+});
+
+/* ---------- материалы и текстуры укладки ---------- */
+function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t;}
+const texSheet=ctex(256,512,(g,w,h)=>{g.fillStyle='#E1EFFA';g.fillRect(0,0,w,h);g.strokeStyle='#9FC3E2';g.lineWidth=2;for(let x=6;x<w;x+=12){g.beginPath();g.moveTo(x,0);g.lineTo(x,h);g.stroke();}});
+const texFilm=ctex(256,1024,(g,w,h)=>{g.fillStyle='#F6F9FC';g.fillRect(0,0,w,h);g.strokeStyle='rgba(120,160,200,.22)';g.lineWidth=1;for(let x=6;x<w;x+=12){g.beginPath();g.moveTo(x,0);g.lineTo(x,h);g.stroke();}
+  g.fillStyle='#2A6BA8';g.textAlign='center';g.font='bold 30px Arial,sans-serif';
+  for(const y of [330,650,960]){g.save();g.translate(w/2,y);g.rotate(-Math.PI/2);g.fillText('KIN PREMIUM',0,10);g.restore();}
+  g.font='bold 22px Arial,sans-serif';g.fillText('▲',w/2,40);g.font='bold 40px Arial,sans-serif';g.fillText('ВЕРХ',w/2,92);});
+const dbl={side:THREE.DoubleSide};
+Object.assign(M,{
+  sheet:new THREE.MeshStandardMaterial({map:texSheet,roughness:.35,transparent:true,opacity:.93,side:THREE.DoubleSide}),
+  film:new THREE.MeshStandardMaterial({map:texFilm,roughness:.5,transparent:true,opacity:.96,side:THREE.DoubleSide}),
+  filmB:new THREE.MeshStandardMaterial({color:0xBFD3E6,roughness:.4,transparent:true,opacity:.45,side:THREE.DoubleSide,depthWrite:false}),
+  endp:new THREE.MeshStandardMaterial({color:0xEEF1F5,roughness:.4,transparent:true,opacity:.92,side:THREE.DoubleSide}),
+  beam:std(0xC9A46F),
+  capT:new THREE.MeshStandardMaterial({color:0xBFE0F7,roughness:.2,transparent:true,opacity:.55,side:THREE.DoubleSide,depthWrite:false}),
+  wash:std(0xF1F3F5,{metalness:.1,roughness:.45}),washCap:std(0x5C7A99,{roughness:.5}),
+  washGhost:new THREE.MeshStandardMaterial({color:0xF1F3F5,roughness:.45,transparent:true,opacity:.35,depthWrite:false}),
+  washCapGhost:new THREE.MeshStandardMaterial({color:0x5C7A99,roughness:.5,transparent:true,opacity:.35,depthWrite:false}),
+  hl:new THREE.MeshBasicMaterial({color:0xFFC83A,transparent:true,opacity:.3,side:THREE.DoubleSide,depthWrite:false}),
+  hlG:new THREE.MeshBasicMaterial({color:0x2BBF75,transparent:true,opacity:.3,side:THREE.DoubleSide,depthWrite:false}),
+  hlR:new THREE.MeshBasicMaterial({color:0xE0322A,transparent:true,opacity:.42,side:THREE.DoubleSide,depthWrite:false}),
+  r08:new THREE.MeshBasicMaterial({color:0x2BBF75,transparent:true,opacity:.42,side:THREE.DoubleSide,depthWrite:false}),
+  r115:new THREE.MeshBasicMaterial({color:0xFFC83A,transparent:true,opacity:.36,side:THREE.DoubleSide,depthWrite:false}),
+  r15:new THREE.MeshBasicMaterial({color:0x4A90E2,transparent:true,opacity:.3,side:THREE.DoubleSide,depthWrite:false}),
+  front:new THREE.MeshBasicMaterial({color:0xF08A2A,transparent:true,opacity:.34,side:THREE.DoubleSide,depthWrite:false}),
+  soap:new THREE.MeshBasicMaterial({color:0x4FD3EE}),
+  pad:std(0xE8873A),
+  stepL:std(0xE8873A,{metalness:.3,roughness:.5}),asstL:std(0x3A7BD5,{metalness:.3,roughness:.5}),
+  stack:new THREE.MeshStandardMaterial({color:0xDCEBF7,roughness:.4,transparent:true,opacity:.95}),
+  arrG:new THREE.MeshBasicMaterial({color:0x1B9E5F}),arrY:new THREE.MeshBasicMaterial({color:0xE0A010}),arrR:new THREE.MeshBasicMaterial({color:0xD62E2E}),arrB:new THREE.MeshBasicMaterial({color:0x1D5FA6}),
+  mallet:std(0x8A5A2B),malletHead:std(0x1F2933)
+});
+const Yv=new THREE.Vector3(0,1,0),Zv=new THREE.Vector3(0,0,1);
+
+/* ---------- общие построители ---------- */
+function mk(g,mat,shadow){const m=new THREE.Mesh(g,mat);m.castShadow=!!shadow;m.receiveShadow=true;m.visible=false;scene.add(m);return m;}
+// призма по восьми углам: ptf(i,j,k) → [x,y,z]; i — вдоль листа (0 — верх), j — по толщине, k — поперёк
+function prismG(ptf){
+  const pos=[],uv=[];
+  const quad=(a,b,c,d,ua,ub,uc,ud)=>{pos.push(...a,...b,...c,...a,...c,...d);uv.push(...ua,...ub,...uc,...ua,...uc,...ud);};
+  const C=ptf,U0=[0,0],U1=[1,0],U2=[1,1],U3=[0,1],T=(i,k)=>[k,1-i];
+  quad(C(0,1,0),C(1,1,0),C(1,1,1),C(0,1,1),T(0,0),T(1,0),T(1,1),T(0,1));
+  quad(C(0,0,0),C(0,0,1),C(1,0,1),C(1,0,0),T(0,0),T(0,1),T(1,1),T(1,0));
+  quad(C(0,0,0),C(1,0,0),C(1,1,0),C(0,1,0),U0,U1,U2,U3);
+  quad(C(0,0,1),C(0,1,1),C(1,1,1),C(1,0,1),U0,U1,U2,U3);
+  quad(C(0,0,0),C(0,1,0),C(0,1,1),C(0,0,1),U0,U1,U2,U3);
+  quad(C(1,0,0),C(1,0,1),C(1,1,1),C(1,1,0),U0,U1,U2,U3);
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.computeVertexNormals();return g;
+}
+function roofPrism(side,v0,v1,w0,w1,fa,fb){const vs=[v0,v1],ws=[w0,w1];return prismG((i,j,k)=>{const v=vs[i],p=P(side,v,ws[j]);return [p.x,p.y,k?fb(v):fa(v)];});}
+function shift(m,side,d,lift){lift=lift||0;m.position.set(side*(cs*d+sn*lift),-sn*d+cs*lift,0);}
+function rod(A,B,t,mat,parent){const d=new THREE.Vector3().subVectors(B,A),len=d.length(),m=new THREE.Mesh(U,mat);
+  m.position.copy(A).addScaledVector(d,.5);m.quaternion.setFromUnitVectors(Zv,d.clone().normalize());m.scale.set(t,t,len);m.castShadow=true;(parent||scene).add(m);return m;}
+const coneG=new THREE.ConeGeometry(1,1,16),cylW=new THREE.CylinderGeometry(20,20,5,28),cylC=new THREE.CylinderGeometry(8,8,6,18);
+function mkArrow(mat){const g=new THREE.Group(),sh=new THREE.Mesh(U,mat),hd=new THREE.Mesh(coneG,mat);g.add(sh,hd);g.userData={sh,hd};g.visible=false;scene.add(g);return g;}
+function setArrow(g,A,B,t){const d=new THREE.Vector3().subVectors(B,A),len=d.length(),dir=d.clone().normalize(),hl=Math.min(len*.45,t*5),sh=g.userData.sh,hd=g.userData.hd;
+  sh.position.copy(A).addScaledVector(dir,(len-hl)/2);sh.quaternion.setFromUnitVectors(Zv,dir);sh.scale.set(t,t,Math.max(1,len-hl));
+  hd.position.copy(B).addScaledVector(dir,-hl/2);hd.quaternion.setFromUnitVectors(Yv,dir);hd.scale.set(t*2.4,hl,t*2.4);g.visible=true;}
+function halfDisc(side,zc,vc,r,w,dirz,mat){const pos=[],idx=[],n=48,p0=P(side,vc,w);pos.push(p0.x,p0.y,zc);
+  for(let k=0;k<=n;k++){const f=-Math.PI/2+Math.PI*k/n,p=P(side,vc+r*Math.sin(f),w);pos.push(p.x,p.y,zc+dirz*r*Math.cos(f));if(k>0)idx.push(0,k,k+1);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);return mk(g,mat,false);}
+
+/* ---------- направляющие (уже стоят по инструкции направляющих) ---------- */
+for(const s of SIDES)rafterZ.forEach((z,i)=>{const m=um(M.base,true);placeR(m,s,i,BV0,BV1,0,3,-30,30);m.visible=true;});
+/* крышки 70 мм: плита и две губы; между губой и основанием остаётся паз */
+const caps={};
+for(const s of SIDES){caps[s]=rafterZ.map(()=>({t:um(M.capT),l1:um(M.capT),l2:um(M.capT)}));}
+function showCap(s,i,lift){const c=caps[s][i];lift=lift||0;
+  placeR(c.t,s,i,BV0,BV1,11+lift,13+lift,-35,35);placeR(c.l1,s,i,BV0,BV1,8+lift,13+lift,-35,-33);placeR(c.l2,s,i,BV0,BV1,8+lift,13+lift,33,35);c.t.visible=c.l1.visible=c.l2.visible=true;}
+/* полосы крайних стропил: 50 мм под наружной губой */
+const SV0=-66,SV1=BV1;                       // верх листа — в захвате конька, низ вровень с направляющей
+const strips={};
+for(const s of SIDES){strips[s]={};for(const i of [0,4]){const out=i===0?-1:1;
+  strips[s][i]=mk(roofPrism(s,SV0,SV1,3,9,v=>zAt(s,i,v)+(out<0?-60:10),v=>zAt(s,i,v)+(out<0?-10:60)),M.sheet);}}
+/* коньковый профиль: дуга с захватами; нижний край — на v = EDGE */
+function makeRidgeProfile(){
+  const e=P(1,EDGE,9),rx=e.x,ye=e.y,ry=50,t=3,n=28,sh=new THREE.Shape();
+  for(let k=0;k<=n;k++){const a=Math.PI*(1-k/n),x=rx*Math.cos(a),y=ye+ry*Math.sin(a);if(k===0)sh.moveTo(x,y);else sh.lineTo(x,y);}
+  for(let k=n;k>=0;k--){const a=Math.PI*(1-k/n);sh.lineTo((rx-t)*Math.cos(a),ye+(ry-t)*Math.sin(a));}
+  const g=new THREE.ExtrudeGeometry(sh,{depth:1,bevelEnabled:false}),grp=new THREE.Group();
+  grp.add(new THREE.Mesh(g,M.ridge),new THREE.LineSegments(new THREE.EdgesGeometry(g,25),M.ridgeLine));
+  for(const sd of SIDES){const c=P(sd,EDGE-9,10.5),m=new THREE.Mesh(U,M.ridge);m.position.set(c.x,c.y,.5);m.rotation.z=sd>0?-th:th;m.scale.set(18,3,1);grp.add(m);}
+  grp.visible=false;scene.add(grp);return grp;
+}
+const ridgeRoof=makeRidgeProfile(),ridgeGround=makeRidgeProfile();
+ridgeRoof.position.z=-3000;ridgeRoof.scale.z=6000;
+ridgeGround.position.set(-2350,-P(1,EDGE,9).y,-3000);ridgeGround.scale.z=6000;
+/* шнуры подвязки конькового профиля к крайним стропилам */
+const cords=[];
+for(const zs of [-1,1])for(const s of SIDES){const zr=zs<0?rafterZ[0]:rafterZ[4],pa=V(0,ridgeTop+72,zs*2990),pb=P(s,260,4);pb.z=zr+zs*8;cords.push(rod(pa,pb,9,M.cord));}
+cords.forEach(c=>c.visible=false);
+/* фронтоны — подсветка открытых торцов */
+const frShape=new THREE.Shape();frShape.moveTo(-W/2,plateTop);frShape.lineTo(W/2,plateTop);frShape.lineTo(0,ridgeTop);frShape.lineTo(-W/2,plateTop);
+const frG=new THREE.ExtrudeGeometry(frShape,{depth:14,bevelEnabled:false});
+const fronts=[mk(frG,M.front),mk(frG,M.front)];fronts[0].position.z=-3014;fronts[1].position.z=3000;
+
+/* ---------- пролёты: бруски, лист, плёнка, торцевой профиль, термошайбы ---------- */
+const bay={};
+for(const s of SIDES){bay[s]=[];for(let b=0;b<4;b++){
+  const fa=v=>zAt(s,b,v)+10,fb=v=>zAt(s,b+1,v)-10,o={s,b,fa,fb};
+  o.sheet=mk(roofPrism(s,SV0,SV1,3,9,fa,fb),M.sheet);
+  o.film=mk(roofPrism(s,SV0+100,SV1,9.05,9.7,v=>fa(v)+100,v=>fb(v)-100),M.film);
+  o.endp=mk(roofPrism(s,SV1-2,SV1+6,1,11,fa,fb),M.endp);
+  o.beams=ROWS.map(()=>um(M.beam,true));
+  o.wash=[0,1,2].map(()=>ROWS.map(()=>({w:mk(cylW,M.wash,true),c:mk(cylC,M.washCap,true)})));
+  o.hl=mk(roofPrism(s,0,slen,16,16.6,v=>zAt(s,b,v)+26,v=>zAt(s,b+1,v)-26),M.hl);
+  bay[s].push(o);}}
+function showBeam(o,k,lift){const v=ROWS[k],m=o.beams[k];lift=lift||0;
+  placeSlope(m,o.s,v-22.5,v+22.5,-42-lift,2.9-lift,zAt(o.s,o.b,v)+31,zAt(o.s,o.b+1,v)-31);m.visible=true;}
+function showSheet(o,d,lift){[o.sheet,o.endp].forEach(m=>{shift(m,o.s,d,lift);m.visible=true;});}
+function showFilm(o,f,d){if(f>=1){o.film.visible=false;return;}shift(o.film,o.s,(d||0)+f*2200,f*140);o.film.visible=true;}
+function washZ(o,r,k){const v=ROWS[k],a=o.fa(v),b=o.fb(v);return r===0?b-370:r===1?(a+b)/2:a+370;}
+function showWash(o,r,k,lift,ghost){const v=ROWS[k],z=washZ(o,r,k),W=o.wash[r][k],p=P(o.s,v,9+2.5+(lift||0)),q=P(o.s,v,9+5+3+(lift||0)),rz=o.s>0?-th:th;
+  W.w.position.set(p.x,p.y,z);W.w.rotation.set(0,0,rz);W.c.position.set(q.x,q.y,z);W.c.rotation.set(0,0,rz);
+  W.w.material=ghost?M.washGhost:M.wash;W.c.material=ghost?M.washCapGhost:M.washCap;W.w.visible=W.c.visible=true;}
+/* прогресс закрытия пролёта: бруски → лист → плёнка → термошайбы; u от 0 до 1 */
+function bayProg(o,u,opt){opt=opt||{};
+  const nb=clamp(u/.22,0,1)*5;for(let k=0;k<5;k++)if(nb>k)showBeam(o,k,(1-ease(clamp(nb-k,0,1)))*160);
+  const sl=seg(u,.24,.5);if(sl>0){const d=(1-ease(sl))*1000;showSheet(o,d,0);showFilm(o,seg(u,.5,.62),d);}
+  const wr=seg(u,.64,.8),wm=seg(u,.8,.92),wf=seg(u,.92,1),skip=opt.skipTop?1:0;
+  [[0,wr],[1,wm],[2,wf]].forEach(([r,f])=>{const n=f*5;for(let k=skip;k<5;k++)if(n>k-skip)showWash(o,r,k,(1-ease(clamp(n-(k-skip),0,1)))*40,false);});
+}
+function bayDone(o,opt){bayProg(o,1,opt);}
+
+/* ---------- стремянки, подкладка, мягкие вещи ---------- */
+function mkStep(mat){const g=new THREE.Group(),H=2000,X=300;
+  for(const x of [-X,X]){rod(V(x,0,430),V(x,H,70),38,mat,g);rod(V(x,0,-470),V(x,H,-70),38,mat,g);}
+  for(let y=320;y<H-100;y+=330){const z=430-(430-70)*y/H;rod(V(-X,y,z),V(X,y,z),26,mat,g);}
+  rod(V(-X,900,-270),V(X,900,-270),22,mat,g);
+  const top=new THREE.Mesh(U,mat);top.scale.set(2*X+80,36,330);top.position.set(0,H+10,0);top.castShadow=true;g.add(top);
+  g.visible=false;scene.add(g);return g;}
+function mkLadder(mat){const g=new THREE.Group(),H=2350,LX=-330,Z=230;
+  for(const z of [-Z,Z])rod(V(0,0,z),V(LX,H,z),40,mat,g);
+  for(let f=.12;f<1;f+=.13)rod(V(LX*f,H*f,-Z),V(LX*f,H*f,Z),26,mat,g);
+  g.visible=false;scene.add(g);return g;}
+const stepLs=[mkStep(M.stepL),mkStep(M.stepL),mkStep(M.stepL)];
+const asstLs=[mkLadder(M.asstL),mkLadder(M.asstL)];
+function putStep(i,x,z,ry){const g=stepLs[i];g.position.set(x,0,z);g.rotation.y=ry||0;g.visible=true;}
+function putAsst(i,side,z){const g=asstLs[i];g.position.set(side*(W/2+420),0,z);g.rotation.y=side>0?0:Math.PI;g.visible=true;}
+const padM=um(M.pad,true);
+function putPad(s,i){placeR(padM,s,i,640,1060,0,24,-190,190);padM.visible=true;}
+const mallet=new THREE.Group();{const h=new THREE.Mesh(U,M.malletHead),st=new THREE.Mesh(U,M.mallet);h.scale.set(90,70,160);st.scale.set(24,24,420);st.position.set(0,0,-280);mallet.add(h,st);mallet.visible=false;scene.add(mallet);}
+const reach=[0,1,2].map(()=>null);
+const soap=[0,1,2,3].map(()=>um(M.soap));
+const arrows=[0,1,2,3,4,5,6,7,8,9,10,11].map((k)=>mkArrow(M.arrG));
+const arrowReach=mkArrow(M.arrB);
+
+/* ---------- площадка на земле: козлы, стопка листов, бруски, крышки ---------- */
+const GX=3400,GY=700;
+box(1700,40,2400,GX,GY-20,0,M.plank);
+for(const z of [-900,900]){box(1500,60,60,GX,GY-70,z,M.woodDark);for(const x of [GX-650,GX+650])box(60,GY-100,60,x,(GY-100)/2,z,M.woodDark);}
+const stackM=um(M.stack,true),beamBundle=um(M.beam,true),capBundle=um(M.capT),endBundle=um(M.endp,true);
+beamBundle.scale.set(225,360,1423);beamBundle.position.set(2300,180,2500);
+capBundle.scale.set(320,36,1755);capBundle.position.set(4500,18,2560);
+endBundle.scale.set(46,46,1500);endBundle.position.set(4900,23,2560);
+function showStack(n){if(n<=0){stackM.visible=false;return;}const h=6*n+4;stackM.scale.set(1485,h,1794);stackM.position.set(GX,h/2,2560);stackM.visible=true;}
+/* козлы: два запасных куска направляющей с крышками, лист, плёнки, торцевой профиль, метки */
+const TX0=GX-742.5,TX1=GX+742.5,TZ0=-916.5,TZ1=877.5,TY=GY+3;
+const tp=(w0,w1,mx0,mx1,mz0,mz1)=>prismG((i,j,k)=>[k?TX1-mx1:TX0+mx0,TY+(j?w1:w0),i?TZ1-mz1:TZ0+mz0]);
+const sheetT=mk(tp(0,6,0,0,0,0),M.sheet),filmT=mk(tp(6.05,6.6,0,0,0,0),M.film),filmB=mk(tp(-.7,0,0,0,0,0),M.filmB);
+const filmC=mk(tp(6.05,6.6,100,100,100,0),M.film),stripL=mk(tp(6.05,6.6,0,1385,0,0),M.film),stripR=mk(tp(6.05,6.6,1385,0,0,0),M.film),stripT=mk(tp(6.05,6.6,100,100,0,1694),M.film);
+const endT=mk(prismG((i,j,k)=>[k?TX1:TX0,j?TY+10:TY-3,i?TZ1+6:TZ1-2]),M.endp);
+const drain=[0,1,2,3,4].map(()=>um(M.hole));
+const pcs=[0,1].map(()=>({b:um(M.base,true),t:um(M.capT),l1:um(M.capT),l2:um(M.capT)}));
+function putPiece(k,lb,lc){const x=GX+(k?752.5:-752.5),c=pcs[k];
+  c.b.scale.set(60,3,1755);c.b.position.set(x,GY+1.5+lb,0);c.b.visible=true;
+  const pl=(m,x0,x1,y0,y1)=>{m.scale.set(x1-x0,y1-y0,1755);m.position.set(x+(x0+x1)/2,GY+(y0+y1)/2+lc,0);m.visible=true;};
+  if(lc!=null){pl(c.t,-35,35,11,13);pl(c.l1,-35,-33,8,13);pl(c.l2,33,35,8,13);}}
+const marks=[];for(let m=0;m<5;m++)for(let r=0;r<3;r++)marks.push(um(M.mark));
+const MARKM=[1444,1164,884,604,324];                 // мм от нижнего торца листа (сверху вниз по листу)
+function markPos(m,r){return [GX+(r===0?372.5:r===1?0:-372.5),TZ1-MARKM[m]];}
+function showMark(m,r){const q=marks[m*3+r],p=markPos(m,r),round=MARKM[m]===884;q.scale.set(round?14:14,1.4,round?14:28);q.position.set(p[0],TY+6.9,p[1]);q.visible=true;}
+const fixArrow=mkArrow(M.arrR);
+
+/* ---------- подписи поверх сцены (с выносками) ---------- */
+const frameLabels=[],pool=[],pool2=[];
+function lab(text,pos,cls,dx,dy){frameLabels.push({text,pos,cls:cls||'',dx:dx||0,dy:dy||0});}
+function drawLabels(){
+  const w=view.clientWidth,h=view.clientHeight,sc=(KADR||VIDEO)?1:Math.min(1,w/1600);let n=0,nl=0;
+  for(const q of frameLabels){
+    const p=q.pos.clone().project(camera);
+    if(p.z>1||p.z<-1||Math.abs(p.x)>1.02||Math.abs(p.y)>1.02)continue;
+    let el=pool[n];if(!el){el=document.createElement('div');layer.appendChild(el);pool.push(el);}
+    if(el._t!==q.text){el.textContent=q.text;el._t=q.text;}
+    const dx=q.dx*sc,dy=q.dy*sc,lead=!!(dx||dy),c='lbl '+q.cls+(lead?' lead':'');if(el.className!==c)el.className=c;
+    el.hidden=false;n++;
+    const px=(p.x+1)/2*w,py=(1-p.y)/2*h;let lx=px+dx;
+    if(lead){const hw=el.offsetWidth/2;lx=clamp(lx,hw+4,w-hw-4);}
+    el.style.transform='translate('+lx.toFixed(1)+'px,'+(py-dy).toFixed(1)+'px) translate(-50%,calc(-100% - 7px))';
+    if(lead){let ld=pool2[nl];if(!ld){ld=document.createElement('div');layer.appendChild(ld);pool2.push(ld);}
+      const ex=lx-px,ey=-(dy+7);ld.className='ldr '+q.cls;ld.style.width=Math.hypot(ex,ey).toFixed(1)+'px';
+      ld.style.transform='translate('+px.toFixed(1)+'px,'+py.toFixed(1)+'px) rotate('+Math.atan2(ey,ex).toFixed(4)+'rad)';ld.hidden=false;nl++;}
+  }
+  for(let i=n;i<pool.length;i++)pool[i].hidden=true;
+  for(let i=nl;i<pool2.length;i++)pool2[i].hidden=true;
+}
+
+/* ---------- вспомогательное для шагов ---------- */
+const BZ=b=>(rafterZ[b]+rafterZ[b+1])/2;
+function roofPt(s,b,v,w){const p=P(s,v,w);p.z=(zAt(s,b,v)+zAt(s,b+1,v))/2;return p;}
+function rafPt(s,i,v,w){const p=P(s,v,w);p.z=zAt(s,i,v);return p;}
+function zPt(s,v,w,z){const p=P(s,v,w);p.z=z;return p;}
+const reachSpec=[{r:800,m:M.r08,w:14.8},{r:1150,m:M.r115,w:14.4},{r:1500,m:M.r15,w:14}];
+const reach2=reachSpec.map(q=>halfDisc(1,zAt(1,2,900),900,q.r,q.w,-1,q.m));
+const reach17=halfDisc(1,zAt(1,3,900),900,1500,14,-1,M.r15);
+const dimL=um(M.dim);
+const scrapM=um(M.sheet);
+const PARTS=['Часть 1. Проверка и разметка на земле','Часть 2. Подготовка крыши — все пролёты открыты','Часть 3. Пролёт за пролётом','Часть 4. Запасные способы','Часть 5. Завершение'];
+const partOf=i=>i<5?0:i<8?1:i<16?2:i<18?3:4;
+function trestleDone(){sheetT.visible=filmC.visible=endT.visible=true;sheetT.position.set(0,0,0);marks.forEach((m,i)=>showMark(Math.floor(i/3),i%3));drain.forEach((d,k)=>{d.scale.set(6,6,3);d.position.set(TX0+150+300*k,TY+4,TZ1+6.2);d.visible=true;});}
+function trestleHide(){sheetT.visible=filmC.visible=endT.visible=false;marks.forEach(m=>m.visible=false);drain.forEach(d=>d.visible=false);}
+function groundKit(n,opt){opt=opt||{};showStack(n);beamBundle.visible=true;endBundle.visible=true;capBundle.visible=!!opt.caps;ridgeGround.visible=!!opt.ridge;}
+function rim(r,ang){const zc=zAt(1,2,900);return zPt(1,900+r*Math.sin(ang),30,zc-r*Math.cos(ang));}
+const ST=[];
+/* 1 */ST.push({dur:9500,cams:[{at:0,pos:[7200,5200,-8300],target:[1400,1400,500]}],
+ apply(t,cur){groundKit(8,{caps:1,ridge:1});
+  if(!cur)return;
+  fronts.forEach(f=>{f.material=M.front;f.visible=true;});
+  if(t>.1){lab('фронтоны не зашивать',V(0,2650,-3015),'warn big');lab('фронтоны не зашивать',V(0,2650,3015),'warn big');}
+  if(t>.35){lab('стопка листов: сверху Л1',V(GX,70,2560));lab('40 брусков',V(2300,390,2500));lab('10 крышек',V(4500,70,2560));lab('коньковый профиль',V(-2350,150,0));lab('торцевой профиль',V(4900,70,2560),'',40,55);}
+  if(t>.6)lab('на каркасе — только уголки и стойки',rafPt(1,2,1000,40),'',-160,120);}});
+/* 2 */ST.push({dur:10500,cams:[{at:0,pos:[3400,4700,-2900],target:[800,2700,80]}],
+ apply(t,cur){if(!cur)return;
+  const f0=seg(t,.12,.28),f1=seg(t,.3,.46),f2=seg(t,.48,.64);
+  putStep(0,795,BZ(2)+20,0);putPad(1,2);
+  if(f0>0)reach2[0].visible=true;if(f1>0)reach2[1].visible=true;if(f2>0)reach2[2].visible=true;
+  const zc=zAt(1,2,900);
+  setArrow(arrowReach,zPt(1,900,190,zc+320),zPt(1,900,190,zc+320-(320+1500)*ease(seg(t,.08,.66))),16);
+  lab('мягкая подкладка на стропиле',rafPt(1,2,800,26),'warn',-180,90);
+  lab('стремянка: пояс на уровне крыши',V(795,2080,BZ(2)+20),'',150,30);
+  if(f0>=1){lab('0,8 м',rim(800,-.15),'num');lab('2 ряда',rim(800,.75),'ok big',-30,42);}
+  if(f1>=1){lab('1,15 м',rim(1150,-.3),'num');lab('3 ряда',rim(1150,.6),'warn big',20,68);}
+  if(f2>=1){lab('1,5 м',rim(1500,-.42),'num');lab('и крышки после',rim(1500,.3),'big',0,60);}}});
+/* 3 */ST.push({dur:10000,cams:[{at:0,pos:[GX+2100,2500,1900],target:[GX,GY,100]},{at:.35,pos:[GX+1500,1700,1700],target:[GX+400,GY+10,300]}],
+ apply(t,cur){groundKit(7,{caps:1,ridge:1});if(!cur)return;
+  const fp=seg(t,.02,.14),fc=seg(t,.14,.28),fs=seg(t,.32,.74);
+  [0,1].forEach(k=>{if(fp>0)putPiece(k,(1-ease(fp))*320,fc>0?(1-ease(fc))*200:null);});
+  const dz=(1-ease(fs))*1300;[sheetT,filmT].forEach(m=>{m.position.set(0,0,dz);m.visible=true;});
+  if(t>.3&&t<.64)lab('идёт рукой',V(TX0+60,TY+40,TZ1-300),'ok');
+  if(t>.8)lab('туго — мыльный раствор',V(TX1-40,GY+30,TZ1-80),'warn');
+  if(t>.14&&t<.3)lab('пазы пустые',V(TX1-40,GY+40,TZ1-400));}});
+/* 4 */ST.push({dur:12000,cams:[{at:0,pos:[GX+2300,3300,-60],target:[GX-40,GY,-20]}],
+ apply(t,cur){if(!cur)return;
+  sheetT.visible=filmT.visible=true;sheetT.position.set(0,0,0);filmT.position.set(0,0,0);
+  const fm=m=>seg(t,.08+m*.11,.16+m*.11);
+  for(let m=0;m<5;m++){if(fm(m)>0)for(let r=0;r<3;r++)showMark(m,r);}
+  dimL.scale.set(10,6,1444);dimL.position.set(TX0-55,TY+8,TZ1-722);dimL.visible=true;
+  const fa=seg(t,.72,.84);
+  if(fa>0)setArrow(fixArrow,V(GX+120,TY+13,TZ0+300),V(TX1-40,TY+13,TZ0+300),14);
+  for(let m=0;m<5;m++)if(fm(m)>.5)lab(String(MARKM[m]),V(TX0-60,TY+12,TZ1-MARKM[m]),'num big');
+  if(t>.3){lab('370',V(GX+557,TY+12,TZ0-90),'num');lab('середина',V(GX,TY+12,TZ0-90),'num');lab('370',V(GX-557,TY+12,TZ0-90),'num');}
+  if(fa>=1)lab('ОТСЮДА КРЕПИМ',V(TX1-240,TY+14,TZ0+300),'warn big',0,55);
+  if(t>.55)lab('круглое 7 мм',V(markPos(2,1)[0],TY+10,markPos(2,1)[1]),'ok',0,75);
+  if(t>.62)lab('овал 7×12 вдоль ската',V(markPos(4,0)[0],TY+10,markPos(4,0)[1]),'warn',30,75);
+  lab('ВЕРХ — к коньку',V(GX,TY+10,TZ0-10),'big',0,0);}});
+/* 5 */ST.push({dur:12500,cams:[{at:0,pos:[GX+2000,2500,-200],target:[GX,GY,-60]},{at:.62,pos:[GX+1000,1400,2600],target:[GX,GY+10,700]}],
+ apply(t,cur){
+  if(!cur){trestleDone();return;}
+  const fb=seg(t,.04,.22),fs=seg(t,.26,.56),fe=seg(t,.62,.8),fd=seg(t,.82,.94);
+  sheetT.visible=true;sheetT.position.set(0,0,0);marks.forEach((m,i)=>showMark(Math.floor(i/3),i%3));
+  if(fb<1){filmB.visible=true;filmB.position.set(0,-fb*160,fb*1600);}
+  if(fs<=0){filmT.visible=true;filmT.position.set(0,0,0);}else{filmC.visible=true;
+    if(fs<1){stripL.visible=stripR.visible=stripT.visible=true;stripL.position.set(-fs*500,fs*260,0);stripR.position.set(fs*500,fs*260,0);stripT.position.set(0,fs*260,-fs*500);}}
+  if(fe>0){endT.visible=true;endT.position.set(0,0,(1-ease(fe))*600);}
+  const nd=Math.floor(fd*5.99);drain.forEach((d,k)=>{if(k<nd){d.scale.set(6,6,3);d.position.set(TX0+150+300*k,TY+4,TZ1+6.2);d.visible=true;}});
+  if(t>.06&&t<.3)lab('нижняя плёнка — снять',V(GX,GY-40,TZ1-200),'warn');
+  if(t>.3)lab('верхняя плёнка: полосы 100 мм',V(TX0+50,TY+20,TZ0+500),'',0,60);
+  if(t>.66)lab('торцевой профиль с капельником',V(GX,TY+16,TZ1+10),'ok big',0,50);
+  if(t>.86)lab('дренаж 2–3 мм через 300 мм',V(TX0+750,TY+6,TZ1+10),'',120,110);}});
+/* 6 */ST.push({dur:11000,cams:[{at:0,pos:[3000,4900,-5400],target:[0,3000,-1500]},{at:.5,pos:[2100,4250,-4000],target:[0,3230,-2700]}],
+ apply(t,cur){ridgeGround.visible=false;capBundle.visible=true;
+  const f=cur?seg(t,.04,.42):1;ridgeRoof.visible=true;ridgeRoof.position.y=(1-ease(f))*600;
+  cords.forEach((c,k)=>{if(!cur||t>.5+k*.1)c.visible=true;});
+  if(!cur)return;
+  if(t>.3)lab('коньковый профиль — на весь конёк',V(0,ridgeTop+150,-2100),'big');
+  if(t>.62)lab('шнур к крайнему стропилу',cords[0].position.clone(),'warn',-120,70);
+  if(t>.85)lab('край профиля на 5 мм выше верха направляющих',V(0,ridgeTop+90,-1400),'ok',0,110);}});
+/* 7 */ST.push({dur:12500,cams:[{at:0,pos:[3900,4300,-5200],target:[700,2700,-1500]},{at:.6,pos:[3500,3300,-3700],target:[1000,2400,-2200]}],
+ apply(t,cur){capBundle.visible=false;
+  let q=0;for(const i of [0,1,2,3,4])for(const s of SIDES){const a=.03+q*.075,f=cur?seg(t,a,a+.12):1;q++;
+    if(f<=0)continue;if((i===0||i===4)&&strips[s][i]){strips[s][i].visible=true;shift(strips[s][i],s,0,(1-ease(seg(f,0,.5)))*90);}
+    if(f>.35)showCap(s,i,(1-ease(seg(f,.35,1)))*220);}
+  if(!cur)return;
+  if(t>.35)lab('полоса крайнего стропила — под наружной губой',zPt(1,1100,60,rafterZ[0]-35),'',-170,85);
+  if(t>.86)lab('пазы пустые',rafPt(-1,2,1650,30),'warn big',60,75);}});
+/* 8 */ST.push({dur:16500,cams:[{at:0,pos:[-1500,10600,0],target:[0,2700,0]}],
+ apply(t,cur){if(!cur)return;
+  const sc=t<.33?0:t<.66?1:2;
+  const SCH=[{name:'лучше: 2 → 3 → 1 → 4',ord:[1,2,0,3],acc:[[0,1],[2,1],[3,2],['g0',0],['g1',3]],bad:-1},
+    {name:'можно: 1 → 2 → 3 → 4',ord:[0,1,2,3],acc:[['g0',0],[1,0],[2,1],[3,2],['g1',3]],bad:-1},
+    {name:'нельзя: 1 → 4 → 2 → 3',ord:[0,3,1,2],acc:[['g0',0],[1,0],['g1',3],[2,3],[2,1]],bad:2}][sc];
+  let ai=0;
+  for(const s of SIDES){
+    for(let b=0;b<4;b++){const o=bay[s][b];o.hl.visible=true;o.hl.material=b===SCH.bad?M.hlR:(SCH.ord.indexOf(b)<2?M.hlG:M.hl);}
+    SCH.acc.forEach(([from,to])=>{const B=roofPt(s,to,900,70);let A,A2,B2=B.clone();
+      if(from==='g0'){A2=zPt(s,900,70,-3000-1000);B2.z=-3000+300;}else if(from==='g1'){A2=zPt(s,900,70,3000+1000);B2.z=3000-300;}
+      else{A=roofPt(s,from,900,70);const dir=A.z<B.z?1:-1;A2=A.clone();A2.z=A.z+dir*260;B2.z=B.z-dir*200;}
+      const ar=arrows[ai++];ar.userData.sh.material=ar.userData.hd.material=M.arrG;setArrow(ar,A2,B2,18);});
+  }
+  lab(SCH.name,V(0,ridgeTop+700,0),'big'+(SCH.bad>=0?' warn':' ok'));
+  for(const s of SIDES)for(let b=0;b<4;b++){const n=SCH.ord.indexOf(b)+1;lab(String(n),roofPt(s,b,520,40),'num big');}
+  if(SCH.bad>=0)lab('нет доступа',roofPt(1,SCH.bad,1150,50),'warn big');
+  lab('стрелки — откуда работают',V(0,ridgeTop+420,-2100),'');}});
+/* ---------- шаги 9–20 ---------- */
+function stepped(f,n,d0){const k=clamp(f,0,1)*n,i=Math.min(n-1,Math.floor(k)),r=k-i;return d0*(1-(i+ease(clamp(r/.6,0,1)))/n);}
+function openHl(bs,mat){for(const s of SIDES)bs.forEach(b=>{bay[s][b].hl.material=mat||M.hl;bay[s][b].hl.visible=true;});}
+function placeWashRows(o,rows){} 
+function roofBase(opt){opt=opt||{};ridgeRoof.visible=true;ridgeRoof.position.y=0;if(!opt.nocords)cords.forEach(c=>c.visible=true);
+  for(const s of SIDES){for(const i of [0,4]){strips[s][i].visible=true;shift(strips[s][i],s,0,0);}
+    rafterZ.forEach((z,i)=>{if(opt.caps===false&&i>0&&i<4)return;showCap(s,i,0);});}}
+/* 9 */ST.push({dur:11500,cams:[{at:0,pos:[3300,4300,-3300],target:[800,2650,-735]},{at:.66,pos:[1350,3250,-1900],target:[760,2760,-1330]}],
+ apply(t,cur){const o=bay[1][1];trestleHide();
+  const n=cur?seg(t,.05,.64)*5:5;for(let k=0;k<5;k++)if(n>k)showBeam(o,k,(1-ease(clamp(n-k,0,1)))*170);
+  if(!cur)return;
+  putStep(0,795,BZ(2)+20,0);openHl([0,2]);
+  if(t>.68){const v=ROWS[2],za=zAt(1,1,v);placeSlope(scrapM,1,v-70,v+70,3,9,za+10,za+300);scrapM.visible=true;}
+  if(t>.08)lab('открыты пролёты 1 и 3 — через них работают',roofPt(1,0,700,60),'ok',-20,130);
+  if(t>.2&&t<.66)lab('бруски — снизу, по одному',roofPt(1,1,ROWS[Math.min(4,Math.floor(n))],50),'',0,90);
+  if(t>.7){lab('обрезок 6 мм: в паз под крышку и на брусок',zPt(1,ROWS[2],20,zAt(1,1,ROWS[2])+160),'big warn',0,90);}}});
+/* 10 */ST.push({dur:13000,cams:[{at:0,pos:[3700,3500,-300],target:[1200,2350,-740]},{at:.72,pos:[1500,3700,-2100],target:[300,3100,-900]}],
+ apply(t,cur){const o=bay[1][1];trestleHide();
+  for(let k=0;k<5;k++)showBeam(o,k,0);
+  const ds=cur?stepped(seg(t,.06,.76),4,1000):0;showSheet(o,ds,0);showFilm(o,0,ds);
+  if(!cur)return;
+  putStep(0,795,BZ(2)+20,0);putAsst(0,1,BZ(1));openHl([0,2]);
+  setArrow(arrows[0],roofPt(1,1,1724+ds+460,40),roofPt(1,1,1724+ds+90,40),22);
+  const vt=SV0+ds;setArrow(arrows[1],zPt(1,vt+330,70,zAt(1,2,vt)-180),zPt(1,vt+30,70,zAt(1,2,vt)-180),22);
+  lab('помощник подаёт лист: «ВЕРХ» к коньку',V(W/2+420,2500,BZ(1)),'',-40,80);
+  if(t>.1&&t<.74){lab('снизу толкают',roofPt(1,1,1724+ds+300,50),'ok',0,60);lab('сверху тянут',zPt(1,vt+200,80,zAt(1,2,vt)-180),'ok big',0,60);}
+  if(t>.1)lab('второй — на стремянке в пролёте 3',V(795,2080,BZ(2)+20),'',150,50);
+  if(t>.78)lab('верх — в захват конькового профиля',P(1,-50,30).setZ(zAt(1,1,0)+400),'ok big',0,90);}});
+/* 11 */ST.push({dur:11500,cams:[{at:0,pos:[3700,3300,-300],target:[1250,2300,-740]},{at:.5,pos:[2800,2500,-200],target:[1350,2200,-900]}],
+ apply(t,cur){const o=bay[1][1];trestleHide();
+  for(let k=0;k<5;k++)showBeam(o,k,0);
+  let d=0;
+  if(cur){if(t<.22)d=1000-700*ease(seg(t,0,.22));else if(t<.36)d=300;else if(t<.5)d=300+150*ease(seg(t,.36,.5));else if(t<.66)d=450;else d=450*(1-ease(seg(t,.66,.96)));}
+  showSheet(o,d,0);showFilm(o,0,d);
+  if(!cur)return;
+  putAsst(0,1,BZ(1));
+  if(t>.5&&t<.98){placeR(soap[0],1,1,1150,1724,7,9,33,35);placeR(soap[1],1,2,1150,1724,7,9,-35,-33);soap[0].visible=soap[1].visible=true;}
+  if(t>.24&&t<.36)lab('встал в пазах',roofPt(1,1,1724+d-100,50),'warn big',0,70);
+  if(t>.38&&t<.52)lab('вытянуть на 10–20 см, выровнять',roofPt(1,1,1724+d-150,50),'warn',0,70);
+  if(t>.54&&t<.68)lab('мыльный раствор на губы',zPt(1,1600,30,zAt(1,1,1600)+34),'ok big',80,90);
+  if(t>.8)lab('двигать снова — идёт',roofPt(1,1,1724+d-200,50),'ok',0,70);}});
+/* 12 */ST.push({dur:9500,cams:[{at:0,pos:[3800,3600,-200],target:[1150,2450,-740]}],
+ apply(t,cur){const o=bay[1][1];trestleHide();
+  for(let k=0;k<5;k++)showBeam(o,k,0);showSheet(o,0,0);
+  const f=cur?ease(seg(t,.12,.92)):1;showFilm(o,f,0);
+  if(!cur)return;
+  putAsst(0,1,BZ(1));
+  if(t>.05&&t<.96)lab('помощник тянет плёнку от карниза вниз — одним куском',roofPt(1,1,1700+f*900,60),'big',0,90);}});
+/* 13 */ST.push({dur:14000,cams:[{at:0,pos:[3300,4300,-2900],target:[800,2650,-735]},{at:.6,pos:[2500,3300,-2600],target:[1150,2600,-735]}],
+ apply(t,cur){const o=bay[1][1];trestleHide();
+  for(let k=0;k<5;k++)showBeam(o,k,0);showSheet(o,0,0);showFilm(o,1,0);
+  const fN=cur?seg(t,.05,.3):1,fM=cur?seg(t,.3,.52):1,fF=cur?seg(t,.74,.94):1,fB=cur?seg(t,.34,.7):1;
+  for(let k=0;k<3;k++){const a=fN*3-k,b=fM*3-k,c=fF*3-k;
+    if(a>0)showWash(o,0,k,(1-ease(clamp(a,0,1)))*40,false);if(b>0)showWash(o,1,k,(1-ease(clamp(b,0,1)))*40,false);if(c>0)showWash(o,2,k,(1-ease(clamp(c,0,1)))*40,cur);}
+  for(let j=0;j<2;j++){const k=4-j,a=fB*2-j;if(a>0)for(let r=0;r<3;r++)showWash(o,r,k,(1-ease(clamp(a,0,1)))*40,false);}
+  if(!cur)return;
+  putStep(0,795,BZ(2)+20,0);putAsst(0,1,BZ(1));putPad(1,2);
+  if(t>.08)lab('сверху — из пролёта 3, перегнувшись: ближний и средний ряд',washZ?zPt(1,ROWS[1],60,washZ(o,1,1)):V(0,0,0),'big',-70,110);
+  if(t>.4)lab('снизу — помощник: нижние ряды',zPt(1,ROWS[4],60,washZ(o,1,4)),'ok big',140,95);
+  if(t>.78)lab('дальний ряд — если достаёт',zPt(1,ROWS[1],40,washZ(o,2,1)),'warn',-40,80);}});
+/* 14 */ST.push({dur:10500,cams:[{at:0,pos:[-3700,3700,-2900],target:[-800,2650,-735]}],
+ apply(t,cur){const o=bay[-1][1];trestleHide();showStack(6);
+  bayProg(o,cur?seg(t,.02,.96):1);
+  if(!cur)return;
+  putStep(0,-795,BZ(2)+20,0);putAsst(0,-1,BZ(1));openHl([0,2]);
+  lab('скат П пролёта 2: шаги 9–13',roofPt(-1,1,400,50),'big',0,90);}});
+/* 15 */ST.push({dur:14000,cams:[{at:0,pos:[3500,4400,-400],target:[800,2650,1500]},{at:.5,pos:[-3500,4400,-400],target:[-800,2650,1500]}],
+ apply(t,cur){trestleHide();showStack(4);
+  bayProg(bay[1][2],cur?seg(t,.02,.47):1);bayProg(bay[-1][2],cur?seg(t,.5,.95):1);
+  if(!cur)return;
+  const sd=t<.5?1:-1;putStep(0,sd*795,BZ(3)+20,0);putAsst(0,sd,BZ(2));openHl([0,3]);
+  lab('пролёт 3 — из пролёта 4',roofPt(sd,2,300,50),'big',0,90);
+  lab('открыт: пролёт 4',roofPt(sd,3,1100,50),'ok',0,60);lab('открыт: пролёт 1',roofPt(sd,0,1100,50),'ok',0,60);}});
+/* 16 */ST.push({dur:16000,cams:[{at:0,pos:[3600,4200,-6300],target:[700,2500,-2500]},{at:.5,pos:[3600,4200,6300],target:[700,2500,2500]}],
+ apply(t,cur){trestleHide();
+  const a=cur?seg(t,.02,.26):1,b=cur?seg(t,.26,.5):1,c=cur?seg(t,.52,.76):1,d=cur?seg(t,.76,1):1;
+  bayProg(bay[1][0],a);bayProg(bay[-1][0],b);bayProg(bay[1][3],c);bayProg(bay[-1][3],d);
+  showStack(cur?Math.max(0,Math.round(4-(a+b+c+d))):0);
+  if(!cur)return;
+  if(t<.52){putStep(0,795,-3000-520,Math.PI);putAsst(0,a<1?1:-1,BZ(0));fronts[0].material=M.front;fronts[0].visible=true;lab('пролёт 1 — со стремянки у фронтона пары 1',V(0,2650,-3015),'big',0,60);}
+  else{putStep(0,795,3000+520,0);putAsst(0,c<1?1:-1,BZ(3));fronts[1].material=M.front;fronts[1].visible=true;lab('пролёт 4 — у фронтона пары 5',V(0,2650,3015),'big',0,60);}}});
+/* 17 */ST.push({dur:14500,cams:[{at:0,pos:[3500,4200,-300],target:[800,2650,-300]},{at:.45,pos:[2500,3500,700],target:[900,2800,0]}],
+ apply(t,cur){groundKit(6);roofBase({caps:false});
+  const o1=bay[1][1],o2=bay[1][2];
+  for(let k=0;k<5;k++){showBeam(o1,k,0);showBeam(o2,k,0);}
+  const f1=seg(t,.03,.22),f2=seg(t,.18,.38);
+  showSheet(o1,0,(1-ease(f1))*260);showSheet(o2,0,(1-ease(f2))*260);
+  putStep(0,795,BZ(3)+20,0);putAsst(0,1,BZ(1));
+  if(t>.4)reach17.visible=true;
+  const fc=seg(t,.48,.62);if(fc>0)showCap(1,2,(1-ease(fc))*260);
+  if(t>.64){const v=100+1600*seg(t,.64,.96);mallet.position.copy(zPt(1,v,60,zAt(1,2,v)));mallet.rotation.set(0,0,-th);mallet.visible=true;}
+  if(t>.05&&t<.42)lab('средних крышек заранее нет',rafPt(1,2,1500,20),'warn big',0,90);
+  if(t>.14&&t<.42)lab('лист кладётся сверху на полки направляющих',roofPt(1,1,900,40),'ok',0,100);
+  if(t>.42)lab('1,5 м из пролёта 4',rim2(1500),'num');
+  if(t>.66)lab('крышка — киянкой по всей длине',rafPt(1,2,600,60),'big',-40,100);}});
+/* 18 */ST.push({dur:17000,cams:[{at:0,pos:[-3300,4300,-3300],target:[0,3000,0]},{at:.3,pos:[-1500,3700,-2500],target:[-150,3150,-50]},{at:.72,pos:[-3300,3000,-3000],target:[-700,2800,0]}],
+ apply(t,cur){roofBase();groundKit(0);trestleHide();
+  for(const s of SIDES)for(const b of [0,1,3])bayDone(bay[s][b]);
+  const oL=bay[1][2],oP=bay[-1][2];
+  for(let k=0;k<5;k++)showBeam(oL,k,0);showSheet(oL,0,0);
+  const fT=seg(t,.3,.56),fB=seg(t,.34,.6);
+  for(let k=0;k<3;k++){const a=fT*3-k;if(a>0){showWash(oL,0,k,(1-ease(clamp(a,0,1)))*40,false);showWash(oL,1,k,(1-ease(clamp(a,0,1)))*40,false);}}
+  for(let j=0;j<2;j++){const k=4-j,a=fB*2-j;if(a>0)for(let r=0;r<2;r++)showWash(oL,r,k,(1-ease(clamp(a,0,1)))*40,false);}
+  for(let k=1;k<5;k++)showBeam(oP,k,0);
+  const fb=seg(t,.64,.78);if(fb>0)showBeam(oP,0,(1-ease(fb))*170);
+  const dP=t<.8?600:600*(1-ease(seg(t,.8,.95)));showSheet(oP,dP,0);
+  if(t>.95)for(let k=1;k<5;k++){showWash(oP,0,k,0,false);showWash(oP,1,k,0,false);}
+  putStep(0,-300,BZ(2),0);stepLs[0].scale.set(1,1.45,1);
+  const zc=BZ(2);
+  if(t>.22&&t<.66){setArrow(arrowReach,V(-300,3050,zc),V(-20,3420,zc),20);setArrow(arrows[0],V(-20,3420,zc),V(420,3150,zc),20);}
+  if(t>.05&&t<.3)lab('у пролёта не осталось открытого соседа',roofPt(1,2,1100,60),'warn',0,100);
+  if(t>.1&&t<.64)lab('лист Л — до конца; лист П — на 600 мм ниже конька',roofPt(-1,2,1100,60),'big',0,100);
+  if(t>.22&&t<.66)lab('лаз у конька: перегнуться через конёк',V(-20,3430,zc),'ok big',-100,80);
+  if(t>.38&&t<.66)lab('верхние ряды — отсюда, нижние — помощник снизу',zPt(1,ROWS[1],60,washZ(oL,1,1)),'',140,80);
+  if(t>.62&&t<.8)lab('верхний брусок П — только теперь',rafPt(-1,2,ROWS[0],40),'',-120,90);
+  if(t>.82)lab('лист П дотолкан в захват конька; верхний ряд — без термошайб',roofPt(-1,2,ROWS[0]+200,60),'warn big',0,100);}});
+/* 19 */ST.push({dur:14000,cams:[{at:0,pos:[2200,4300,-7200],target:[0,3050,-1000]},{at:.36,pos:[4300,2600,-2100],target:[1400,2200,-700]},{at:.7,pos:[-4300,2600,1800],target:[-1400,2200,600]}],
+ apply(t,cur){roofBase({nocords:t>.4});groundKit(0);trestleHide();
+  for(const s of SIDES)for(let b=0;b<4;b++)bayDone(bay[s][b]);
+  if(t<.3)lab('верхние торцы — в захвате конькового профиля',V(0,ridgeTop+110,-900),'ok big');
+  if(t<.3)lab('крышки — по всей длине',rafPt(1,2,900,40),'',120,80);
+  if(t>.36&&t<.68){lab('низ всех листов — на одной линии',zPt(1,1760,30,BZ(1)),'ok big',0,80);lab('торцевые профили и капельники',zPt(1,1760,20,BZ(2)),'',0,50);}
+  if(t>.4&&t<.7)lab('шнуры отвязаны',V(0,ridgeTop+110,-2700),'warn');
+  if(t>.72)lab('линия карниза — скат П',zPt(-1,1760,30,BZ(1)),'ok big',0,80);}});
+/* 20 */ST.push({dur:10000,cams:[{at:0,pos:[3200,4200,-7300],target:[0,2500,-500]},{at:.5,pos:[-3200,4200,7300],target:[0,2500,500]}],
+ apply(t,cur){roofBase({nocords:true});groundKit(0);trestleHide();
+  for(const s of SIDES)for(let b=0;b<4;b++)bayDone(bay[s][b]);
+  fronts.forEach(f=>{f.material=M.hlG;f.visible=true;});
+  lab('теперь зашивать',V(0,2600,-3015),'ok big');lab('теперь зашивать',V(0,2600,3015),'ok big');
+  if(t>.4)lab('первый дождь — осмотреть изнутри стыки и термошайбы',V(0,ridgeTop+230,0),'big');}});
+function rim2(r){const zc=zAt(1,3,900);return zPt(1,900+r*Math.sin(-.4),30,zc-r*Math.cos(-.4));}
+const STEPS=ST;
+const TXT=[
+ {
+  "title": "Что должно быть готово",
+  "actions": [
+   "Направляющие на всех 10 стропилах — по инструкции направляющих, 16 замеров отправлены.",
+   "8 листов нарезаны по инструкции раскроя, торцы в лентах, на каждом код и «ВЕРХ». Запасной кусок в листе В цел.",
+   "40 брусков 1423 мм, 10 крышек по длине направляющих, коньковый профиль, торцевой профиль с капельником, 4 полосы крайних стропил, термошайбы и саморезы 4×50.",
+   "Фронтоны не зашивать, пока не закончена крыша: через них работают в крайних пролётах."
+  ],
+  "check": "Всё на месте. Бруски в пролётах не стоят."
+ },
+ {
+  "title": "Проверка 1 — вылет с корпусом",
+  "actions": [
+   "Встать на стремянку в открытом пролёте так, чтобы пояс был на уровне крыши. На стропило положить мягкую подкладку и перегнуться через него корпусом. Опираться только на стропило.",
+   "Рулеткой по верху стропил отмерить, докуда достаёт рука с шуруповёртом от оси ближнего стропила.",
+   "1,5 м и дальше — достаёт всё: три ряда термошайб и крышку на соседнем стропиле.",
+   "От 1,15 до 1,5 м — три ряда термошайб, крышки — только заранее.",
+   "От 0,8 до 1,15 м — два ряда: ближний и средний. Дальнюю кромку держит крышка."
+  ],
+  "check": "Меньше 0,8 м — стоп: видео владельцу."
+ },
+ {
+  "title": "Проверка 2 — лист заходит в пазы",
+  "actions": [
+   "На козлах положить два запасных куска направляющей параллельно, оси — на расстоянии пролёта Л1 (по замеру, около 1505 мм). Защёлкнуть на них крышки, пазы пустые.",
+   "Лист Л1 положить надписями вверх и задвинуть вдоль в оба паза на всю длину.",
+   "Идёт рукой — годится. Туго — смочить губы крышек слабым мыльным раствором и повторить.",
+   "Кромки трутся о середину профиля — лист широк: подрезать по 2 мм с каждой кромки."
+  ],
+  "check": "Не заходит и с мылом — работать запасным способом, шаг 17. Лист вынуть, он остаётся годным."
+ },
+ {
+  "title": "Разметка отверстий на земле",
+  "actions": [
+   "Вдоль листа, от нижнего торца: 324 · 604 · 884 · 1164 · 1444 мм — оси брусков.",
+   "Поперёк: ближний ряд — в 370 мм от ближней кромки, средний — посередине, дальний — в 370 мм от дальней кромки (если по проверке 1 — три ряда).",
+   "Ближняя кромка — со стороны, откуда будут крепить этот лист (шаг 8). Отметить её стрелкой «ОТСЮДА КРЕПИМ».",
+   "На среднем бруске (884) — круглое 7 мм, на остальных — овал 7×12 вдоль ската. Сверлить на козлах, подложив доску, стружку из сот продуть."
+  ],
+  "check": "Все отметки не ближе 40 мм к кромке. Надписи вверх, «ВЕРХ» к коньку."
+ },
+ {
+  "title": "Подготовка листа к подъёму",
+  "actions": [
+   "Снять нижнюю прозрачную плёнку.",
+   "Верхнюю плёнку надрезать и снять полосой 100 мм вдоль обеих длинных кромок и у верхнего торца: там будут губы крышек и захват конька.",
+   "На нижний торец надеть торцевой профиль с капельником, в нём просверлить дренажные отверстия 2–3 мм через 300 мм.",
+   "Готовить лист только перед подъёмом. Если начался ветер — лист не поднимать."
+  ],
+  "check": "Остальная верхняя плёнка на месте, торцевой профиль сидит плотно."
+ },
+ {
+  "title": "Коньковый профиль — на весь конёк",
+  "actions": [
+   "Уложить коньковый профиль на конёк по всей длине, захватами на оба ската.",
+   "Концы подвязать шнуром к крайним стропилам, чтобы профиль не съехал."
+  ],
+  "check": "Край профиля на 5 мм выше верхних концов направляющих по всей длине."
+ },
+ {
+  "title": "Все 10 крышек — заранее",
+  "actions": [
+   "Крайние стропила пар 1 и 5: на наружную полку положить полосу крайнего стропила и защёлкнуть крышку. Внутренний паз оставить пустым.",
+   "Средние стропила пар 2, 3, 4 на обоих скатах: защёлкнуть крышки, оба паза пустые.",
+   "Всё — изнутри, пока все пролёты открыты."
+  ],
+  "check": "В каждый паз у карниза входит обрезок листа 6 мм. Если по проверке 2 лист в пазы не идёт — средние крышки не ставить, шаг 17."
+ },
+ {
+  "title": "Порядок пролётов",
+  "actions": [
+   "Лучше всего: сначала средние пролёты 2 и 3, потом крайние 1 и 4. В каждом пролёте сначала скат Л, потом П.",
+   "Пролёт 2 — работать из пролётов 1 и 3, с двух сторон. Пролёт 3 — из пролёта 4. Пролёт 1 — с фронтона пары 1. Пролёт 4 — с фронтона пары 5.",
+   "Можно подряд 1, 2, 3, 4: пролёт 1 — с фронтона и из пролёта 2, дальше каждый — из следующего, пролёт 4 — с фронтона.",
+   "Нельзя сначала оба крайних, потом средние: последний средний пролёт останется без открытого соседа. Если так вышло — шаг 18."
+  ],
+  "check": "Перед брусками пролёта рядом есть открытый пролёт или открытый фронтон, стремянка стоит там."
+ },
+ {
+  "title": "Бруски пролёта",
+  "actions": [
+   "5 брусков снизу по уголкам, на оси по разметке шага 4 от нижнего конца направляющей.",
+   "Высота: обрезок листа 6 мм одним концом задвинуть в паз под крышку, другим положить на брусок. Брусок поднять, пока обрезок не ляжет ровно, и закрепить. Так у обоих концов бруска.",
+   "Если есть уплотнительная лента 3×20 — сначала наклеить её на брусок, потом выставлять."
+  ],
+  "check": "Оси брусков отличаются от разметки не больше 10 мм. Больше — разметить отверстия этого листа по фактическим осям."
+ },
+ {
+  "title": "Задвинуть лист вдвоём",
+  "actions": [
+   "Помощник у карниза подаёт лист надписями вверх, «ВЕРХ» к коньку, и заводит верхний торец сразу в оба паза, под крышки.",
+   "Второй — на стремянке в соседнем открытом пролёте, перегнувшись корпусом, — тянет лист за верхний край и ведёт кромки в пазах.",
+   "Двигать шагами по 20–30 см: снизу толкают, сверху тянут. Перекосило — продвинуть отстающий угол, потом дальше.",
+   "У конька завести верхний торец в захват конькового профиля."
+  ],
+  "check": "Низ листа вровень с нижними концами направляющих, ±2 мм."
+ },
+ {
+  "title": "Если лист не идёт",
+  "actions": [
+   "Встал в пазах — вытянуть на 10–20 см, выровнять, смочить губы мыльным раствором, двигать снова.",
+   "Не входит в захват конька — сверху приподнять губу профиля рукой.",
+   "Низ выступает больше 5 мм — лист длинный: вынуть, подрезать верх, заново заклеить сплошной лентой.",
+   "Низ не доходит больше 5 мм — лист короток: вынуть, поставить запасной из листа В."
+  ],
+  "check": "Слетела крышка там, где не достать, — стоп: видео владельцу."
+ },
+ {
+  "title": "Снять верхнюю плёнку",
+  "actions": [
+   "Сразу после задвигания, до термошайб: помощник тянет плёнку от карниза вниз одним куском.",
+   "Порвалась или застряла под губой — срезать ножом по краю губы, полоску под губой оставить."
+  ],
+  "check": "На листе нет плёнки там, где встанут термошайбы."
+ },
+ {
+  "title": "Термошайбы",
+  "actions": [
+   "Сверху — из соседнего открытого пролёта или с фронтона, перегнувшись корпусом: ближний и средний ряд, а по проверке 1 — и дальний.",
+   "Снизу у карниза помощник крепит нижние ряды, до которых достаёт.",
+   "Саморез 4×50 по центру отверстия, затянуть, пока уплотнитель термошайбы не прижмётся ровно. Лист не продавливать.",
+   "Отверстие не попало на брусок — просверлить рядом по оси бруска новое, пустое закрыть нейтральным герметиком."
+  ],
+  "check": "Все термошайбы стоят ровно, колпачки закрыты."
+ },
+ {
+  "title": "Второй скат пролёта",
+  "actions": [
+   "Скат П этого же пролёта — шаги 9–13."
+  ],
+  "check": "Пролёт закрыт на обоих скатах."
+ },
+ {
+  "title": "Следующие пролёты",
+  "actions": [
+   "По выбранному порядку: бруски, лист Л, лист П. Работать из соседнего открытого пролёта.",
+   "Прервали работу — у поставленного листа не меньше 4 термошайб, стопку укрыть."
+  ],
+  "check": "Ветер — стоп: недокрученный лист парусит."
+ },
+ {
+  "title": "Крайние пролёты — с фронтонов",
+  "actions": [
+   "Пролёт 1 — со стремянки у открытого фронтона пары 1, пролёт 4 — у фронтона пары 5. Можно снаружи, с земли.",
+   "Бруски, лист Л, термошайбы, затем лист П."
+  ],
+  "check": "Все 8 листов стоят, все термошайбы закручены."
+ },
+ {
+  "title": "Запасной способ — класть сверху, крышки потом",
+  "actions": [
+   "Только если по проверке 2 лист в пазы не идёт, а по проверке 1 рука с корпусом достаёт на 1,5 м.",
+   "Средние крышки заранее не ставить. Помощник подаёт лист снизу, второй, перегнувшись из соседнего пролёта, кладёт его на полки направляющих и заводит верх в захват конька.",
+   "Крышку на стропиле защёлкивать, когда по обе стороны уже лежат листы: из ближайшего открытого пролёта или с фронтона, резиновой киянкой по всей длине."
+  ],
+  "check": "Крышку не достать — стоп: видео владельцу."
+ },
+ {
+  "title": "Запасной способ — лаз у конька",
+  "actions": [
+   "Для пролёта, у которого не осталось открытого соседа.",
+   "Лист Л задвинуть до конца. Лист П — не до конца: верхом на 600 мм ниже конька, верхний брусок ската П пока не ставить. У конька остаётся лаз.",
+   "Подняться изнутри в лаз, перегнуться через конёк и закрепить лист Л: верхние ряды — отсюда, нижние — помощник снизу у карниза.",
+   "Спуститься, поставить верхний брусок ската П. Снизу дотолкать лист П в захват конька и закрепить снизу у карниза, до куда достаёт рука."
+  ],
+  "check": "Верхний ряд листа П не достать — оставить без термошайб, верх держит коньковый профиль. Сообщить владельцу."
+ },
+ {
+  "title": "Проверка крыши",
+  "actions": [
+   "Изнутри: все верхние торцы в захвате конькового профиля, крышки защёлкнуты по всей длине.",
+   "Снизу у карниза: низ всех листов на одной линии, торцевые профили и капельники на месте.",
+   "Отвязать шнуры конькового профиля."
+  ],
+  "check": "Фото и видео владельцу: каждый пролёт изнутри, линия карниза с обоих скатов, конёк."
+ },
+ {
+  "title": "Что дальше",
+  "actions": [
+   "Только теперь зашивать фронтоны — по инструкции раскроя, часть 2.",
+   "Первый дождь — осмотреть изнутри стыки и термошайбы, капли — фото владельцу."
+  ],
+  "check": "Крыша закрыта, отчёт отправлен."
+ }
+];
+STEPS.forEach((s,i)=>Object.assign(s,TXT[i],{part:PARTS[partOf(i)]}));
+// кадры для инструкции: полоса примерно 3:1, главное — в середине
+const PDFCAM={};
+STEPS.forEach((s,i)=>{if(PDFCAM[i+1])s.pdfcam=PDFCAM[i+1];});
+const CAMS={obzor:{pos:[7000,5600,-8400],target:[1000,1600,300]}};
+
+function hideAll(){
+  for(const s of SIDES){caps[s].forEach(c=>c.t.visible=c.l1.visible=c.l2.visible=false);for(const i of [0,4])strips[s][i].visible=false;
+    bay[s].forEach(o=>{o.sheet.visible=o.film.visible=o.endp.visible=o.hl.visible=false;o.beams.forEach(m=>m.visible=false);o.wash.forEach(r=>r.forEach(w=>{w.w.visible=w.c.visible=false;}));});}
+  ridgeRoof.visible=ridgeGround.visible=false;ridgeRoof.position.y=0;cords.forEach(c=>c.visible=false);fronts.forEach(f=>f.visible=false);
+  stepLs.forEach(g=>{g.visible=false;g.scale.set(1,1,1);});asstLs.forEach(g=>g.visible=false);padM.visible=mallet.visible=false;soap.forEach(m=>m.visible=false);
+  arrows.forEach(a=>a.visible=false);arrowReach.visible=fixArrow.visible=false;reach2.forEach(m=>m.visible=false);reach17.visible=false;
+  stackM.visible=beamBundle.visible=capBundle.visible=endBundle.visible=false;
+  [sheetT,filmT,filmB,filmC,stripL,stripR,stripT,endT,dimL,scrapM].forEach(m=>{m.visible=false;m.position.set(m===dimL?m.position.x:0,m===dimL?m.position.y:0,m===dimL?m.position.z:0);});
+  drain.forEach(d=>d.visible=false);marks.forEach(m=>m.visible=false);pcs.forEach(c=>{c.b.visible=c.t.visible=c.l1.visible=c.l2.visible=false;});
+  frameLabels.length=0;
+}
+let noLabels=false;
+function applyState(si,t){hideAll();if(si>=16)STEPS[si].apply(t,true);else for(let i=0;i<=si;i++)STEPS[i].apply(i<si?1:t,i===si);if(noLabels)frameLabels.length=0;}
+
+/* ---------- камера ---------- */
+let camOverride=null,camTo=null,camFrom=null,camStart=0,camLocked=true;const CAM_DUR=1500;
+function setCam(c){camera.position.set(c.pos[0],c.pos[1],c.pos[2]);controls.target.set(c.target[0],c.target[1],c.target[2]);camera.lookAt(controls.target);}
+function camFor(si,t){if(camOverride)return camOverride;const cs2=STEPS[si].cams;let c=cs2[0];for(const q of cs2)if(q.at<=t)c=q;return c;}
+function wantCam(c,instant){
+  if(camTo===c&&!instant)return;
+  camTo=c;
+  if(instant||REDUCED){setCam(c);camFrom=null;return;}
+  camFrom={pos:camera.position.toArray(),target:controls.target.toArray()};camStart=performance.now();
+}
+function updateCam(now){
+  if(!camLocked||!camFrom||!camTo)return;
+  const k=Math.min(1,(now-camStart)/CAM_DUR),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2,lerp=(a,b)=>a+(b-a)*e;
+  camera.position.set(lerp(camFrom.pos[0],camTo.pos[0]),lerp(camFrom.pos[1],camTo.pos[1]),lerp(camFrom.pos[2],camTo.pos[2]));
+  controls.target.set(lerp(camFrom.target[0],camTo.target[0]),lerp(camFrom.target[1],camTo.target[1]),lerp(camFrom.target[2],camTo.target[2]));
+  if(k>=1)camFrom=null;
+}
+function lerpCam(a,b,e){const f=(p,q)=>p.map((v,i)=>v+(q[i]-v)*e);return {pos:f(a.pos,b.pos),target:f(a.target,b.target)};}
+function camAt(si,t){
+  const list=STEPS[si].cams,w=Math.min(.25,1600/STEPS[si].dur);
+  let k=0;for(let j=0;j<list.length;j++)if(list[j].at<=t)k=j;
+  const prev=k>0?list[k-1]:(si>0?STEPS[si-1].cams[STEPS[si-1].cams.length-1]:list[0]);
+  const x=clamp((t-list[k].at)/w,0,1),e=x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+  return lerpCam(prev,list[k],e);
+}
+/* ---------- панель управления ---------- */
+let si=0,t=0,playing=!REDUCED&&!KADR&&!VIDEO,last=performance.now();
+const dots=$('dots'),fills=[];
+STEPS.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.title=s.title;b.setAttribute('aria-label','Шаг '+(i+1)+': '+s.title);
+  if(partOf(i)>0)b.classList.add('p'+(partOf(i)+1));
+  const f=document.createElement('i');f.className='fill';const sp=document.createElement('span');sp.textContent=String(i+1);b.append(f,sp);
+  b.addEventListener('click',()=>go(i));dots.appendChild(b);fills.push(f);});
+function updateUI(){
+  const s=STEPS[si];$('stepno').textContent='Шаг '+(si+1)+' из '+STEPS.length;$('part').textContent=s.part;$('title').textContent=s.title;
+  $('acts').replaceChildren(...s.actions.map(a=>{const li=document.createElement('li');li.textContent=a;return li;}));
+  $('check').textContent=s.check;
+  const atEnd=si===STEPS.length-1&&t>=1;$('play').textContent=playing?'Пауза':(atEnd?'Сначала':'Пуск');
+  [...dots.children].forEach((b,i)=>{b.classList.toggle('on',i===si);if(i===si)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
+}
+function updateFills(){fills.forEach((f,i)=>{f.style.transform='scaleX('+(i<si?1:i===si?t:0)+')';});}
+function go(i){noLabels=false;si=clamp(i,0,STEPS.length-1);t=playing?0:1;camOverride=null;camLocked=true;camTo=null;updateUI();}
+$('prev').addEventListener('click',()=>go(si-1));
+$('next').addEventListener('click',()=>go(si+1));
+$('play').addEventListener('click',()=>{
+  if(!playing&&si===STEPS.length-1&&t>=1){si=0;t=0;}
+  else if(!playing&&t>=1){t=0;}
+  playing=!playing;camLocked=true;camTo=null;camOverride=null;updateUI();
+});
+window.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('button,a'))return;
+  if(e.key==='ArrowRight')go(si+1);else if(e.key==='ArrowLeft')go(si-1);});
+controls.addEventListener('start',()=>{camLocked=false;camFrom=null;$('hint').hidden=true;if(playing){playing=false;updateUI();}});
+
+/* ---------- размер и цикл ---------- */
+function resize(){const w=view.clientWidth,h=view.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);
+  const a=w/h;camera.aspect=a;camera.fov=a<1.25?Math.min(64,38*1.25/a):38;camera.updateProjectionMatrix();}
+if(window.ResizeObserver)new ResizeObserver(resize).observe(view);else window.addEventListener('resize',resize);
+resize();
+setCam(STEPS[0].cams[0]);camTo=STEPS[0].cams[0];
+if(!playing)t=1;
+updateUI();
+function frame(now){
+  const dt=Math.min(100,now-last);last=now;
+  if(playing){t+=dt/STEPS[si].dur;if(t>=1){if(si<STEPS.length-1){si++;t=0;}else{t=1;playing=false;}updateUI();}}
+  applyState(si,t);
+  if(camLocked)wantCam(camFor(si,t));
+  updateCam(now);controls.update();renderer.render(scene,camera);drawLabels();updateFills();
+  requestAnimationFrame(frame);
+}
+if(!VIDEO)requestAnimationFrame(frame);
+
+// для сборки инструкции: переход к шагу и кадр без анимации
+const TOTAL=STEPS.reduce((a,s)=>a+s.dur,0);
+if(VIDEO){$('vbrand').hidden=false;$('vcap').hidden=false;}
+function frameAt(ms){
+  let acc=0,i=0;while(i<STEPS.length-1&&ms>=acc+STEPS[i].dur){acc+=STEPS[i].dur;i++;}
+  const tt=clamp((ms-acc)/STEPS[i].dur,0,1);si=i;t=tt;playing=false;camLocked=false;noLabels=false;camFrom=null;
+  applyState(si,t);setCam(camAt(si,t));controls.update();renderer.render(scene,camera);drawLabels();
+  if(VIDEO){$('vn').textContent='Шаг '+(si+1)+' из '+STEPS.length+' · '+STEPS[si].part;$('vt').textContent=STEPS[si].title;$('vc').textContent='Проверка: '+STEPS[si].check;}
+}
+window.anim={count:STEPS.length,total:TOTAL,frameAt,steps:STEPS.map(s=>({title:s.title,actions:s.actions.slice(),check:s.check,part:s.part})),
+  goto(i,tt,cam,bez){si=i;t=tt;playing=false;camLocked=true;camOverride=cam?(cam==='pdf'?(STEPS[i].pdfcam||null):CAMS[cam]):null;noLabels=!!bez;const c=camFor(si,t);
+    applyState(si,t);wantCam(c,true);controls.update();renderer.render(scene,camera);drawLabels();updateUI();updateFills();}};
+})();
+</script>
