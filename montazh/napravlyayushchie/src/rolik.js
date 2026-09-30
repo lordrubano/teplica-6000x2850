@@ -1,6 +1,7 @@
 // Ролик MP4 из анимации: кадры снимаются по времени, без пропусков, 25 кадров в секунду.
 // Запуск: node rolik.js   (нужны Playwright с Chromium, ffmpeg с libx264 — путь в FFMPEG)
-// Переменные окружения: THREE_DIR, FONTS_DIR — как в sborka.js; OUT_TMP — папка для страницы.
+// Переменные окружения: THREE_DIR, FONTS_DIR — как в sborka.js; OUT_TMP — папка для страницы;
+// OUT_FILE — куда записать ролик (по умолчанию rolik-napravlyayushchie.mp4 рядом с index.html). crf 30 держит размер до 10 МБ.
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -11,7 +12,7 @@ const DIST = path.resolve(SRC, '..');
 const TMP = process.env.OUT_TMP || path.join(SRC, '.sborka');
 const FFMPEG = process.env.FFMPEG || 'ffmpeg';
 const FPS = 25, W = 1280, H = 720, HOLD_MS = 2000;
-const OUT = path.join(DIST, 'rolik-napravlyayushchie.mp4');
+const OUT = process.env.OUT_FILE || path.join(DIST, 'rolik-napravlyayushchie.mp4');
 
 (async () => {
   fs.mkdirSync(TMP, { recursive: true });
@@ -39,7 +40,7 @@ const OUT = path.join(DIST, 'rolik-napravlyayushchie.mp4');
   const total = await page.evaluate(() => window.anim.total);
 
   const ff = spawn(FFMPEG, ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', OUT], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', '-preset', 'medium', '-crf', '30', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', OUT], { stdio: ['pipe', 'inherit', 'inherit'] });
   const write = buf => new Promise(res => { if (!ff.stdin.write(buf)) ff.stdin.once('drain', res); else res(); });
 
   const frames = Math.ceil(total / (1000 / FPS));

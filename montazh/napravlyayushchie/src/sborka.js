@@ -73,7 +73,7 @@ async function routes(page) {
 
   // данные для инструкции
   const qrSvg = await QRCode.toString(ANIM_URL, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#1F2933', light: '#FFFFFF' } });
-  const date = new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const date = '30.09.2026'; // редакция 2: дата по решению владельца, не по часам контейнера
   const data = {
     steps: steps.map((s, i) => Object.assign({}, s, { img: path.basename(images[i]) })),
     cover: path.basename(cover), qrSvg, animUrl: ANIM_URL, date
