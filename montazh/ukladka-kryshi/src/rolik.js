@@ -1,7 +1,7 @@
 // Ролик MP4 из анимации: кадры снимаются по времени, без пропусков, 25 кадров в секунду.
 // Запуск: node rolik.js   (нужны Playwright с Chromium, ffmpeg с libx264 — путь в FFMPEG)
 // Переменные окружения: THREE_DIR, FONTS_DIR — как в sborka.js; OUT_TMP — папка для страницы;
-// OUT_FILE — куда записать ролик (по умолчанию rolik-ukladka.mp4 рядом с index.html). Ролик длинный (24 шага, около 5 минут): crf 30 даёт около 16 МБ, поэтому по умолчанию crf 35 (около 9 МБ). Другое значение — переменная CRF.
+// OUT_FILE — куда записать ролик (по умолчанию rolik-ukladka.mp4 рядом с index.html). Ролик длинный (26 шагов, около 6 минут): crf 30 даёт около 16 МБ, поэтому по умолчанию crf 35 (около 10 МБ). Другое значение — переменная CRF.
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');

@@ -14,7 +14,7 @@ const SRC = __dirname;
 const DIST = path.resolve(SRC, '..');
 const TMP = process.env.OUT_TMP || path.join(SRC, '.sborka');
 const ANIM_URL = process.env.ANIM_URL || 'https://lordrubano.github.io/teplica-6000x2850/montazh/ukladka-kryshi/';
-const MOMENT = { 10: 0.82, 11: 0.89, 13: 0.8, 16: 0.46, 17: 0.6, 18: 0.5, 22: 0.85, 23: 0.45 };
+const MOMENT = { 6: 0.07, 10: 0.82, 11: 0.89, 13: 0.8, 14: 0.2, 16: 0.46, 17: 0.9, 18: 0.5, 22: 0.7, 23: 0.66, 24: 0.85, 25: 0.45 };
 const PDF_NAME = 'instrukciya-ukladka.pdf';
 
 function wrapPage(fragment) {
@@ -69,7 +69,7 @@ async function routes(page) {
     const n = String(i + 1).padStart(2, '0');
     images.push(await shot('shag-' + n + '.jpg', i, moment[i + 1] || 0.97, 'pdf'));
   }
-  const cover = await shot('obzor.jpg', 23, 0.97, 'obzor', true);
+  const cover = await shot('obzor.jpg', steps.length - 1, 0.97, 'obzor', true);
   await page.close();
 
   // данные для инструкции
