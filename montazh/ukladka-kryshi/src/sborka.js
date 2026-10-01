@@ -14,7 +14,7 @@ const SRC = __dirname;
 const DIST = path.resolve(SRC, '..');
 const TMP = process.env.OUT_TMP || path.join(SRC, '.sborka');
 const ANIM_URL = process.env.ANIM_URL || 'https://lordrubano.github.io/teplica-6000x2850/montazh/ukladka-kryshi/';
-const MOMENT = { 10: 0.82, 11: 0.89, 13: 0.8, 17: 0.6, 18: 0.5, 22: 0.85, 23: 0.45 };
+const MOMENT = { 10: 0.82, 11: 0.89, 13: 0.8, 16: 0.46, 17: 0.6, 18: 0.5, 22: 0.85, 23: 0.45 };
 const PDF_NAME = 'instrukciya-ukladka.pdf';
 
 function wrapPage(fragment) {

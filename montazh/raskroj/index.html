@@ -36,6 +36,10 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b
 .wrap{max-width:1320px;margin:0 auto;display:grid;gap:14px}
 .top h1{font-family:var(--font-d);font-weight:700;font-size:clamp(23px,3.2vw,31px);line-height:1.1;margin:0;text-wrap:balance}
 .top p{margin:6px 0 0;color:var(--muted);font-size:14.5px;max-width:78ch}
+.alert{margin:10px 0 0;padding:10px 14px;background:#FFF3DF;border-left:5px solid #B4640A;border-radius:0 6px 6px 0;color:#4A2A00;font-size:15px;line-height:1.45;font-weight:500;max-width:92ch}
+.alert a{color:#7A3E00;word-break:break-all}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .alert{background:#3A2A12;color:#FFE2B3;border-left-color:#F0B35A}:root:not([data-theme="light"]) .alert a{color:#FFD28A}}
+:root[data-theme="dark"] .alert{background:#3A2A12;color:#FFE2B3;border-left-color:#F0B35A}:root[data-theme="dark"] .alert a{color:#FFD28A}
 .stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:16px;align-items:start}
 @media (max-width:920px){.stage{grid-template-columns:minmax(0,1fr)}}
 .view{position:relative;width:100%;aspect-ratio:16/10;background:var(--sky);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
@@ -91,6 +95,7 @@ body.shot .lbl.big{font-size:23px}
 <div class="wrap">
   <header class="top">
     <h1>Раскрой поликарбоната</h1>
+    <div class="alert">Крышу (листы А, Б, В) резать по инструкции «Крыша: раскрой и укладка листов»: <a href="https://lordrubano.github.io/teplica-6000x2850/montazh/ukladka-kryshi/">https://lordrubano.github.io/teplica-6000x2850/montazh/ukladka-kryshi/</a> — здесь действует только часть 2: стены, фронтоны, окна</div>
     <p>Теплица 6000×2850, сотовый поликарбонат KIN PREMIUM 6 мм, 6 листов 2100×6000: 20 шагов от подготовки площадки до створок окон. Часть 1 — крыша, листы А, Б, В. Часть 2 — стены, фронтоны, окна, листы Г, Д, Е.</p>
   </header>
   <div class="stage">

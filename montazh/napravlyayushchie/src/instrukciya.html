@@ -36,9 +36,13 @@ p{margin:0}
 .note{background:var(--warnbg);border-left:1mm solid var(--warn);padding:3mm 4mm}
 .note h3{color:var(--warn)}
 .note ul{margin:0;padding-left:4.5mm}
+.plain{background:var(--soft);border-left:1mm solid var(--accent);padding:3mm 4mm}
+.plain ul{margin:0;padding-left:4.5mm}
 .okbox{background:var(--okbg);border-left:1mm solid var(--ok);padding:3mm 4mm}
 .okbox h3{color:var(--ok)}
 .okbox ul{margin:0;padding-left:4.5mm}
+ul.redo{margin:0;padding-left:5mm;font-size:11.5pt;line-height:1.55}ul.redo li{margin:2.6mm 0}
+#p-redo .okbox ul,#p-redo .plain ul{font-size:10.4pt}
 figure{margin:0}
 figure svg{width:100%;height:auto;display:block}
 figcaption{font-size:8.8pt;color:var(--muted);margin-top:1.5mm}
@@ -80,7 +84,7 @@ svg .m{font-family:"IBM Plex Mono",monospace}
     <div class="key"><span>Нижний конец</span><b>на 48 мм за торец стропила</b></div>
     <div class="key"><span>Верхний конец</span><b>на 5 мм ниже края конькового профиля</b></div>
     <div class="key"><span>Положение</span><b>по оси стропила, ±1 мм</b></div>
-    <div class="key"><span>Отверстия в направляющей</span><b>2 средних круглых 6 мм, 6 овалов 6×12</b></div>
+    <div class="key"><span>Отверстия в направляющей</span><b>2 средних круглых 6 мм, 6 отверстий 10 мм</b></div>
     <div class="key"><span>Крепёж на одну направляющую</span><b>8 саморезов Pz 4×50 + шайба 5,3×15</b></div>
     <div class="key" style="grid-column:1/-1"><span>Отметки отверстий от нижнего конца направляющей, мм</span><b>105 · 185 · 465 · 745 · 1025 · 1305 · 1585 · 1665</b></div>
     <div class="key" style="grid-column:1/-1"><span>Пролёты у конька в свету, замер 28.09.2026, мм, от пары 1 к паре 5 — каркас принят как есть</span><b>1460 · 1430 · 1427 · 1450</b></div>
@@ -91,6 +95,21 @@ svg .m{font-family:"IBM Plex Mono",monospace}
     <div class="t"><b>Анимация всех шагов</b>Наведите камеру телефона на код — откроется объёмная анимация монтажа с пояснениями к каждому шагу.<div class="url" id="animurl"></div></div>
   </div>
   <div class="foot" id="foot1"></div>
+</section>
+
+<section class="page" id="p-redo">
+  <div class="kicker">Переделка</div>
+  <h2>Если направляющие уже стоят — переделка за один проход</h2>
+  <ul class="redo">
+    <li>Пара 1: надеть конец конькового профиля, отметить мелом его край на стропиле. Верх направляющей подрезать на месте ножовкой по металлу с мелким зубом на 5 мм ниже метки — обычно около 20 мм. Заусенцы снять ножом.</li>
+    <li>Защёлкнуть на верх направляющей короткий кусок крышки и проверить, что коньковый профиль садится поверх и не упирается. Фото владельцу.</li>
+    <li>Остальные девять — так же, каждую по своей метке края профиля.</li>
+    <li>Саморезы — по одному: открутить; два средних отверстия (745 и 1025) оставить 6 мм; остальные шесть рассверлить до 10 мм — только пластик; поставить шайбу 5,3×15 и вкрутить саморез в то же отверстие в дереве; затянуть, пока основание плотно прижато и не качается рукой. Пластик под шайбой побелел — отпустить на четверть оборота.</li>
+    <li>Крышки нарезать по длине своей направляющей.</li>
+  </ul>
+  <div class="okbox"><ul><li>Проверка: верх всех направляющих на 5 мм ниже края конькового профиля, все 80 шайб 5,3×15 стоят, ни одно основание не качается. Фото: подрезка на паре 1 с профилем, одно рассверленное отверстие с шайбой.</li></ul></div>
+  <div class="plain"><ul><li>Инструмент: ножовка по металлу с мелким зубом, сверло 10 мм по металлу (или ступенчатое), шуруповёрт, бита PZ2, нож.</li></ul></div>
+  <div class="foot">Страница 2</div>
 </section>
 
 <section class="page" id="p-prep">
@@ -107,6 +126,7 @@ svg .m{font-family:"IBM Plex Mono",monospace}
       <li>Ножовка по металлу с мелким зубом или лобзик с пилкой по металлу.</li>
       <li>Нож — зачистить заусенцы.</li>
       <li>Сверло 6 мм по металлу или по дереву — 2 шт.</li>
+      <li>Сверло 10 мм по металлу или ступенчатое.</li>
       <li>Козлы или стол — резать и сверлить хлысты на земле.</li></ul></div>
     <div class="blk"><h3>Крепление</h3><ul>
       <li>Шуруповёрт с ограничением усилия.</li>
@@ -132,10 +152,10 @@ svg .m{font-family:"IBM Plex Mono",monospace}
   <div class="blk"><h3>Что изменено относительно проекта (редакция 8.0)</h3><ul>
     <li>Порядок: сначала направляющие, по ним бруски. В проекте наоборот. Решение владельца 28.09.2026.</li>
     <li>Каркас принят как есть решением владельца 28.09.2026: конёк по листу 14 не выставлялся, провис ската Л до 7 мм, П до 11 мм. Направляющие ставятся по стропилам без подкладок.</li>
-    <li>Крепёж: саморез 4×50 с увеличенной шайбой 5,3×15 вместо 4,8×60. Отверстия: два средних круглые 6 мм, шесть — овал 6×12 вдоль направляющей. Решение владельца 30.09.2026: обычная шайба М5 (10 мм) не перекрывает овал 12 мм.</li>
+    <li>Крепёж: саморез 4×50 с увеличенной шайбой 5,3×15 вместо 4,8×60. Отверстия: два средних круглые 6 мм, шесть — 10 мм вместо овалов 6×12 (ход ±3 мм, шайба 15 мм закрывает отверстие). Решения владельца 30.09.2026 и 01.10.2026: обычная шайба М5 (10 мм) не перекрывает отверстие, овалы заменены круглыми.</li>
     <li>Верхний конец направляющей — на 5 мм ниже края конькового профиля, а не у оси конька: захват профиля зажимает сам лист. Решение владельца 30.09.2026.</li>
     <li>8 саморезов на направляющую, все между рядами уголков и не ближе 60 мм к торцам стропила: саморез направляющей не должен встретить саморезы уголков.</li></ul></div>
-  <div class="foot">Страница 2</div>
+  <div class="foot">Страница 3</div>
 </section>
 
 <section class="page" id="p-draw">
@@ -143,13 +163,13 @@ svg .m{font-family:"IBM Plex Mono",monospace}
   <h2>Где лежит направляющая и куда идут саморезы</h2>
   <figure>
     <svg id="dA" viewBox="0 0 1000 556" role="img" aria-label="Направляющая на стропиле, вид сбоку"></svg>
-    <figcaption>Вид сбоку, скат развёрнут в линию, высоты увеличены. Пунктир — места будущих брусков. Отметки отверстий — от нижнего конца направляющей. Все саморезы стоят между рядами уголков; крайние — примерно в 60 мм от торцов стропила. Два средних отверстия круглые 6 мм, остальные шесть — овал 6×12 вдоль направляющей. Уголки по проекту: 280 · 560 · 840 · 1120 · 1400 мм от верхнего конца стропила.</figcaption>
+    <figcaption>Вид сбоку, скат развёрнут в линию, высоты увеличены. Пунктир — места будущих брусков. Отметки отверстий — от нижнего конца направляющей. Все саморезы стоят между рядами уголков; крайние — примерно в 60 мм от торцов стропила. Два средних отверстия 6 мм, остальные шесть — 10 мм. Уголки по проекту: 280 · 560 · 840 · 1120 · 1400 мм от верхнего конца стропила.</figcaption>
   </figure>
   <figure>
     <svg id="dB" viewBox="0 0 1000 440" role="img" aria-label="Разрез поперёк стропила"></svg>
-    <figcaption>Разрез поперёк стропила 45×90. Саморез направляющей идёт вертикально по оси и входит в дерево на 46 мм. Саморезы уголков вкручены сбоку и доходят почти до оси — поэтому напротив уголка саморез направляющей ставить нельзя. Круглое отверстие 6 мм под саморез 4 мм даёт ход ±1 мм, а направляющая длиной до 1800 мм от тепла удлиняется примерно на 5 мм. Поэтому круглые только два средних отверстия, остальные — овал 6×12, ход ±3 мм.</figcaption>
+    <figcaption>Разрез поперёк стропила 45×90. Саморез направляющей идёт вертикально по оси и входит в дерево на 46 мм. Саморезы уголков вкручены сбоку и доходят почти до оси — поэтому напротив уголка саморез направляющей ставить нельзя. Круглое отверстие 6 мм под саморез 4 мм даёт ход ±1 мм, а направляющая длиной до 1800 мм от тепла удлиняется примерно на 5 мм. Поэтому 6 мм только два средних отверстия, остальные шесть — 10 мм, ход ±3 мм.</figcaption>
   </figure>
-  <div class="foot">Страница 3</div>
+  <div class="foot">Страница 4</div>
 </section>
 
 <section class="page" id="p-fact">
@@ -172,9 +192,9 @@ svg .m{font-family:"IBM Plex Mono",monospace}
       <li>Уголки 40×40×40 стоят на всех стропилах, по 5 на скат. Верх уголка вровень с верхом стропила, крепление саморезами 4×25 с плоской головкой.</li>
       <li>Бруски обрешётки нарезаны, 40 шт по 1423 мм, не установлены: высоту задаст направляющая.</li>
       <li>Поликарбонат KIN PREMIUM 6 мм, 6 листов, лежит ровно в тени.</li>
-      <li>Направляющие: саморез жёлтый Pz 4×50 с шайбой 5,3×15; отверстия — 2 круглых 6 мм и 6 овалов 6×12 вдоль.</li></ul></div>
+      <li>Направляющие: саморез жёлтый Pz 4×50 с шайбой 5,3×15; отверстия — 2 круглых 6 мм и 6 отверстий 10 мм.</li></ul></div>
   </div>
-  <div class="foot">Страница 4</div>
+  <div class="foot">Страница 5</div>
 </section>
 
 <div id="steps"></div>
@@ -220,7 +240,7 @@ svg .m{font-family:"IBM Plex Mono",monospace}
     <li>На всех стропилах, и на крайних тоже, край листа — в 10 мм от оси стропила, между краями соседних листов 20 мм.</li>
     <li>Ширину каждого листа считать по 16 замерам шага 14, отдельно для каждого пролёта — примерно от 1450 до 1490 мм.</li>
     <li>Если пролёт сужается, лист режется трапецией: кромка везде в 10 мм от оси. Раскрой — отдельная инструкция: https://lordrubano.github.io/teplica-6000x2850/montazh/raskroj/</li></ul></div>
-  <div class="foot">Инструкция подготовлена ИИ-помощником Claude по данным проекта, замерам монтажников и решениям владельца · 30.09.2026</div>
+  <div class="foot">Инструкция подготовлена ИИ-помощником Claude по данным проекта, замерам монтажников и решениям владельца · 01.10.2026</div>
 </section>
 
 <script src="data.js"></script>
@@ -232,11 +252,11 @@ function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(
 document.getElementById('cover').src=D.cover;
 document.getElementById('qr').innerHTML=D.qrSvg;
 document.getElementById('animurl').textContent=D.animUrl;
-document.getElementById('foot1').textContent='Редакция инструкции 3 · '+D.date+' · по проекту «Теплица 6000×2850», редакция 8.0, и решениям владельца от 28.09 и 30.09.2026';
-document.getElementById('footlast').textContent='Страница 12';
+document.getElementById('foot1').textContent='Редакция инструкции 4 · '+D.date+' · по проекту «Теплица 6000×2850», редакция 8.0, и решениям владельца от 28.09, 30.09 и 01.10.2026';
+document.getElementById('footlast').textContent='Страница 13';
 
 // шаги по два на страницу
-const host=document.getElementById('steps');let page=null,pn=5;
+const host=document.getElementById('steps');let page=null,pn=6;
 D.steps.forEach((s,i)=>{
   if(i%2===0){page=document.createElement('section');page.className='page steps'+(i===12?' tight':'');host.appendChild(page);
     const k=document.createElement('div');k.className='kicker';k.textContent='Шаги '+(i+1)+(i+1<D.steps.length?'–'+(i+2):'')+' из '+D.steps.length;page.appendChild(k);}
@@ -279,13 +299,13 @@ D.steps.forEach((s,i)=>{
     el('text',{x:xm-6,y:yt-8,'font-size':FS-1,fill:'#5B3F99',class:'halo'},s,'коньковый профиль');})();
   // направляющая и отверстия
   el('rect',{x:x(BV0),y:top-8,width:x(BV1)-x(BV0),height:8,fill:'#DDEEFA',stroke:'#2A6BA8','stroke-width':1.2},s);
-  MARKS.forEach(m=>{const r=(m===745||m===1025);el('ellipse',{cx:x(vM(m)),cy:top-4,rx:r?3.4:6.2,ry:3.4,fill:'#F06A2A',stroke:'#fff','stroke-width':.8},s);});
+  MARKS.forEach(m=>{const r=(m===745||m===1025);el('circle',{cx:x(vM(m)),cy:top-4,r:r?3.4:5.6,fill:'#F06A2A',stroke:'#fff','stroke-width':.8},s);});
   // размер L
   el('line',{x1:x(BV0),y1:92,x2:x(BV1),y2:92,stroke:'#1D5FA6','stroke-width':1,'marker-start':'url(#ar)','marker-end':'url(#ar)'},s);
   el('line',{x1:x(BV0),y1:84,x2:x(BV0),y2:top-10,stroke:'#1D5FA6','stroke-width':.6},s);
   el('line',{x1:x(BV1),y1:84,x2:x(BV1),y2:top-10,stroke:'#1D5FA6','stroke-width':.6},s);
   el('text',{x:x(824),y:84,'font-size':FS+2,fill:'#1D5FA6','text-anchor':'middle',class:'m'},s,'L — направляющая, по примерке');
-  el('text',{x:x(824),y:124,'font-size':FS,fill:'#2A6BA8','text-anchor':'middle'},s,'по средней линии: 745 и 1025 — круглые 6 мм, остальные — овал 6×12');
+  el('text',{x:x(824),y:124,'font-size':FS,fill:'#2A6BA8','text-anchor':'middle'},s,'по средней линии: 745 и 1025 — 6 мм, остальные шесть — 10 мм');
   // свес 48 и зазор у конька
   el('line',{x1:x(SL),y1:150,x2:x(SL),y2:top,stroke:'#9C5410','stroke-width':.8},s);
   el('line',{x1:x(SL)-20,y1:156,x2:x(BV1)+20,y2:156,stroke:'#9C5410','stroke-width':1},s);
@@ -338,7 +358,7 @@ D.steps.forEach((s,i)=>{
     el('text',{x:cx,y:28,'font-size':20,'font-weight':600,fill:ok?'#1B7A50':'#B3261E','text-anchor':'middle'},s,title);
     el('rect',{x:x0,y:top,width:W,height:H,fill:'url(#hw2)',stroke:'#1F2933','stroke-width':1.3},s);
     el('line',{x1:cx,y1:44,x2:cx,y2:top+H+14,stroke:'#5B6773','stroke-width':1,'stroke-dasharray':'8 4 2 4'},s);
-    const bw=60*k,bt=3*k,hole=6*k;
+    const bw=60*k,bt=3*k,hole=10*k;
     el('rect',{x:cx-bw/2,y:top-bt,width:bw/2-hole/2,height:bt,fill:'#DDEEFA',stroke:'#2A6BA8','stroke-width':1.1},s);
     el('rect',{x:cx+hole/2,y:top-bt,width:bw/2-hole/2,height:bt,fill:'#DDEEFA',stroke:'#2A6BA8','stroke-width':1.1},s);
     const wt=1.2*k,ww=15*k;el('rect',{x:cx-ww/2,y:top-bt-wt,width:ww,height:wt,fill:'#C3CAD1',stroke:'#5E6770','stroke-width':.9},s);
@@ -356,7 +376,7 @@ D.steps.forEach((s,i)=>{
     el('text',{x:cx-bw/2-8,y:top-bt+4,'font-size':FS-1,fill:'#2A6BA8','text-anchor':'end'},s,'направляющая');
     el('text',{x:cx-bw/2-8,y:top-bt-18,'font-size':FS-1,fill:'#5E6770','text-anchor':'end'},s,'шайба 5,3×15');
     el('text',{x:cx+bw/2+8,y:top-bt-14,'font-size':FS-1,fill:'#7A5A10'},s,'саморез Pz 4×50');
-    el('text',{x:cx+bw/2+8,y:top-bt+4,'font-size':FS-1,fill:'#2A6BA8'},s,'отверстие 6');
+    el('text',{x:cx+bw/2+8,y:top-bt+4,'font-size':FS-1,fill:'#2A6BA8'},s,'отверстие 10');
     if(withAngles){
       const at=2*k,ah=40*k,ls=23*k;
       [[-1,top+14*k],[1,top+28*k]].forEach(([d,yy])=>{
