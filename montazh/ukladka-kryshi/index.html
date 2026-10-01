@@ -320,7 +320,11 @@ function prismG(ptf){
   quad(C(1,0,0),C(1,0,1),C(1,1,1),C(1,1,0),U0,U1,U2,U3);
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.computeVertexNormals();return g;
 }
-function roofPrism(side,v0,v1,w0,w1,fa,fb){const vs=[v0,v1],ws=[w0,w1];return prismG((i,j,k)=>{const v=vs[i],p=P(side,v,ws[j]);return [p.x,p.y,k?fb(v):fa(v)];});}
+function roofPrism(side,v0,v1,w0,w1,fa,fb){const vs=[v0,v1],ws=[w0,w1];
+  const g=prismG((i,j,k)=>{const v=vs[i],p=P(side,v,ws[j]);return [p.x,p.y,k?fb(v):fa(v)];});
+  // на скате Л (side>0) ось z идёт справа налево, если смотреть на лист снаружи сверху: зеркалим u, чтобы надписи на плёнке читались сверху
+  if(side>0){const uv=g.attributes.uv;for(let n=0;n<uv.count;n++)uv.setX(n,1-uv.getX(n));uv.needsUpdate=true;}
+  return g;}
 function shift(m,side,d,lift){lift=lift||0;m.position.set(side*(cs*d+sn*lift),-sn*d+cs*lift,0);}
 function rod(A,B,t,mat,parent){const d=new THREE.Vector3().subVectors(B,A),len=d.length(),m=new THREE.Mesh(U,mat);
   m.position.copy(A).addScaledVector(d,.5);m.quaternion.setFromUnitVectors(Zv,d.clone().normalize());m.scale.set(t,t,len);m.castShadow=true;(parent||scene).add(m);return m;}
