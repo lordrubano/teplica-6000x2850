@@ -1,7 +1,7 @@
 // Ролик MP4 из анимации: кадры снимаются по времени, без пропусков, 25 кадров в секунду.
 // Запуск: node rolik.js   (нужны Playwright с Chromium, ffmpeg с libx264 — путь в FFMPEG)
 // Переменные окружения: THREE_DIR, FONTS_DIR — как в sborka.js; OUT_TMP — папка для страницы;
-// OUT_FILE — куда записать ролик (по умолчанию rolik-ukladka.mp4 рядом с index.html). crf 30 держит размер до 10 МБ.
+// OUT_FILE — куда записать ролик (по умолчанию rolik-ukladka.mp4 рядом с index.html). Ролик длинный (24 шага, около 5 минут): crf 30 даёт около 16 МБ, поэтому по умолчанию crf 35 (около 9 МБ). Другое значение — переменная CRF.
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -40,7 +40,7 @@ const OUT = process.env.OUT_FILE || path.join(DIST, 'rolik-ukladka.mp4');
   const total = await page.evaluate(() => window.anim.total);
 
   const ff = spawn(FFMPEG, ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '30', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', OUT], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', '-preset', 'medium', '-crf', process.env.CRF || '35', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', OUT], { stdio: ['pipe', 'inherit', 'inherit'] });
   const write = buf => new Promise(res => { if (!ff.stdin.write(buf)) ff.stdin.once('drain', res); else res(); });
 
   const frames = Math.ceil(total / (1000 / FPS));
