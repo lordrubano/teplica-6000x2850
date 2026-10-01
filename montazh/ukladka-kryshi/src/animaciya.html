@@ -59,7 +59,7 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b
 .ctrl button{font:500 14px/1 var(--font-b);padding:10px 14px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;min-height:42px}
 .ctrl button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-width:104px}
 button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.dots{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px}
+.dots{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:3px}
 .dots button{height:30px;border:0;border-radius:4px;background:var(--chip);color:var(--muted);font:500 12px/1 var(--font-m);cursor:pointer;position:relative;overflow:hidden;padding:0}
 .dots .fill{position:absolute;inset:0;background:var(--accent-soft);transform-origin:left center;transform:scaleX(0)}
 .dots button span{position:relative}
@@ -67,8 +67,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .dots button.p2{background:#DDE6EE}
 .dots button.p3{background:#E6E3D3}
 .dots button.p4{background:#EBDDDD}
-.dots button.p5{background:#DCE9DF}
-.dots button.p6{background:#E0E6F0}
+.dots button.p5{background:#E4DDF0}
+.dots button.p6{background:#DCE9DF}
+.dots button.p7{background:#E0E6F0}
 .doclink{font-size:14px;color:var(--accent);text-underline-offset:3px}
 .facts{display:flex;flex-wrap:wrap;gap:8px}
 .facts span{background:var(--paper);border:1px solid var(--rule);border-radius:99px;padding:5px 12px;font-size:13px}
@@ -92,7 +93,7 @@ body.shot .lbl.big{font-size:23px}
 <div class="wrap">
   <header class="top">
     <h1>Крыша: раскрой и укладка листов</h1>
-    <p>Теплица 6000×2850, листы А, Б, В сотового поликарбоната 6 мм: 24 шага от площадки для раскроя до закрытой крыши. Работа только снизу, изнутри, с лестницы: бруски ставятся по пролётам вместе с листами.</p>
+    <p>Теплица 6000×2850, листы А, Б, В сотового поликарбоната 6 мм: 26 шагов от площадки для раскроя до закрытой крыши. Работа только снизу, изнутри, с лестницы: бруски ставятся по пролётам вместе с листами, коньковый профиль — после листов.</p>
   </header>
   <div class="stage">
     <div class="view" id="view">
@@ -104,8 +105,8 @@ body.shot .lbl.big{font-size:23px}
       <div class="nogl" id="nogl" hidden>Браузер не показывает объёмную графику. Все шаги есть в инструкции для печати — ссылка справа.</div>
     </div>
     <aside class="panel" aria-live="polite">
-      <div class="stepno" id="stepno">Шаг 1 из 24</div>
-      <div class="part" id="part">Часть 1. Проверка и разметка на земле</div>
+      <div class="stepno" id="stepno">Шаг 1 из 26</div>
+      <div class="part" id="part">Часть 1. Подготовка и проверки</div>
       <h2 id="title">Что должно быть готово</h2>
       <ul class="acts" id="acts"></ul>
       <div class="check"><b>Проверка</b><span id="check"></span></div>
@@ -123,7 +124,8 @@ body.shot .lbl.big{font-size:23px}
     <span>Раскрой крыши: <b>листы А, Б, В</b></span>
     <span>Бруски — <b>по пролётам, не все сразу</b></span>
     <span>Средние крышки — <b>заранее</b>, лист задвигается в пазы</span>
-    <span>Порядок: <b>средние пролёты, потом крайние</b></span>
+    <span>Порядок: <b>2 → 1 → 3 → 4</b></span>
+    <span>Конёк — <b>после листов</b>, вдоль с фронтона</span>
   </div>
 </div>
 
@@ -207,8 +209,8 @@ const M={
   axis:new THREE.MeshBasicMaterial({color:0xFF8A00}),mark:new THREE.MeshBasicMaterial({color:0xF06A2A}),
   dim:new THREE.MeshBasicMaterial({color:0x1D5FA6}),
   chalk:new THREE.MeshBasicMaterial({color:0xFFFFFF}),
-  ridge:new THREE.MeshStandardMaterial({color:0xD9C8F2,roughness:.3,metalness:0,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}),
-  ridgeLine:new THREE.LineBasicMaterial({color:0x5B3F99,transparent:true,opacity:.8})
+  ridge:new THREE.MeshStandardMaterial({color:0xB59BE6,roughness:.3,metalness:0,transparent:true,opacity:.85,side:THREE.DoubleSide,depthWrite:false}),
+  ridgeLine:new THREE.LineBasicMaterial({color:0x3C2A70,transparent:true,opacity:.95})
 };
 
 function box(w,h,d,x,y,z,mat){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;scene.add(m);return m;}
@@ -338,7 +340,7 @@ for(const s of SIDES){caps[s]=rafterZ.map(()=>({t:um(M.capT),l1:um(M.capT),l2:um
 function showCap(s,i,lift){const c=caps[s][i];lift=lift||0;
   placeR(c.t,s,i,BV0,BV1,11+lift,13+lift,-35,35);placeR(c.l1,s,i,BV0,BV1,8+lift,13+lift,-35,-33);placeR(c.l2,s,i,BV0,BV1,8+lift,13+lift,33,35);c.t.visible=c.l1.visible=c.l2.visible=true;}
 /* полосы крайних стропил: 50 мм под наружной губой */
-const SV0=-63,SV1=BV1;                       // верх листа — в захвате конька (L = А − 3 = 1787), низ вровень с направляющей
+const SV0=BV0-30,SV1=BV1;                    // верх листа — на 30 мм выше верха направляющей (L = направляющая + 30 = 1785), низ вровень с нижним концом направляющей
 const strips={};
 for(const s of SIDES){strips[s]={};for(const i of [0,4]){const out=i===0?-1:1;
   strips[s][i]=mk(roofPrism(s,SV0,SV1,3,9,v=>zAt(s,i,v)+(out<0?-60:10),v=>zAt(s,i,v)+(out<0?-10:60)),M.sheet);}}
@@ -352,13 +354,32 @@ function makeRidgeProfile(){
   for(const sd of SIDES){const c=P(sd,EDGE-9,10.5),m=new THREE.Mesh(U,M.ridge);m.position.set(c.x,c.y,.5);m.rotation.z=sd>0?-th:th;m.scale.set(18,3,1);grp.add(m);}
   grp.visible=false;scene.add(grp);return grp;
 }
-const ridgeRoof=makeRidgeProfile(),ridgeGround=makeRidgeProfile();
-ridgeRoof.position.z=-3000;ridgeRoof.scale.z=6000;
-ridgeGround.rotation.y=Math.PI/2;ridgeGround.position.set(2100,-P(1,EDGE,9).y,-2300);ridgeGround.scale.z=6000;
-/* шнуры подвязки конькового профиля к крайним стропилам */
-const cords=[];
-for(const zs of [-1,1])for(const s of SIDES){const zr=zs<0?rafterZ[0]:rafterZ[4],pa=V(0,ridgeTop+72,zs*2990),pb=P(s,260,4);pb.z=zr+zs*8;cords.push(rod(pa,pb,9,M.cord));}
-cords.forEach(c=>c.visible=false);
+const ridgeRoof=makeRidgeProfile(),ridgeGround=makeRidgeProfile(),ridgeB=makeRidgeProfile();
+const RYE=P(1,EDGE,9).y;                              // высота основания дуги профиля, когда он лежит на коньке
+/* профиль — 6 м; z0…z1 — где он лежит вдоль оси конька, x и y — смещение (на земле: y = −RYE) */
+function ridgePlace(g,z0,z1,x,y){g.position.set(x||0,y||0,z0);g.scale.z=Math.max(z1-z0,1);g.visible=true;}
+const RG0=-9400,RG1=-3400,RGX=1500;                   // профиль в комплекте: на земле у фронтона пары 1, в створе конька, сбоку от стремянок
+const Z_IN0=-3000,Z3=rafterZ[2];                      // входной конец у фронтона пары 1 — и ось пары 3
+const PROPZ=-3750;                                    // подпорка хвоста — снаружи у фронтона пары 1
+/* подпорка хвоста: стремянка до высоты конька с доской наверху */
+function mkProp(){const g=new THREE.Group(),l=mkStep(M.stepL);scene.remove(l);l.visible=true;l.scale.set(1,1.6,1);g.add(l);
+  const bd=new THREE.Mesh(U,M.plank);bd.scale.set(110,30,1300);bd.position.set(0,RYE-15,0);bd.castShadow=true;g.add(bd);
+  g.visible=false;scene.add(g);return g;}
+/* метка маркером на профиле, углы губ входного конца, две линейки в захватах, плоскость оси пары 3, подвязка хвоста */
+const markBand=um(M.mark),lipCut=[um(M.mark),um(M.mark)],rulers=[um(M.alu),um(M.alu)];
+const axisPl=mk(new THREE.PlaneGeometry(520,300),M.front);
+const tieBox=[0,1,2,3].map(()=>um(M.cord));
+const silBlob=um(M.wash);
+function tieAt(z){const y0=RYE-62,y1=RYE+96,x=82;
+  [[-x,(y0+y1)/2,20,y1-y0],[x,(y0+y1)/2,20,y1-y0],[0,y0,2*x+20,20],[0,y1,2*x+20,20]].forEach((q,i)=>{const m=tieBox[i];m.position.set(q[0],q[1],z);m.scale.set(q[2],q[3],26);m.rotation.set(0,0,0);m.visible=true;});}
+function markAt(z,x,y){markBand.position.set(x||0,RYE+22+(y||0),z);markBand.scale.set(112,76,26);markBand.rotation.set(0,0,0);markBand.visible=true;}
+function lipsAt(z,x,y){[1,-1].forEach((sd,i)=>{const m=lipCut[i];m.position.set(x+sd*37,y+RYE+8,z);m.scale.set(30,22,34);m.rotation.set(0,0,0);m.visible=true;});}
+function rulersAt(z,x,y){[1,-1].forEach((sd,i)=>{const m=rulers[i];m.position.set(x+sd*50,y+RYE+3,z+120);m.scale.set(34,6,360);m.rotation.set(0,0,0);m.visible=true;});}
+const prop=mkProp(),prop2=mkProp();
+prop.position.set(0,0,PROPZ);prop2.position.set(0,0,-PROPZ);
+/* метка края конька на коньковых балках — «край профиля» по проекту */
+const edgeMk=SIDES.map(sd=>um(M.mark));
+function showEdgeMk(){SIDES.forEach((sd,i)=>{placeSlope(edgeMk[i],sd,EDGE-2,EDGE+2,0,7,-2990,2990);edgeMk[i].visible=true;});}
 /* фронтоны — подсветка открытых торцов */
 const frShape=new THREE.Shape();frShape.moveTo(-W/2,plateTop);frShape.lineTo(W/2,plateTop);frShape.lineTo(0,ridgeTop);frShape.lineTo(-W/2,plateTop);
 const frG=new THREE.ExtrudeGeometry(frShape,{depth:14,bevelEnabled:false});
@@ -787,6 +808,7 @@ RS[15]={dur:8500,cams:[{at:0,pos:[-3000,2700,-1300],target:[0,120,0]},{at:.84,po
   const ft=ease(seg(t,.86,1));
   if(ft>0){TENT.position.set(0,40+(1-ft)*900,0);TENT.scale.set(1,13*LH+20,1);TENT.visible=true;}
   if(t>.3&&t<.86)lab('сверху Л2',V(-745,SY+ST+50,0),'big');
+  if(t>.4&&t<.86)lab('порядок: Л2 · П2 · Л1 · П1 · Л3 · П3 · Л4 · П4',V(0,SY+ST+120,-1000),'ok',0,60);
   if(t>.6&&t<.9)lab('обрезки и запас — сверху',V(-320,SY+ST+150,0),'warn');
   if(t>.9)lab('светлый непрозрачный тент',V(0,SY+ST+200,0),'big');
  }};
@@ -830,7 +852,7 @@ RS[6]={dur:9500,cams:[{at:0,pos:[-3100,4300,-1500],target:[0,0,-1450]}],
   deckAll();drawBars(0,Z1,1,0,2400,0);at(SL.A5400,0,0,0);capOn(FT[1],-SX,2*SX,3000,-1);
   const f1=seg(t,0,.16),f2=seg(t,.18,.34);
   if(t<.48){tapePose(0,-1030,Z600,-Math.PI/2,LP*f1);tapePose(1,1030,Z600,-Math.PI/2,LP*f2);}
-  if(t>.14){redLine(-SX,Z1,-SX+60,Z1);lab('L — по примерке, до 1820',V(-1030,Ly,(Z600+Z1)/2),'big');}
+  if(t>.14){redLine(-SX,Z1,-SX+60,Z1);lab('L = направляющая + 30, до 1820',V(-1030,Ly,(Z600+Z1)/2),'big');}
   if(t>.32)redLine(SX-60,Z1,SX,Z1);
   const rf=ease(seg(t,.46,.58)),ln=seg(t,.56,.72);
   if(t>.46&&t<.72){ruleAlong(-SX,Z1,SX,Z1,-41,2500,(1-rf)*300);}
@@ -886,7 +908,7 @@ RS[9]={dur:8000,cams:[{at:0,pos:[-2900,2900,-3500],target:[300,0,-1800]}],
   if(t>.28&&t<.66)lab('вдоль сот',V(XT+300,SY+ST+250,ZT+400),'big');
   if(t>.9){lab('обрезок О-Л1',V(XT+SK+220+300,Ly,(ZT+ZB)/2),'big');}
  }};
-function stack(n,tent){deckAll();const LH=16;for(let i=0;i<8;i++)if(i<n)at(SL.stk[i],0,0,i*LH);if(tent&&n>0){TENT.position.set(0,40,0);TENT.scale.set(1,13*LH+20,1);TENT.visible=true;}}
+function stack(n,tent){deckAll();const LH=16;SL.stk.forEach(m=>m.visible=false);TENT.visible=false;for(let i=0;i<8;i++)if(i<n)at(SL.stk[i],0,0,i*LH);if(tent&&n>0){TENT.position.set(0,40,0);TENT.scale.set(1,13*LH+20,1);TENT.visible=true;}}
 function hide(){TOG.forEach(o=>o.visible=false);lrN=0;lbN=0;}
 const yc=cs_=>cs_.map(c=>({at:c.at,pos:[c.pos[0]+YX,c.pos[1],c.pos[2]],target:[c.target[0]+YX,c.target[1],c.target[2]]}));
 return {RS,hide,yc,Y,pave,drawDeck,deckAll,at,SL,SY,ST,TENT,LP,SHZ,stack};
@@ -902,16 +924,34 @@ const reach2=reachSpec.map(q=>halfDisc(1,zAt(1,2,900),900,q.r,q.w,-1,q.m));
 const reach17=halfDisc(1,zAt(1,3,900),900,1500,14,-1,M.r15);
 const dimL=um(M.dim),dimR1=um(M.dim),dimR2=um(M.dim);
 const scrapM=um(M.sheet);
-const PARTS=['Часть 1. Подготовка и проверки','Часть 2. Подготовка крыши — все пролёты открыты','Часть 3. Раскрой листов крыши','Часть 4. Укладка — пролёт за пролётом','Часть 5. Запасные способы','Часть 6. Завершение'];
-const partOf=i=>i<5?0:i<8?1:i<13?2:i<21?3:i<23?4:5;
+const PARTS=['Часть 1. Подготовка и проверки','Часть 2. Подготовка крыши — все пролёты открыты','Часть 3. Раскрой листов крыши','Часть 4. Укладка — пролёт за пролётом','Часть 5. Коньковый профиль — вдоль, с фронтона','Часть 6. Запасные способы','Часть 7. Завершение'];
+const partOf=i=>i<5?0:i<8?1:i<13?2:i<21?3:i<23?4:i<25?5:6;
 function trestleDone(){sheetT.visible=filmC.visible=endT.visible=true;sheetT.position.set(0,0,0);marks.forEach((m,i)=>showMark(Math.floor(i/3),i%3));drain.forEach((d,k)=>{d.scale.set(6,6,3);d.position.set(TX0+150+300*k,TY+4,TZ1+6.2);d.visible=true;});}
 function trestleHide(){sheetT.visible=filmC.visible=endT.visible=false;marks.forEach(m=>m.visible=false);drain.forEach(d=>d.visible=false);}
-function kit(opt){opt=opt||{};beamBundle.visible=true;endBundle.visible=true;capBundle.visible=!!opt.caps;ridgeGround.visible=!!opt.ridge;}
+/* комплект на земле: бруски, торцевые профили, крышки (до шага 7), коньковый профиль (до шага 22) и подпорка хвоста (с шага 6) */
+function kit(opt){opt=opt||{};beamBundle.visible=endBundle.visible=!opt.done;capBundle.visible=!!opt.caps;
+  if(opt.ridge)ridgePlace(ridgeGround,RG0,RG1,RGX,-RYE);else ridgeGround.visible=false;
+  if(opt.ridge===2)markAt(RG1-2980,RGX,-RYE);
+  prop.visible=!!opt.prop;}
+/* ставит маленькие метки: углы губ, метка маркером на профиле, подвязка */
+const KIT_ROOF={ridge:2};   // после шага 6: профиль лежит на земле, метка на нём сделана; подпорку выставляют перед шагом 22
 function rim(r,ang){const zc=zAt(1,2,900);return zPt(1,900+r*Math.sin(ang),30,zc-r*Math.cos(ang));}
-function roofBase(opt){opt=opt||{};ridgeRoof.visible=true;ridgeRoof.position.y=0;if(!opt.nocords)cords.forEach(c=>c.visible=true);
-  if(opt.caps==='none')return;
-  for(const s of SIDES){for(const i of [0,4]){strips[s][i].visible=true;shift(strips[s][i],s,0,0);}
+/* крыша целиком: все крышки и полосы крайних стропил (коньковый профиль — отдельно, он ставится после листов) */
+function roofFull(){for(const s of SIDES){for(const i of [0,4]){strips[s][i].visible=true;shift(strips[s][i],s,0,0);}
     rafterZ.forEach((z,i)=>showCap(s,i,0));}}
+/* состояние крыши: закрытые пролёты (индексы 0…3); крышки на средних стропилах стоят заранее; крайние — вместе с пролётом */
+function roofNow(done){for(const s of SIDES){for(const i of [1,2,3])showCap(s,i,0);
+    done.forEach(b=>bayDone(bay[s][b],b===0?{edge:0}:b===3?{edge:4}:null));}}
+/* место помощника — на земле у карниза */
+const groundMk=(()=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(260,260,8,36),M.arrG);m.visible=false;m.receiveShadow=true;scene.add(m);return m;})();
+function groundAt(side,z){groundMk.position.set(side*(W/2+520),4,z);groundMk.visible=true;}
+const yardTools=(()=>{const g=new THREE.Group(),add=(geo,mat,x,y,z,sc)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);if(sc)m.scale.set(...sc);m.castShadow=true;g.add(m);return m;};
+  // раскладка вдоль оси z: слева направо на экране (вид с +x) — линейки, мыло и кисть, силикон, шнур
+  add(U,M.alu,0,3,0,[34,5,520]);add(U,M.alu,130,3,0,[34,5,520]);
+  add(new THREE.CylinderGeometry(90,70,130,24),M.soap,0,65,-700);add(U,M.aluHi,160,10,-700,[60,16,240]);add(U,M.woodDark,160,22,-700,[26,26,90]);
+  const c=add(new THREE.CylinderGeometry(24,24,230,16),M.wash,0,24,-1300);c.rotation.x=Math.PI/2;add(new THREE.ConeGeometry(24,50,16),M.washCap,0,24,-1440).rotation.x=-Math.PI/2;
+  const tr=add(new THREE.TorusGeometry(80,13,10,28),M.cord,0,14,-1800);tr.rotation.x=Math.PI/2;
+  g.visible=false;scene.add(g);return g;})();
 function stepped(f,n,d0){const k=clamp(f,0,1)*n,i=Math.min(n-1,Math.floor(k)),r=k-i;return d0*(1-(i+ease(clamp(r/.6,0,1)))/n);}
 function openHl(bs,mat){for(const s of SIDES)bs.forEach(b=>{bay[s][b].hl.material=mat||M.hl;bay[s][b].hl.visible=true;});}
 const YS=YARD.RS,YC=YARD.yc;
@@ -924,8 +964,8 @@ const ST=[];
   fronts.forEach(f=>{f.material=M.front;f.visible=true;});
   YARD.pave.visible=true;YARD.drawDeck(1,7000);YARD.at(YARD.SL.A0,-2250,0);YARD.at(YARD.SL.B0,0,0);YARD.at(YARD.SL.V0,2250,0);
   if(t>.1){lab('фронтоны не зашивать',V(0,2650,-3015),'warn big');lab('фронтоны не зашивать',V(0,2650,3015),'warn big');}
-  if(t>.3){lab('40 брусков',V(2300,390,2500));lab('10 крышек',V(4500,70,2560),'',0,50);lab('коньковый профиль 6 м',V(5200,150,-2300),'',0,60);lab('торцевой профиль',V(4900,70,2560),'',40,110);}
-  if(t>.45)lab('на каркасе — только уголки и стойки',rafPt(1,2,1000,40),'',-160,120);
+  if(t>.3){lab('40 брусков',V(2300,390,2500));lab('10 крышек',V(4500,70,2560),'',0,50);lab('коньковый профиль 6 м',V(RGX,60,-4700),'',0,45);lab('торцевой профиль',V(4900,70,2560),'',40,110);}
+  if(t>.45)lab('на каркасе — только уголки и стойки',rafPt(1,2,1000,40),'',-160,70);
   if(t>.62){lab('лист А',V(YX-2250,90,2600),'big');lab('лист Б',V(YX,90,2600),'big');lab('лист В',V(YX+2250,90,2600),'big');}}});
 /* 2–4 */
 ST.push({dur:YS[1].dur,cams:YC(YS[1].cams),apply(t,cur){kit({caps:1,ridge:1});if(!cur)return;YARD.pave.visible=true;YS[1].apply(t);}});
@@ -943,35 +983,42 @@ ST.push({dur:YS[3].dur,cams:YC(YS[3].cams),apply(t,cur){kit({caps:1,ridge:1});if
   if(f0>=1){lab('0,8 м',rim(800,-.15),'num');lab('2 ряда',rim(800,.75),'ok big',-30,42);}
   if(f1>=1){lab('1,15 м',rim(1150,-.3),'num');lab('3 ряда',rim(1150,.6),'warn big',20,68);}
   if(f2>=1){lab('1,5 м',rim(1500,-.42),'num');lab('и крышки после',rim(1500,.3),'big',0,60);}}});
-/* 6 */ST.push({dur:9000,cams:[{at:0,pos:[3000,4900,-5400],target:[0,3000,-1500]},{at:.5,pos:[2100,4250,-4000],target:[0,3230,-2700]}],
- apply(t,cur){kit({caps:1});
-  const f=cur?seg(t,.04,.42):1;ridgeRoof.visible=true;ridgeRoof.position.y=(1-ease(f))*600;
-  cords.forEach((c,k)=>{if(!cur||t>.5+k*.1)c.visible=true;});
-  if(!cur)return;
-  if(t>.3)lab('коньковый профиль — на весь конёк',V(0,ridgeTop+150,-2100),'big');
-  if(t>.62)lab('шнур к крайнему стропилу',cords[0].position.clone(),'warn',-120,70);
-  if(t>.85)lab('край профиля на 5 мм выше верха направляющих',V(0,ridgeTop+90,-1400),'ok',0,110);}});
+/* 6 */ST.push({dur:15000,cams:[{at:0,pos:[8200,3700,-10800],target:[900,500,-5600]},{at:.3,pos:[2600,950,-2500],target:[1500,100,-3450]},{at:.54,pos:[5600,1500,-5000],target:[1500,50,-4900]},{at:.74,pos:[2700,4700,-1500],target:[0,3150,-900]}],
+ apply(t,cur){kit(cur?{ridge:1,prop:1}:KIT_ROOF);if(!cur)return;
+  yardTools.position.set(2700,0,-3950);yardTools.visible=true;
+  if(t>.28)lipsAt(RG1-14,RGX,-RYE);
+  if(t>.46)markAt(RG1-2980,RGX,-RYE);
+  if(t>.46){const f=ease(seg(t,.46,.6));dimC.position.set(RGX-160,3,RG1-1490*f);dimC.scale.set(14,4,2980*f);dimC.visible=true;}
+  if(t>.03&&t<.3){lab('коньковый профиль — на земле, у фронтона пары 1',V(RGX,70,-8300),'big',60,150);
+    lab('подпорка для хвоста — на высоте конька',V(0,3290,PROPZ),'',210,-70);
+    lab('на конёк — после листов, шаги 22–23',V(0,3290,-3000),'warn big',-300,-110);}
+  if(t>.1&&t<.3){lab('две линейки',V(2760,30,-3950),'',-60,40);lab('мыло и кисть',V(2700,150,-4650),'',-60,100);lab('нейтральный силикон',V(2700,60,-5250),'',60,100);lab('шнур',V(2700,50,-5750),'',90,40);}
+  if(t>.3&&t<.54)lab('углы губ срезать на 10 мм',V(RGX,100,RG1-14),'warn big',-40,100);
+  if(t>.54&&t<.74){lab('метка: до оси пары 3, около 3 м',V(RGX,150,RG1-2980),'big',0,90);lab('около 3 м от входного конца',V(RGX-160,40,RG1-1490),'num',-30,60);}
+  if(t>.74)showEdgeMk();
+  if(t>.74){lab('метка края конька',P(1,EDGE,6).setZ(-1700),'warn',90,90);lab('верх направляющих — на 5 мм ниже метки края конька',rafPt(1,1,BV0,10),'ok big',-30,160);}}});
 /* 7 */ST.push({dur:9500,cams:[{at:0,pos:[3900,4300,-3200],target:[700,2700,-900]},{at:.6,pos:[3500,3300,-1900],target:[1000,2400,-700]}],
- apply(t,cur){kit();
+ apply(t,cur){kit(KIT_ROOF);
   let q=0;for(const i of [1,2,3])for(const s of SIDES){const a=.04+q*.11,f=cur?seg(t,a,a+.16):1;q++;
     if(f>0)showCap(s,i,(1-ease(f))*220);}
   if(!cur)return;
   if(t>.3)lab('крайние стропила — пока без крышек',rafPt(1,0,1000,40),'warn',-60,90);
   if(t>.3)lab('крайние: с фронтонов, шаг 21',rafPt(1,4,1000,40),'warn',40,90);
   if(t>.86)lab('пазы пустые',rafPt(-1,2,1650,30),'warn big',60,75);}});
-/* 8 */ST.push({dur:13000,cams:[{at:0,pos:[3500,2900,1300],target:[1200,2300,-740]},{at:.52,pos:[3300,4100,-1500],target:[800,2500,-740]}],
- apply(t,cur){kit();if(!cur){return;}
-  const d=1500*(1-ease(seg(t,.12,.52)));shift(testP,1,d,0);testP.visible=true;putAsst(0,1,BZ(1));
-  const zc=BZ(1)+0;const top=SV0+520;
-  if(t>.6){const f=seg(t,.6,.72);placeSlope(dimA,1,top,top+(1724-top)*f,17,20,zAt(1,1,top)+600,zAt(1,1,top)+612);dimA.visible=true;}
-  if(t>.74){const f=seg(t,.74,.84);placeSlope(dimB,1,SV0,SV0+520*f,17,20,zAt(1,1,top)+600,zAt(1,1,top)+612);dimB.visible=true;}
-  if(t>.1&&t<.55)lab('пробный кусок около 1450×520',zPt(1,1724+d-100,40,BZ(1)),'big',0,90);
-  if(t>.4&&t<.58)lab('в захват до упора',P(1,SV0+40,40).setZ(BZ(1)),'ok big',0,80);
-  if(t>.62)lab('замер: от низа куска до конца направляющей',zPt(1,1150,40,zAt(1,1,top)+606),'',160,70);
-  if(t>.76)lab('+ 520 = размер А',zPt(1,250,40,zAt(1,1,top)+606),'warn big',-80,80);
-  if(t>.88)lab('L = А − 3, до 1820',zPt(1,700,80,BZ(1)-300),'ok big',0,120);}});
+/* 8 */ST.push({dur:13000,cams:[{at:0,pos:[3500,2900,1300],target:[1200,2300,-740]},{at:.52,pos:[3200,4300,-1300],target:[500,2900,-740]}],
+ apply(t,cur){kit(KIT_ROOF);if(!cur){return;}
+  const d=30+1500*(1-ease(seg(t,.12,.52)));shift(testP,1,d,0);testP.visible=true;groundAt(1,BZ(1));
+  const z0=zAt(1,1,BV0)+600;
+  if(t>.6){const f=ease(seg(t,.6,.74));placeSlope(dimA,1,BV0,BV0+(BV1-BV0)*f,17,20,z0,z0+12);dimA.visible=true;}
+  if(t>.76){placeSlope(dimB,1,SV0,BV0,17,24,z0,z0+14);dimB.visible=true;}
+  if(t>.1&&t<.55)lab('пробный кусок около 1450×520',zPt(1,SV0+260+d,40,BZ(1)),'big',0,90);
+  if(t>.1&&t<.55)lab('помощник — с земли у карниза',V(W/2+520,0,BZ(1)),'ok',90,110);
+  if(t>.4&&t<.62)lab('до верхнего конца направляющей',P(1,BV0+40,40).setZ(BZ(1)),'ok big',110,90);
+  if(t>.62)lab('длина направляющей',zPt(1,1150,40,z0+6),'',160,70);
+  if(t>.78)lab('+ 30 = L, до 1820',zPt(1,SV0,40,z0+8),'warn big',240,12);
+  if(t>.88)lab('брать меньшую из двух',zPt(1,500,80,BZ(1)-300),'ok big',-60,60);}});
 /* 9 */ST.push({dur:9500,cams:[{at:0,pos:[-1500,10600,0],target:[0,2700,0]}],
- apply(t,cur){kit();if(!cur)return;
+ apply(t,cur){kit(KIT_ROOF);if(!cur)return;
   const WID={'1':[[1485,1490],[1455,1455],[1452,1460],[1475,1475]],'-1':[[1485,1483],[1455,1450],[1452,1455],[1475,1485]]};
   const CODE={'1':['Л1','Л2','Л3','Л4'],'-1':['П1','П2','П3','П4']};
   let k=0;for(const s of SIDES)for(let b=0;b<4;b++){const f=seg(t,.04+k*.085,.04+k*.085+.1);k++;if(f<=0)continue;
@@ -985,9 +1032,8 @@ ST.push(Object.assign(yardSeq([8,9]),{}));
 ST.push(Object.assign(yardSeq([10,11,12]),{}));
 {const s=yardSeq([13,15]);const a=s.apply;s.apply=(t,cur)=>{if(!cur){return;}a(t,cur);};ST.push(s);}
 /* 14 */ST.push({dur:13000,cams:[{at:0,pos:[-1500,10600,0],target:[0,2700,0]}],
- apply(t,cur){kit();YARD.stack(8,true);if(!cur)return;
-  const sc=t<.33?0:t<.66?1:2;
-  const SCH=[{name:'лучше: 2 → 3 → 1 → 4',ord:[1,2,0,3],acc:[[0,1],[2,1],[3,2],['g0',0],['g1',3]],bad:-1},
+ apply(t,cur){const sc=t<.33?0:t<.66?1:2;kit(cur&&sc===0?{}:KIT_ROOF);YARD.stack(8,true);if(!cur)return;   // на схеме «лучше» профиль показан на половине конька, на земле его уже нет
+  const SCH=[{name:'лучше: 2 → 1 → 3 → 4',ord:[1,0,2,3],acc:[[0,1],[2,1],[3,2],['g0',0],['g1',3]],bad:-1},
     {name:'можно: 1 → 2 → 3 → 4',ord:[0,1,2,3],acc:[['g0',0],[1,0],[2,1],[3,2],['g1',3]],bad:-1},
     {name:'нельзя: 1 → 4 → 2 → 3',ord:[0,3,1,2],acc:[['g0',0],[1,0],['g1',3],[2,3],[2,1]],bad:2}][sc];
   let ai=0;
@@ -1001,9 +1047,10 @@ ST.push(Object.assign(yardSeq([10,11,12]),{}));
   lab(SCH.name,V(0,ridgeTop+700,300),'big'+(SCH.bad>=0?' warn':' ok'));
   for(const s of SIDES)for(let b=0;b<4;b++){const n=SCH.ord.indexOf(b)+1;lab(String(n),roofPt(s,b,520,40),'num big');}
   if(SCH.bad>=0)lab('нет доступа',roofPt(1,SCH.bad,1150,50),'warn big');
-  lab('стрелки — откуда работают',V(0,ridgeTop+420,-2700),'');}});
+  lab('стрелки — откуда работают',V(0,ridgeTop+420,-2700),'');
+  if(sc===0){ridgePlace(ridgeRoof,-3000,Z3,0,0);lab('после 2 и 1 — конёк на половину',V(0,ridgeTop+30,-1500),'big',0,-50);}}});
 /* 15 */ST.push({dur:10000,cams:[{at:0,pos:[3300,4300,-3300],target:[800,2650,-735]},{at:.66,pos:[1350,3250,-1900],target:[760,2760,-1330]}],
- apply(t,cur){const o=bay[1][1];kit();YARD.stack(8,true);
+ apply(t,cur){const o=bay[1][1];kit(KIT_ROOF);YARD.stack(8,true);
   const n=cur?seg(t,.05,.64)*5:5;for(let k=0;k<5;k++)if(n>k)showBeam(o,k,(1-ease(clamp(n-k,0,1)))*170);
   if(!cur)return;
   putStep(0,795,BZ(2)+20,0);openHl([0,2]);
@@ -1012,7 +1059,7 @@ ST.push(Object.assign(yardSeq([10,11,12]),{}));
   if(t>.2&&t<.66)lab('бруски — снизу, по одному',roofPt(1,1,ROWS[Math.min(4,Math.floor(n))],50),'',0,90);
   if(t>.7)lab('обрезок 6 мм: в паз под крышку и на брусок',zPt(1,ROWS[2],20,zAt(1,1,ROWS[2])+160),'big warn',0,90);}});
 /* 16 */ST.push({dur:17000,cams:[{at:0,pos:[GX+2300,3300,-60],target:[GX-40,GY,-20]},{at:.5,pos:[GX+2000,2500,-200],target:[GX,GY,-60]},{at:.74,pos:[GX+1000,1400,2600],target:[GX,GY+10,700]}],
- apply(t,cur){kit();YARD.stack(8,true);for(let k=0;k<5;k++)showBeam(bay[1][1],k,0);
+ apply(t,cur){kit(KIT_ROOF);YARD.stack(8,true);for(let k=0;k<5;k++)showBeam(bay[1][1],k,0);
   if(!cur){trestleDone();return;}
   sheetT.visible=true;sheetT.position.set(0,0,0);
   if(t<.5){const u=t/.5;filmT.visible=true;filmT.position.set(0,0,0);
@@ -1039,33 +1086,35 @@ ST.push(Object.assign(yardSeq([10,11,12]),{}));
   if(u>.3)lab('верхняя плёнка: полосы 100 мм',V(TX0+50,TY+20,TZ0+500),'',0,60);
   if(u>.66)lab('торцевой профиль',V(GX,TY+16,TZ1+10),'ok big',0,50);
   if(u>.86)lab('дренаж 2–3 мм через 300 мм',V(TX0+750,TY+6,TZ1+10),'',120,110);}});
-/* 17 */ST.push({dur:11500,cams:[{at:0,pos:[3700,3500,-300],target:[1200,2350,-740]},{at:.72,pos:[1500,3700,-2100],target:[300,3100,-900]}],
- apply(t,cur){const o=bay[1][1];trestleHide();kit();YARD.stack(7,false);
+/* 17 */ST.push({dur:11500,cams:[{at:0,pos:[3700,3500,-300],target:[1200,2350,-740]},{at:.72,pos:[4300,4300,-800],target:[900,2700,-780]}],
+ apply(t,cur){const o=bay[1][1];trestleHide();kit(KIT_ROOF);YARD.stack(7,false);
   for(let k=0;k<5;k++)showBeam(o,k,0);
   const ds=cur?stepped(seg(t,.06,.76),4,1000):0;showSheet(o,ds,0);showFilm(o,0,ds);
   if(!cur)return;
-  putStep(0,795,BZ(2)+20,0);putAsst(0,1,BZ(1));openHl([0,2]);
+  putStep(0,795,BZ(2)+20,0);groundAt(1,BZ(1));openHl([0,2]);
   setArrow(arrows[0],roofPt(1,1,1724+ds+460,40),roofPt(1,1,1724+ds+90,40),22);
   const vt=SV0+ds;setArrow(arrows[1],zPt(1,vt+330,70,zAt(1,2,vt)-180),zPt(1,vt+30,70,zAt(1,2,vt)-180),22);
-  lab('помощник подаёт лист: «ВЕРХ» к коньку',V(W/2+420,2500,BZ(1)),'',140,190);
+  lab('помощник — с земли: подаёт лист, «ВЕРХ» к коньку',V(W/2+520,1500,BZ(1)),'',140,120);
   if(t>.1&&t<.74){lab('снизу толкают',roofPt(1,1,1724+ds+300,50),'ok',0,60);lab('тянет сверху',zPt(1,vt+200,80,zAt(1,2,vt)-180),'ok big',0,60);}
-  if(t>.1)lab('второй — на стремянке в пролёте 3',V(795,2080,BZ(2)+20),'',150,50);
-  if(t>.78)lab('верх — в захват конькового профиля',P(1,-50,30).setZ(zAt(1,1,0)+400),'ok big',0,90);}});
-/* 18 */ST.push({dur:10000,cams:[{at:0,pos:[3700,3300,-300],target:[1250,2300,-740]},{at:.5,pos:[2800,2500,-200],target:[1350,2200,-900]}],
- apply(t,cur){const o=bay[1][1];trestleHide();kit();YARD.stack(7,false);
+  if(t>.1)lab('на стремянке — только один',V(795,2080,BZ(2)+20),'',-120,70);
+  if(t>.78){lab('низ вровень с концом направляющей',roofPt(1,1,1724,40),'ok big',60,80);lab('верх — на 30 мм выше направляющей',zPt(1,SV0,30,zAt(1,1,SV0)+500),'ok big',0,-45);}}});
+/* 18 */ST.push({dur:11500,cams:[{at:0,pos:[3700,3300,-300],target:[1250,2300,-740]},{at:.5,pos:[2800,2500,-200],target:[1350,2200,-900]}],
+ apply(t,cur){const o=bay[1][1];trestleHide();kit(KIT_ROOF);YARD.stack(7,false);
   for(let k=0;k<5;k++)showBeam(o,k,0);
   let d=0;
-  if(cur){if(t<.22)d=1000-700*ease(seg(t,0,.22));else if(t<.36)d=300;else if(t<.5)d=300+150*ease(seg(t,.36,.5));else if(t<.66)d=450;else d=450*(1-ease(seg(t,.66,.96)));}
+  if(cur){if(t<.16)d=1000-700*ease(seg(t,0,.16));else if(t<.27)d=300;else if(t<.37)d=300+150*ease(seg(t,.27,.37));else if(t<.5)d=450;else if(t<.66)d=450-490*ease(seg(t,.5,.66));else if(t<.76)d=-40;else if(t<.92)d=-40*(1-ease(seg(t,.76,.92)));}
   showSheet(o,d,0);showFilm(o,0,d);
   if(!cur)return;
-  putAsst(0,1,BZ(1));
-  if(t>.5&&t<.98){placeR(soap[0],1,1,1150,1724,7,9,33,35);placeR(soap[1],1,2,1150,1724,7,9,-35,-33);soap[0].visible=soap[1].visible=true;}
-  if(t>.24&&t<.36)lab('встал в пазах',roofPt(1,1,1724+d-100,50),'warn big',0,70);
-  if(t>.38&&t<.52)lab('вытянуть на 10–20 см, выровнять',roofPt(1,1,1724+d-150,50),'warn',0,70);
-  if(t>.54&&t<.68)lab('мыльный раствор на губы',zPt(1,1600,30,zAt(1,1,1600)+34),'ok big',80,90);
-  if(t>.8)lab('двигать снова — идёт',roofPt(1,1,1724+d-200,50),'ok',0,70);}});
+  groundAt(1,BZ(1));
+  if(t>.4&&t<.66){placeR(soap[0],1,1,1150,1724,7,9,33,35);placeR(soap[1],1,2,1150,1724,7,9,-35,-33);soap[0].visible=soap[1].visible=true;}
+  if(t>.16&&t<.27)lab('встал в пазах',roofPt(1,1,1724+d-100,50),'warn big',0,70);
+  if(t>.27&&t<.4)lab('вытянуть на 10–20 см, выровнять',roofPt(1,1,1724+d-150,50),'warn',0,70);
+  if(t>.4&&t<.52)lab('мыльный раствор на губы',zPt(1,1600,30,zAt(1,1,1600)+34),'ok big',80,90);
+  if(t>.52&&t<.66)lab('двигать снова — идёт',roofPt(1,1,1724+d-200,50),'ok',0,70);
+  if(t>.64&&t<.9)lab('низ ушёл выше — стянуть вниз',roofPt(1,1,1724+d-120,50),'warn big',0,80);
+  if(t>.92)lab('низ вровень с концами направляющих — ровно',roofPt(1,1,1724,50),'ok big',0,70);}});
 /* 19 */ST.push({dur:17000,cams:[{at:0,pos:[3800,3600,-200],target:[1150,2450,-740]},{at:.4,pos:[3300,4300,-2900],target:[800,2650,-735]},{at:.72,pos:[2500,3300,-2600],target:[1150,2600,-735]}],
- apply(t,cur){const o=bay[1][1];trestleHide();kit();YARD.stack(7,false);
+ apply(t,cur){const o=bay[1][1];trestleHide();kit(KIT_ROOF);YARD.stack(7,false);
   for(let k=0;k<5;k++)showBeam(o,k,0);showSheet(o,0,0);
   const ff=cur?(t<.4?ease(seg(t,.04,.36)):1):1;showFilm(o,ff,0);
   const w0=cur?seg(t,.4,1):1,fN=seg(w0,.05,.3),fM=seg(w0,.3,.52),fF=seg(w0,.74,.94),fB=seg(w0,.34,.7);
@@ -1073,51 +1122,109 @@ ST.push(Object.assign(yardSeq([10,11,12]),{}));
     if(a>0)showWash(o,0,k,(1-ease(clamp(a,0,1)))*40,false);if(b>0)showWash(o,1,k,(1-ease(clamp(b,0,1)))*40,false);if(c>0)showWash(o,2,k,(1-ease(clamp(c,0,1)))*40,cur);}
   for(let j=0;j<2;j++){const k=4-j,a=fB*2-j;if(a>0)for(let r=0;r<3;r++)showWash(o,r,k,(1-ease(clamp(a,0,1)))*40,false);}
   if(!cur)return;
-  putAsst(0,1,BZ(1));
-  if(t<.4){if(t>.05&&t<.4)lab('помощник стягивает плёнку от карниза вниз',roofPt(1,1,1700+ff*900,60),'big',0,90);return;}
+  groundAt(1,BZ(1));
+  if(t<.4){if(t>.05&&t<.4)lab('помощник с земли стягивает плёнку от карниза вниз',roofPt(1,1,1700+ff*900,60),'big',0,90);return;}
   putStep(0,795,BZ(2)+20,0);putPad(1,2);
   if(w0>.08)lab('сверху — из пролёта 3, перегнувшись: ближний и средний ряд',zPt(1,ROWS[1],60,washZ(o,1,1)),'big',-70,110);
-  if(w0>.4)lab('снизу — помощник: нижние ряды',zPt(1,ROWS[4],60,washZ(o,1,4)),'ok big',140,95);
+  if(w0>.4)lab('снизу — помощник с земли: нижние ряды',zPt(1,ROWS[4],60,washZ(o,1,4)),'ok big',140,95);
   if(w0>.78)lab('дальний ряд — если достаёт',zPt(1,ROWS[1],40,washZ(o,2,1)),'warn',-40,80);}});
-/* 20 */ST.push({dur:16000,cams:[{at:0,pos:[-3700,3700,-2900],target:[-800,2650,-735]},{at:.32,pos:[3500,4400,-400],target:[800,2650,1500]},{at:.64,pos:[-3500,4400,-400],target:[-800,2650,1500]}],
- apply(t,cur){trestleHide();kit();
-  const a=cur?seg(t,.02,.29):1,b=cur?seg(t,.34,.6):1,c=cur?seg(t,.66,.96):1;
-  YARD.stack(7-(a>=1?1:0)-(b>=1?1:0)-(c>=1?1:0),false);
-  bayDone(bay[1][1]);bayProg(bay[-1][1],a);bayProg(bay[1][2],b);bayProg(bay[-1][2],c);
+/* 20 */ST.push({dur:14000,cams:[{at:0,pos:[-3700,3700,-2900],target:[-800,2650,-735]},{at:.5,pos:[3600,4400,-5600],target:[900,2650,-2300]}],
+ apply(t,cur){trestleHide();kit(KIT_ROOF);
+  const a=cur?seg(t,.04,.5):1;
+  YARD.stack(7-(a>=1?1:0),false);
+  bayDone(bay[1][1]);bayProg(bay[-1][1],a);
   if(!cur)return;
-  if(t<.32){putStep(0,-795,BZ(2)+20,0);putAsst(0,-1,BZ(1));openHl([0,2]);lab('скат П пролёта 2: шаги 15–19',roofPt(-1,1,400,50),'big',0,90);}
-  else if(t<.64){putStep(0,795,BZ(3)+20,0);putAsst(0,1,BZ(2));openHl([0,3]);lab('пролёт 3 — из пролёта 4',roofPt(1,2,300,50),'big',0,90);}
-  else{putStep(0,-795,BZ(3)+20,0);putAsst(0,-1,BZ(2));openHl([0,3]);lab('открыт: пролёт 4',roofPt(-1,3,1100,50),'ok',0,60);lab('открыт: пролёт 1',roofPt(-1,0,1100,50),'ok',0,60);}}});
-/* 21 */ST.push({dur:16000,cams:[{at:0,pos:[3600,4200,-6300],target:[700,2500,-2500]},{at:.26,pos:[-3600,4200,-6300],target:[-700,2500,-2500]},{at:.52,pos:[3600,4200,6300],target:[700,2500,2500]},{at:.76,pos:[-3600,4200,6300],target:[-700,2500,2500]}],
- apply(t,cur){trestleHide();kit();
-  const a=cur?seg(t,.02,.25):1,b=cur?seg(t,.27,.5):1,c=cur?seg(t,.52,.75):1,d=cur?seg(t,.77,.99):1;
-  YARD.stack(4-(a>=1?1:0)-(b>=1?1:0)-(c>=1?1:0)-(d>=1?1:0),false);
-  for(const s of SIDES)for(const bb of [1,2])bayDone(bay[s][bb]);
-  bayProg(bay[1][0],a,{edge:0});bayProg(bay[-1][0],b,{edge:0});bayProg(bay[1][3],c,{edge:4});bayProg(bay[-1][3],d,{edge:4});
+  if(t<.54){putStep(0,-795,BZ(2)+20,0);groundAt(-1,BZ(1));openHl([0,2]);lab('скат П пролёта 2: шаги 15–19',roofPt(-1,1,400,50),'big',0,90);}
+  else{putStep(0,795,-3000-520,Math.PI);fronts[0].material=M.front;fronts[0].visible=true;openHl([2,3]);openHl([0],M.hlG);
+    lab('дальше пролёт 1, с фронтона пары 1',roofPt(1,0,700,50),'ok big',0,90);
+    lab('пролёты 3 и 4 — пока открыты',roofPt(-1,2,1100,50),'warn',150,-60);
+    if(t>.76)lab('потом конёк на половину — шаг 22',V(0,ridgeTop+30,-1500),'big',-260,60);}}});
+/* 21 */ST.push({dur:16000,cams:[{at:0,pos:[3600,4200,-6300],target:[700,2500,-2500]},{at:.5,pos:[-3600,4200,-6300],target:[-700,2500,-2500]},{at:.84,pos:[4900,4700,-1200],target:[0,2800,-300]}],
+ apply(t,cur){trestleHide();kit(KIT_ROOF);
+  const a=cur?seg(t,.03,.45):1,b=cur?seg(t,.52,.94):1;
+  YARD.stack(6-(a>=1?1:0)-(b>=1?1:0),false);
+  for(const s of SIDES)bayDone(bay[s][1]);
+  bayProg(bay[1][0],a,{edge:0});bayProg(bay[-1][0],b,{edge:0});
   if(!cur)return;
   fronts.forEach(f=>{f.material=M.front;});
-  if(t<.52){putStep(0,t<.26?795:-795,-3000-520,Math.PI);putAsst(0,t<.26?1:-1,BZ(0));fronts[0].visible=true;lab('пролёт 1 — со стремянки у фронтона пары 1',V(0,2650,-3015),'big',0,60);
-    const f=t<.26?a:b;if(f>.2&&f<.7)lab('лист: одной кромкой в паз средней крышки, другой — по полке',zPt(t<.26?1:-1,ROWS[2],40,zAt(t<.26?1:-1,0,ROWS[2])+360),'',0,110);
-    if(f>.56&&f<.9)lab('полоса и крышка на крайнем стропиле',rafPt(t<.26?1:-1,0,1100,50),'ok big',-120,90);}
-  else{putStep(0,t<.76?795:-795,3000+520,0);putAsst(0,t<.76?1:-1,BZ(3));fronts[1].visible=true;lab('пролёт 4 — у фронтона пары 5',V(0,2650,3015),'big',0,60);
-    const f=t<.76?c:d;if(f>.56&&f<.9)lab('полоса и крышка на крайнем стропиле',rafPt(t<.76?1:-1,4,1100,50),'ok big',-120,90);}}});
-/* 22 */ST.push({dur:12500,cams:[{at:0,pos:[3500,4200,-300],target:[800,2650,-300]},{at:.45,pos:[2500,3500,700],target:[900,2800,0]}],
- apply(t,cur){kit();YARD.stack(6,false);roofBase({caps:'none'});
+  openHl([2,3]);
+  const sd=t<.5?1:-1,f=t<.5?a:b;
+  putStep(0,sd*795,-3000-520,Math.PI);groundAt(sd,BZ(0));fronts[0].visible=true;
+  if(t<.84)lab('пролёт 1 — со стремянки у фронтона пары 1',V(0,2400,-3015),'big',-200,-30);
+  if(f>.2&&f<.7)lab('лист: одной кромкой в паз средней крышки, другой — по полке',zPt(sd,ROWS[2],40,zAt(sd,0,ROWS[2])+360),'',0,120);
+  if(f>.56&&f<.9)lab('полоса и крышка на крайнем стропиле',rafPt(sd,0,1100,50),'ok big',-120,90);
+  if(t>.84){fronts[1].visible=true;lab('пролёт 4 — так же, с фронтона пары 5, после пролёта 3',V(0,2650,3015),'big',0,60);lab('пролёты 2 и 1 закрыты, 3 и 4 — открыты',roofPt(1,2,900,60),'ok',0,80);}}});
+/* 22 */ST.push({dur:22000,cams:[{at:0,pos:[4400,4700,-7200],target:[600,2900,-5200]},{at:.15,pos:[2500,4200,-4700],target:[0,3250,-3200]},{at:.33,pos:[5500,4700,-2400],target:[0,3150,-1800]},{at:.6,pos:[2200,4200,-4600],target:[0,3270,-3000]},{at:.82,pos:[4700,4300,-3500],target:[0,3150,-3800]}],
+ apply(t,cur){kit();trestleHide();YARD.stack(4,false);
+  roofNow([1,0]);openHl([2,3]);
+  const e=ease(seg(t,0,.12)),up=ease(seg(t,.12,.2));            // профиль поднимается с земли на подпорку и ложится на торцы листов
+  const g=seg(t,.22,.74),n=9,kk=g*n,ii=Math.min(n-1,Math.floor(kk)),rr=kk-ii,prog=g>=1?1:(ii+ease(clamp(rr/.6,0,1)))/n;
+  const zin=t<.22?RG1+(Z_IN0-RG1)*e:Z_IN0+(Z3-Z_IN0)*prog;      // входной конец профиля
+  const px=RGX*(1-e),py=-RYE*(1-e)+30*e*(1-up);
+  ridgePlace(ridgeRoof,zin-6000,zin,px,py);markAt(zin-2980,px,py);
+  prop.visible=true;putStep(0,900,-3500,Math.PI);fronts[0].material=M.front;fronts[0].visible=true;
+  if(t>.2){axisPl.position.set(0,3290,Z3+8);axisPl.visible=true;}
+  if(t>.12&&t<.22)rulersAt(Z_IN0,0,py);
+  if(t>.3&&t<.52){for(const sd of SIDES){const m=soap[sd>0?0:1];placeSlope(m,sd,SV0,SV0+70,9,12,zAt(sd,0,SV0)+10,zAt(sd,1,SV0)-10);m.visible=true;}}
+  if(t>.22&&t<.74)setArrow(arrows[2],V(0,3520,Z_IN0-1300),V(0,3520,Z_IN0-300),24);
+  if(t>.84)tieAt(PROPZ);
+  if(t>.05&&t<.2)lab('подпорка снаружи, хвост профиля — на ней',V(0,3330,PROPZ),'big',-90,110);
+  if(t>.04&&t<.8)lab('работает один',V(900,2100,-3500),'ok big',-120,190);
+  if(t>.12&&t<.22){lab('входной конец — захватами на торцы листов обоих скатов',V(0,3290,Z_IN0),'big',0,110);lab('туго садится — раскрыть захваты двумя линейками',V(50,3280,Z_IN0+300),'warn',140,70);}
+  if(t>.24&&t<.46)lab('толкать короткими толчками',V(0,3520,Z_IN0-800),'big',-30,70);
+  if(t>.3&&t<.5)lab('туго — мыло',V(0,3290,-2700),'warn big',-250,140);
+  if(t>.5&&t<.62)lab('с упором, рывками — пополам, шаг 23',V(0,3330,zin-900),'warn big',0,90);
+  if(t>.6&&t<.8)lab('метка доходит до фронтона',V(0,RYE+60,zin-2980),'big',0,90);
+  if(t>.74)lab('входной конец — на оси пары 3, не дальше',V(0,3290,Z3),'ok big',0,110);
+  if(t>.86)lab('идёт руками — оставить, хвост подвязать',V(0,3340,PROPZ),'ok big',-80,120);}});
+/* 23 */ST.push({dur:30000,cams:[{at:0,pos:[3600,4300,-200],target:[600,2650,900]},{at:.3,pos:[3700,4300,5900],target:[600,2650,2300]},{at:.5,pos:[5300,4500,-1800],target:[0,3200,-500]},{at:.7,pos:[5600,4300,300],target:[0,3150,500]},{at:.79,pos:[2500,4100,5400],target:[0,3250,3000]},{at:.91,pos:[1700,4000,-900],target:[0,3270,Z3]}],
+ apply(t,cur){kit({});trestleHide();
+  const a=seg(t,.03,.15),b=seg(t,.16,.28),c=seg(t,.3,.4),d=seg(t,.41,.52);
+  YARD.stack(4-(a>=1?1:0)-(b>=1?1:0)-(c>=1?1:0)-(d>=1?1:0),false);
+  roofNow([1,0]);bayProg(bay[1][2],a);bayProg(bay[-1][2],b);bayProg(bay[1][3],c,{edge:4});bayProg(bay[-1][3],d,{edge:4});
+  const full=t<.7;
+  // ход профиля: от оси пары 3 до фронтона пары 5, короткими толчками
+  const g=seg(t,.54,.66),n=6,kk=g*n,ii=Math.min(n-1,Math.floor(kk)),rr=kk-ii,prog=g>=1?1:(ii+ease(clamp(rr/.6,0,1)))/n;
+  if(full){const zin=Z3+(3000-Z3)*prog;ridgePlace(ridgeRoof,zin-6000,zin,0,0);markAt(zin-2980,0,0);prop.visible=true;if(t<.54)tieAt(PROPZ);}
+  else{
+    // запасной вариант: две половины
+    ridgePlace(ridgeRoof,-3000,Z3,0,0);
+    const h2=3000-Z3,p2=seg(t,.8,.94),k2=p2*5,i2=Math.min(4,Math.floor(k2)),r2=k2-i2,pr=p2>=1?1:(i2+ease(clamp(r2/.6,0,1)))/5,zs=3000-(3000-Z3)*pr;
+    ridgePlace(ridgeB,zs,zs+h2,0,0);prop2.visible=true;
+    if(t<.9)lipsAt(zs-2,0,0);
+    silBlob.position.set(0,RYE+24,zs+4);silBlob.scale.set(104,66,12);silBlob.rotation.set(0,0,0);silBlob.visible=true;
+  }
+  if(t<.3){putStep(0,t<.16?795:-795,BZ(3)+20,0);}
+  else if(t<.52){putStep(0,t<.41?795:-795,3000+520,0);fronts[1].material=M.front;fronts[1].visible=true;}
+  else if(full){putStep(0,900,-3500,Math.PI);fronts[0].material=M.front;fronts[0].visible=true;}
+  else if(t<.9){putStep(0,900,3500,0);fronts[1].material=M.front;fronts[1].visible=true;}
+  if(t>.03&&t<.15)lab('пролёт 3 — из пролёта 4',roofPt(1,2,700,50),'big',0,90);
+  if(t>.31&&t<.5)lab('пролёт 4 — с фронтона пары 5',roofPt(1,3,700,50),'big',0,90);
+  if(t>.2&&t<.3)lab('листы и крышки — как в шагах 15–21',roofPt(-1,2,900,50),'',0,70);
+  if(t>.54&&t<.66)lab('дотолкать профиль до фронтона пары 5',V(0,3420,Z3+(3000-Z3)*prog-300),'big',0,80);
+  if(t>.64&&t<.7){lab('концы — вровень с фронтонами',V(0,3330,3000),'ok big',0,80);lab('подпорка пустая',V(0,3340,PROPZ),'ok',0,90);}
+  if(t>.7&&t<.84)lab('запасной вариант — профиль двумя половинами',V(0,3560,-500),'warn big',0,70);
+  if(t>.72&&t<.8){lab('первая — до пары 3',V(0,3300,-1500),'ok',0,70);lab('вторая — с фронтона пары 5',V(0,3300,3300),'ok',0,80);}
+  if(t>.8&&t<.92){lab('срезанный конец: углы губ на 10 мм',V(0,3300,3000),'warn',-90,90);lab('торец — в нейтральный силикон',V(0,3330,3000),'big',120,110);}
+  if(t>.93){lab('стык над парой 3',V(0,3280,Z3),'ok big',0,100);lab('отверстий в коньке нет',V(0,3290,-1300),'big',0,90);}}});
+/* 24 */ST.push({dur:12500,cams:[{at:0,pos:[3500,4200,-300],target:[800,2650,-300]},{at:.45,pos:[2500,3500,700],target:[900,2800,0]}],
+ apply(t,cur){kit();YARD.stack(6,false);
   const o1=bay[1][1],o2=bay[1][2];
   for(let k=0;k<5;k++){showBeam(o1,k,0);showBeam(o2,k,0);}
   const f1=seg(t,.03,.22),f2=seg(t,.18,.38);
   showSheet(o1,0,(1-ease(f1))*260);showSheet(o2,0,(1-ease(f2))*260);
-  putStep(0,795,BZ(3)+20,0);putAsst(0,1,BZ(1));
+  putStep(0,795,BZ(3)+20,0);groundAt(1,BZ(1));
   if(t>.4)reach17.visible=true;
   const fc=seg(t,.48,.62);if(fc>0)showCap(1,2,(1-ease(fc))*260);
   if(t>.64){const v=100+1600*seg(t,.64,.96);mallet.position.copy(zPt(1,v,60,zAt(1,2,v)));mallet.rotation.set(0,0,-th);mallet.visible=true;}
   if(t>.05&&t<.42)lab('средних крышек заранее нет',rafPt(1,2,1500,20),'warn big',0,90);
   if(t>.14&&t<.42)lab('лист кладётся сверху на полки направляющих',roofPt(1,1,900,40),'ok',0,100);
+  if(t>.3&&t<.64)lab('низ вровень с концами направляющих',roofPt(1,1,1724,40),'ok big',70,80);
   if(t>.42)lab('1,5 м из пролёта 4',rim2(1500),'num');
   if(t>.66)lab('крышка — киянкой по всей длине',rafPt(1,2,600,60),'big',-40,100);}});
 function rim2(r){const zc=zAt(1,3,900);return zPt(1,900+r*Math.sin(-.4),30,zc-r*Math.cos(-.4));}
-/* 23 */ST.push({dur:15000,cams:[{at:0,pos:[-3300,4300,-3300],target:[0,3000,0]},{at:.3,pos:[-1500,3700,-2500],target:[-150,3150,-50]},{at:.72,pos:[-3300,3000,-3000],target:[-700,2800,0]}],
- apply(t,cur){roofBase();kit();YARD.stack(3,false);trestleHide();
+/* 25 */ST.push({dur:15000,cams:[{at:0,pos:[-3300,4300,-3300],target:[0,3000,0]},{at:.3,pos:[-1500,3700,-2500],target:[-150,3150,-50]},{at:.72,pos:[-3300,3000,-3000],target:[-700,2800,0]}],
+ apply(t,cur){roofFull();kit();YARD.stack(3,false);trestleHide();
   for(const s of SIDES){bayDone(bay[s][0],{});bayDone(bay[s][1]);bayDone(bay[s][3]);}
   const oL=bay[1][2],oP=bay[-1][2];
   for(let k=0;k<5;k++)showBeam(oL,k,0);showSheet(oL,0,0);
@@ -1136,18 +1243,17 @@ function rim2(r){const zc=zAt(1,3,900);return zPt(1,900+r*Math.sin(-.4),30,zc-r*
   if(t>.22&&t<.66)lab('лаз у конька: перегнуться через конёк',V(-20,3430,zc),'ok big',-100,80);
   if(t>.38&&t<.66)lab('верхние ряды — отсюда, нижние — помощник снизу',zPt(1,ROWS[1],60,washZ(oL,1,1)),'',140,80);
   if(t>.62&&t<.8)lab('верхний брусок П — только теперь',rafPt(-1,2,ROWS[0],40),'',-120,90);
-  if(t>.82)lab('лист П дотолкан в захват конька; верхний ряд — без термошайб',roofPt(-1,2,ROWS[0]+200,60),'warn big',0,100);}});
-/* 24 */ST.push({dur:12000,cams:[{at:0,pos:[2200,4300,-7200],target:[0,3050,-1000]},{at:.25,pos:[4300,2600,-2100],target:[1400,2200,-700]},{at:.5,pos:[-4300,2600,1800],target:[-1400,2200,600]},{at:.76,pos:[3200,4200,-7300],target:[0,2500,-500]}],
- apply(t,cur){roofBase({nocords:t>.3});kit();trestleHide();
+  if(t>.82&&t<.93)lab('лист П дотолкан до ровного низа; верхний ряд — без термошайб',roofPt(-1,2,ROWS[0]+200,60),'warn big',0,100);
+  if(t>.93)lab('конёк — потом, шаги 22–23',V(0,ridgeTop+90,0),'big',0,80);}});
+/* 26 */ST.push({dur:14000,cams:[{at:0,pos:[2000,4000,-5700],target:[0,3150,-2300]},{at:.2,pos:[-2000,4000,5700],target:[0,3150,2300]},{at:.4,pos:[4300,2600,-2100],target:[1400,2200,-700]},{at:.58,pos:[-4300,2600,1800],target:[-1400,2200,600]},{at:.78,pos:[3200,4200,-7300],target:[0,2500,-500]}],
+ apply(t,cur){roofFull();ridgePlace(ridgeRoof,-3000,3000,0,0);kit({done:1});trestleHide();
   for(const s of SIDES)for(let b=0;b<4;b++)bayDone(bay[s][b]);
-  if(t>.74){fronts.forEach(f=>{f.material=M.hlG;f.visible=true;});if(cur){lab('зашивать потом',V(0,2600,-3015),'ok big');lab('зашивать потом',V(0,2600,3015),'ok big');}}
-  if(!cur)return;
-  if(t<.24)lab('верхние торцы — в захвате конькового профиля',V(0,ridgeTop+110,-900),'ok big');
-  if(t<.24)lab('крышки — по всей длине',rafPt(1,2,900,40),'',120,80);
-  if(t>.26&&t<.48){lab('низ всех листов — на одной линии',zPt(1,1760,30,BZ(1)),'ok big',0,80);lab('торцевые профили',zPt(1,1760,20,BZ(2)),'',0,50);}
-  if(t>.3&&t<.5)lab('шнуры отвязаны',V(0,ridgeTop+110,-2700),'warn');
-  if(t>.52&&t<.74)lab('линия карниза — скат П',zPt(-1,1760,30,BZ(1)),'ok big',0,80);
-  if(t>.8)lab('первый дождь — осмотреть изнутри стыки и термошайбы',V(0,ridgeTop+230,0),'big');}});
+  if(t>.76){fronts.forEach(f=>{f.material=M.hlG;f.visible=true;});lab('зашивать потом',V(0,2600,-3015),'ok big');lab('зашивать потом',V(0,2600,3015),'ok big');}
+  if(t<.2){lab('верхние торцы — в захвате профиля по всей длине',V(0,ridgeTop+30,-1000),'ok big',60,150);lab('конец профиля — вровень с фронтоном пары 1',V(0,ridgeTop+50,-3000),'',-60,70);lab('подпорка и шнур у фронтона — убраны',V(0,ridgeTop-250,-3600),'warn',-80,60);}
+  if(t>.2&&t<.4){lab('конец профиля — вровень с фронтоном пары 5',V(0,ridgeTop+50,3000),'ok big',-60,80);lab('крышки — по всей длине',rafPt(1,2,900,40),'',200,-40);}
+  if(t>.42&&t<.58){lab('низ всех листов — на одной линии',zPt(1,1760,30,BZ(1)),'ok big',0,80);lab('торцевые профили',zPt(1,1760,20,BZ(2)),'',0,50);}
+  if(t>.6&&t<.76)lab('линия карниза — скат П',zPt(-1,1760,30,BZ(1)),'ok big',0,80);
+  if(t>.8)lab('первый дождь — осмотреть изнутри стыки, термошайбы и конёк',V(0,ridgeTop+230,0),'big');}});
 const STEPS=ST;
 const TXT=[
  {
@@ -1195,12 +1301,13 @@ const TXT=[
   "check": "Меньше 0,8 м — стоп: видео владельцу."
  },
  {
-  "title": "Коньковый профиль — на весь конёк",
+  "title": "Коньковый профиль — подготовить",
   "actions": [
-   "Уложить коньковый профиль на конёк по всей длине, захватами на оба ската.",
-   "Концы подвязать шнуром к крайним стропилам, чтобы профиль не съехал."
+   "Профиль на конёк заранее не класть: снизу лист в захват не заходит. Его задвигают вдоль конька с фронтона пары 1 по уложенным листам — шаги 22 и 23.",
+   "Входной конец: срезать углы губ на 10 мм — так он легче садится на торцы листов. От этого конца отложить расстояние от фронтона пары 1 до оси пары 3 (замерить рулеткой, около 3 м) и поставить метку маркером.",
+   "Приготовить: подпорку для хвоста профиля на высоте конька у фронтона пары 1 (вторая стремянка с доской или стойка), шнур, две металлические линейки, мыльный раствор и кисть, нейтральный силикон."
   ],
-  "check": "Край профиля на 5 мм выше верхних концов направляющих по всей длине."
+  "check": "Верх всех направляющих — на 5 мм ниже метки края конька. Нет — сначала подрезать по инструкции направляющих."
  },
  {
   "title": "Крышки на средних стропилах — заранее",
@@ -1214,18 +1321,17 @@ const TXT=[
   "title": "Проверка 2 и длина листов",
   "actions": [
    "Из полосы 2100×520 вырезать пробный кусок шириной как кусок Л2 по замеру (около 1450 мм), соты вдоль 520.",
-   "Снизу у карниза задвинуть его в пазы и дотолкать вверх до упора в захват конька. Идёт рукой — годится. Туго — смочить губы крышек слабым мыльным раствором.",
-   "От нижнего края куска до нижнего конца направляющей отмерить и прибавить 520 — это размер А. Так во всех 8 пролётах; в крайних кусок одной кромкой лежит на полке без крышки.",
-   "Длина куска для пролёта = А минус 3 мм — зазор на тепло."
+   "Снизу у карниза задвинуть его в пазы и дотолкать вверх до верхнего конца направляющей. Идёт рукой — годится. Туго — смочить губы крышек слабым мыльным раствором. Так во всех 8 пролётах; в крайних кусок одной кромкой лежит на полке без крышки.",
+   "Длина куска для пролёта = длина направляющей плюс 30 мм. Мерить рулеткой от нижнего конца до верхнего обе направляющие пролёта, брать меньшую. Верх листа зайдёт в захват конька на 25 мм из 30."
   ],
-  "check": "Не идёт и с мылом — запасной способ, шаг 22. Длина больше 1820 или А различаются больше чем на 5 мм — сообщить владельцу до резки."
+  "check": "Не идёт и с мылом — запасной способ, шаг 24. Длина больше 1820 или направляющие пролёта различаются больше чем на 5 мм — сообщить владельцу до резки."
  },
  {
   "title": "Размеры кусков",
   "actions": [
    "Ширина у конька = замер у конька минус 20 мм, у карниза = замер у карниза минус 20 мм. Разные — кусок режется трапецией. Резать только по своим 16 замерам.",
    "Справочно, по обмеру каркаса 28.09, у конька / у карниза: Л1 1485/1490, Л2 1455/1455, Л3 1452/1460, Л4 1475/1475, П1 1485/1483, П2 1455/1450, П3 1452/1455, П4 1475/1485.",
-   "Длина — по шагу 8, до 1820 мм. Лист А: Л1, Л2, Л3. Лист Б: Л4, П1, П2. Лист В: П3, П4, остаток около 2360 — запас на один кусок."
+   "Длина — по шагу 8: направляющая + 30, до 1820 мм. Лист А: Л1, Л2, Л3. Лист Б: Л4, П1, П2. Лист В: П3, П4, остаток около 2360 — запас на один кусок."
   ],
   "check": "Замер отличается от справочного больше чем на 10 мм — сначала проверить направляющую и сообщить владельцу."
  },
@@ -1251,7 +1357,7 @@ const TXT=[
   "actions": [
    "Рулеткой: ширина у обоих торцов и длина по обеим кромкам, ±2 мм. Фото рулетки с кодом куска.",
    "Продуть каналы сжатым воздухом или пылесосом на выдув. Водой не мыть.",
-   "Снять заводскую ленту, срезать плёнку полосой 80–100 мм от торцов. Верхний торец — сплошная лента, нижний — перфорированная, края загнуть на обе стороны."
+   "Снять заводскую ленту, срезать плёнку полосой 80–100 мм от торцов. Верхний торец — сплошная лента, нижний — перфорированная, края загнуть на обе стороны. На верхних углах ленту обрезать вровень с кромками и прижать: иначе её завернёт коньковый профиль."
   ],
   "check": "Кусок меньше размера — на этот пролёт не ставить: есть запас в листе В."
  },
@@ -1260,17 +1366,17 @@ const TXT=[
   "actions": [
    "Из обрезков О-Л1 и О-П1 вырезать 4 полосы крайних стропил: ширина по месту, около 50 мм — от 10 мм за осью крайнего стропила до 30–40 мм за плоскостью фронтона. Длина — как у кровельного куска рядом. Торцы — лентами.",
    "Остальные обрезки подписать и сохранить — они пойдут на окна.",
-   "Куски — стопкой в порядке укладки, сверху первый. Укрыть светлым тентом, на стопку ничего не класть."
+   "Куски — стопкой в порядке укладки, сверху первый: Л2, П2, Л1, П1, Л3, П3, Л4, П4. Укрыть светлым тентом, на стопку ничего не класть."
   ],
   "check": "8 кусков, 4 полосы, запас в листе В цел."
  },
  {
   "title": "Порядок пролётов",
   "actions": [
-   "Лучше всего: сначала средние пролёты 2 и 3, потом крайние 1 и 4. В каждом пролёте сначала скат Л, потом П.",
-   "Пролёт 2 — работать из пролётов 1 и 3, с двух сторон. Пролёт 3 — из пролёта 4. Пролёт 1 — с фронтона пары 1. Пролёт 4 — с фронтона пары 5.",
-   "Можно подряд 1, 2, 3, 4: пролёт 1 — с фронтона и из пролёта 2, дальше каждый — из следующего, пролёт 4 — с фронтона.",
-   "Нельзя сначала оба крайних, потом средние: последний средний пролёт останется без открытого соседа. Если так вышло — шаг 23."
+   "Лучше всего: 2 → 1 → 3 → 4. В каждом пролёте сначала скат Л, потом П.",
+   "Пролёт 2 — работать из пролётов 1 и 3, с двух сторон. Пролёт 1 — с фронтона пары 1. Пролёт 3 — из пролёта 4. Пролёт 4 — с фронтона пары 5.",
+   "После пролётов 2 и 1 от фронтона пары 1 лежит половина крыши — на ней проверяют коньковый профиль, шаг 22.",
+   "Можно подряд 1, 2, 3, 4. Нельзя сначала оба крайних, потом средние: последний средний пролёт останется без открытого соседа. Если так вышло — шаг 25."
   ],
   "check": "Перед брусками пролёта рядом есть открытый пролёт или открытый фронтон, стремянка стоит там."
  },
@@ -1295,9 +1401,9 @@ const TXT=[
  {
   "title": "Задвинуть лист вдвоём",
   "actions": [
-   "Помощник у карниза подаёт лист надписями вверх, «ВЕРХ» к коньку, и заводит верхний торец в пазы, под крышки.",
-   "Второй — на стремянке в соседнем открытом пролёте, перегнувшись корпусом, — тянет лист за верхний край и ведёт кромки в пазах.",
-   "Двигать шагами по 20–30 см: снизу толкают, сверху тянут. Перекосило — продвинуть отстающий угол, потом дальше. У конька завести верхний торец в захват."
+   "Помощник с земли у карниза подаёт лист надписями вверх, «ВЕРХ» к коньку, и заводит верхний торец в пазы, под крышки.",
+   "Второй — на стремянке в соседнем открытом пролёте, перегнувшись корпусом, — тянет лист за верхний край и ведёт кромки в пазах. На стремянке — только один.",
+   "Двигать шагами по 20–30 см: снизу толкают, сверху тянут. Перекосило — продвинуть отстающий угол, потом дальше. Остановить, когда низ листа вровень с нижними концами направляющих: верх тогда на 30 мм выше верхних концов."
   ],
   "check": "Низ листа вровень с нижними концами направляющих, ±2 мм."
  },
@@ -1305,8 +1411,7 @@ const TXT=[
   "title": "Если лист не идёт",
   "actions": [
    "Встал в пазах — вытянуть на 10–20 см, выровнять, смочить губы мыльным раствором, двигать снова.",
-   "Не входит в захват конька — сверху приподнять губу профиля рукой.",
-   "Низ выступает больше 5 мм — вынуть, подрезать верх, заново заклеить. Не доходит больше 5 мм — поставить запасной из листа В."
+   "Низ ушёл выше концов направляющих — стянуть лист вниз до ровного низа: иначе верх упрётся в коньковый профиль."
   ],
   "check": "Слетела крышка там, где не достать, — стоп: видео владельцу."
  },
@@ -1322,7 +1427,8 @@ const TXT=[
  {
   "title": "Второй скат и следующие пролёты",
   "actions": [
-   "Скат П этого же пролёта — шаги 15–19. Потом следующий пролёт по выбранному порядку.",
+   "Скат П этого же пролёта — шаги 15–19. Потом следующий пролёт по порядку 2 → 1 → 3 → 4.",
+   "После пролётов 2 и 1 — сначала коньковый профиль на половину, шаг 22, потом пролёты 3 и 4.",
    "Прервали работу — у поставленного листа не меньше 4 термошайб, стопку укрыть."
   ],
   "check": "Ветер — стоп: недокрученный лист парусит."
@@ -1330,17 +1436,36 @@ const TXT=[
  {
   "title": "Крайние пролёты — с фронтонов",
   "actions": [
-   "Пролёт 1 — со стремянки у открытого фронтона пары 1, пролёт 4 — у фронтона пары 5. Можно снаружи, с земли.",
+   "Пролёт 1 — со стремянки у открытого фронтона пары 1, пролёт 4 — у фронтона пары 5. Можно снаружи.",
    "Бруски. Лист одной кромкой задвинуть в паз средней крышки, другой — по полке крайнего стропила.",
    "На наружную полку крайнего стропила положить полосу и защёлкнуть крышку. Потом плёнка и термошайбы."
   ],
-  "check": "Все 8 листов стоят, все термошайбы закручены."
+  "check": "Пролёт 1 закрыт — шаг 22. Пролёт 4 закрыт — все 8 листов стоят, все термошайбы закручены: шаг 23."
+ },
+ {
+  "title": "Коньковый профиль — на половину (проверка 3)",
+  "actions": [
+   "Когда пролёты 2 и 1 закрыты на обоих скатах. Работает один — на стремянке у фронтона пары 1.",
+   "Хвост профиля — на подпорке на высоте конька: иначе переломится о край фронтона. Входной конец надеть захватами на верхние торцы листов обоих скатов. Туго садится — раскрыть захваты двумя линейками, потом вынуть.",
+   "Толкать от руки короткими толчками, пока метка не дойдёт до фронтона: входной конец — на оси пары 3, не дальше, иначе не задвинуть лист пролёта 3.",
+   "Идёт руками без упора — профиль оставить, хвост подвязать к подпорке. Туго — мыльный раствор кистью на губы и на торцы листов у фронтона, ещё раз."
+  ],
+  "check": "Идёт только с упором или рывками, профиль выгибается — резать пополам, шаг 23. Не идёт и половина — стоп: видео владельцу."
+ },
+ {
+  "title": "Коньковый профиль — до конца",
+  "actions": [
+   "Когда пролёты 3 и 4 закрыты. С той же стремянки у фронтона пары 1 дотолкать профиль до фронтона пары 5. Концы — вровень с фронтонами, проверить с обеих сторон.",
+   "Если резать пополам (по шагу 22 или профиль встал по дороге): хвост отрезать у фронтона пары 1 вровень с фронтоном. Отрезанный кусок — вторая половина: у её срезанного конца срезать углы губ на 10 мм, торец намазать нейтральным силиконом.",
+   "Вторую половину задвинуть с фронтона пары 5 до упора в первую. Стык — плотно, без щели. Отверстий в коньке нет."
+  ],
+  "check": "Профиль по всей длине на торцах листов обоих скатов, концы вровень с фронтонами. Вторая половина не идёт — стоп: видео владельцу."
  },
  {
   "title": "Запасной способ — класть сверху, крышки потом",
   "actions": [
    "Только если по проверке 2 кусок в пазы не идёт, а по проверке 1 рука с корпусом достаёт на 1,5 м.",
-   "Средние крышки снять или не ставить. Помощник подаёт лист снизу, второй, перегнувшись из соседнего пролёта, кладёт его на полки направляющих и заводит верх в захват конька.",
+   "Средние крышки снять или не ставить. Помощник подаёт лист снизу, второй, перегнувшись из соседнего пролёта, кладёт его на полки направляющих: низ вровень с концами направляющих.",
    "Крышку на стропиле защёлкивать, когда по обе стороны уже лежат листы: из ближайшего открытого пролёта или с фронтона, резиновой киянкой по всей длине."
   ],
   "check": "Крышку не достать — стоп: видео владельцу."
@@ -1351,34 +1476,37 @@ const TXT=[
    "Для пролёта, у которого не осталось открытого соседа.",
    "Лист Л задвинуть до конца. Лист П — не до конца: верхом на 600 мм ниже конька, верхний брусок ската П пока не ставить. У конька остаётся лаз.",
    "Подняться изнутри в лаз, перегнуться через конёк и закрепить лист Л: верхние ряды — отсюда, нижние — помощник снизу у карниза.",
-   "Спуститься, поставить верхний брусок ската П. Снизу дотолкать лист П в захват конька и закрепить снизу, до куда достаёт рука."
+   "Спуститься, поставить верхний брусок ската П. Снизу дотолкать лист П до ровного низа и закрепить снизу, до куда достаёт рука.",
+   "Коньковый профиль — потом, по шагам 22–23."
   ],
   "check": "Верхний ряд листа П не достать — оставить без термошайб, верх держит коньковый профиль. Сообщить владельцу."
  },
  {
   "title": "Проверка крыши",
   "actions": [
-   "Изнутри: все верхние торцы в захвате конька, крышки защёлкнуты по всей длине. Снизу: низ всех листов на одной линии, торцевые профили на месте.",
-   "Отвязать шнуры конькового профиля.",
-   "Капельник и жёлоб — позже, снизу, по отдельной инструкции. Фронтоны зашивать только теперь — по отдельной инструкции. Первый дождь — осмотреть изнутри стыки и термошайбы."
+   "Изнутри: верхние торцы в захвате конька по всей длине, крышки защёлкнуты. С фронтонов: концы профиля вровень. Снизу: низ всех листов на одной линии, торцевые профили на месте.",
+   "Убрать подпорку и шнур у фронтона пары 1.",
+   "Капельник и жёлоб — позже, снизу, по отдельной инструкции. Фронтоны зашивать только теперь — по отдельной инструкции. Первый дождь — осмотреть изнутри стыки, термошайбы и конёк."
   ],
-  "check": "Фото и видео владельцу: каждый пролёт изнутри, линия карниза с обоих скатов, конёк."
+  "check": "Фото и видео владельцу: каждый пролёт изнутри, линия карниза с обоих скатов, конёк с обоих фронтонов."
  }
 ];
 STEPS.forEach((s,i)=>Object.assign(s,TXT[i],{part:PARTS[partOf(i)]}));
 // кадры для инструкции: полоса примерно 3:1, главное — в середине
-const PDFCAM={1:{pos:[-3000,5400,-11800],target:[-3700,700,-300]},
+const PDFCAM={1:{pos:[7600,5600,-15000],target:[-2500,200,-3200]},
   5:{pos:[2700,3700,-3700],target:[600,2800,200]},
-  6:{pos:[3100,3800,-4300],target:[200,3050,-800]},
+  6:{pos:[10800,3400,-12400],target:[1400,1250,-5500]},
   7:{pos:[3700,3500,-2600],target:[650,2750,-500]},
-  8:{pos:[3300,3700,-2300],target:[800,3050,-740]},
+  8:{pos:[3100,4100,-1800],target:[450,3450,-740]},
   15:{pos:[3000,3500,-2900],target:[800,2700,-740]},
   16:{pos:[3330,2300,1900],target:[3380,700,-20]},
-  17:{pos:[3900,3600,-600],target:[1000,2750,-900]},
+  17:{pos:[5200,5000,-900],target:[900,2650,-780]},
   18:{pos:[3900,3300,-500],target:[1050,2450,-740]},
   20:{pos:[-3500,4400,-2400],target:[-800,2650,0]},
-  22:{pos:[3700,4000,-300],target:[800,2600,-300]},
-  14:{pos:[-900,8200,0],target:[0,2600,0]}
+  22:{pos:[2300,3900,-4700],target:[0,3250,-3000]},
+  23:{pos:[5300,4500,300],target:[0,3150,0]},
+  24:{pos:[3700,4000,-300],target:[800,2600,-300]},
+  14:{pos:[-900,10200,0],target:[0,2600,0]}
 };
 STEPS.forEach((s,i)=>{if(PDFCAM[i+1])s.pdfcam=PDFCAM[i+1];});
 const CAMS={obzor:{pos:[2200,4900,-8200],target:[-300,1900,-300]}};
@@ -1386,7 +1514,8 @@ const CAMS={obzor:{pos:[2200,4900,-8200],target:[-300,1900,-300]}};
 function hideAll(){
   for(const s of SIDES){caps[s].forEach(c=>c.t.visible=c.l1.visible=c.l2.visible=false);for(const i of [0,4])strips[s][i].visible=false;
     bay[s].forEach(o=>{o.sheet.visible=o.film.visible=o.endp.visible=o.hl.visible=false;o.beams.forEach(m=>m.visible=false);o.wash.forEach(r=>r.forEach(w=>{w.w.visible=w.c.visible=false;}));});}
-  ridgeRoof.visible=ridgeGround.visible=false;ridgeRoof.position.y=0;cords.forEach(c=>c.visible=false);fronts.forEach(f=>f.visible=false);
+  ridgeRoof.visible=ridgeGround.visible=ridgeB.visible=false;prop.visible=prop2.visible=false;fronts.forEach(f=>f.visible=false);
+  [markBand,silBlob,axisPl,groundMk,yardTools].forEach(m=>m.visible=false);lipCut.forEach(m=>m.visible=false);rulers.forEach(m=>m.visible=false);tieBox.forEach(m=>m.visible=false);edgeMk.forEach(m=>m.visible=false);
   stepLs.forEach(g=>{g.visible=false;g.scale.set(1,1,1);});asstLs.forEach(g=>g.visible=false);padM.visible=mallet.visible=false;soap.forEach(m=>m.visible=false);
   arrows.forEach(a=>a.visible=false);arrowReach.visible=fixArrow.visible=false;reach2.forEach(m=>m.visible=false);reach17.visible=false;
   stackM.visible=beamBundle.visible=capBundle.visible=endBundle.visible=false;YARD.hide();
@@ -1395,7 +1524,11 @@ function hideAll(){
   frameLabels.length=0;
 }
 let noLabels=false;
-function applyState(si,t){hideAll();if(si>=21)STEPS[si].apply(t,true);else for(let i=0;i<=si;i++)STEPS[i].apply(i<si?1:t,i===si);if(noLabels)frameLabels.length=0;}
+/* Состояние сцены считается заново на каждом кадре (hideAll), поэтому оно одинаково верно при проигрывании подряд и при прямом переходе к шагу.
+   Шаги 1–21 (индексы 0–20) накапливаются: предыдущие шаги рисуют свой конечный вид, текущий — по времени t.
+   Шаги 22–26 (индексы 21–25) рисуют крышу целиком сами (roofNow, roofFull): закрытые пролёты, крышки, профиль и подпорка заданы в каждом шаге явно. */
+const ABS_FROM=21;
+function applyState(si,t){hideAll();if(si>=ABS_FROM)STEPS[si].apply(t,true);else for(let i=0;i<=si;i++)STEPS[i].apply(i<si?1:t,i===si);if(noLabels)frameLabels.length=0;}
 
 /* ---------- камера ---------- */
 let camOverride=null,camTo=null,camFrom=null,camStart=0,camLocked=true;const CAM_DUR=1500;
@@ -1477,7 +1610,7 @@ function frameAt(ms){
   applyState(si,t);setCam(camAt(si,t));controls.update();renderer.render(scene,camera);drawLabels();
   if(VIDEO){$('vn').textContent='Шаг '+(si+1)+' из '+STEPS.length+' · '+STEPS[si].part;$('vt').textContent=STEPS[si].title;$('vc').textContent='Проверка: '+STEPS[si].check;}
 }
-window.anim={count:STEPS.length,total:TOTAL,frameAt,steps:STEPS.map(s=>({title:s.title,actions:s.actions.slice(),check:s.check,part:s.part})),
+window.anim={count:STEPS.length,total:TOTAL,frameAt,steps:STEPS.map(s=>({title:s.title,actions:s.actions.slice(),check:s.check,part:s.part,dur:s.dur})),
   goto(i,tt,cam,bez){si=i;t=tt;playing=false;camLocked=true;camOverride=cam?(cam==='pdf'?(STEPS[i].pdfcam||null):CAMS[cam]):null;noLabels=!!bez;const c=camFor(si,t);
     applyState(si,t);wantCam(c,true);controls.update();renderer.render(scene,camera);drawLabels();updateUI();updateFills();}};
 })();
